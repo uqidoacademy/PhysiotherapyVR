@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using Valve.VR;
 
 namespace Valve.VR
@@ -2008,7 +2009,12 @@ public class CVRSystem
 	{
 		FnTable.AcknowledgeQuit_UserPrompt();
 	}
-}
+
+        internal void GetStringTrackedDeviceProperty(int i, ETrackedDeviceProperty prop_RenderModelName_String, StringBuilder result, int v, ref ETrackedPropertyError error)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 public class CVRExtendedDisplay

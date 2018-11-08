@@ -20,7 +20,6 @@ public class GetStatus : MonoBehaviour {
 			if (result.ToString ().Contains ("tracker")) {
 				if(OpenVR.System.GetTrackedDeviceActivityLevel(i) == EDeviceActivityLevel.k_EDeviceActivityLevel_Standby)
 					Debug.Log("Standby tracker numero: "+i);
-				break;
 			}
 		}
 	}
