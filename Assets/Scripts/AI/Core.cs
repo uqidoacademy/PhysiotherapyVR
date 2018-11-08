@@ -12,13 +12,28 @@ namespace AI
 
         private float _timing;
 
+        /*
+         * TODO as another simple exercise for the reader (first is importing from JSON exercise step) implement a function to wrap the ideal movement steps concept, 
+         * so if you want to use more ideal movements steps and something like that you can. Email me at antonio.terpin@gmail.com to get more info. :* :*
+         */
+
         #region Initialization
 
+        /// <summary>
+        /// Constructor of core (core initialization)
+        /// </summary>
+        /// <param name="idealMovementSteps">How the exercise should be done</param>
+        /// <param name="timing">The time between each step</param>
         public Core(ExerciseStep[] idealMovementSteps, float timing)
         {
             Init(idealMovementSteps, timing);
         }
 
+        /// <summary>
+        /// Can be used to initialize again the core object.
+        /// </summary>
+        /// <param name="idealMovementSteps">How the exercise should be done</param>
+        /// <param name="timing">The time between each step</param>
         public void Init(ExerciseStep[] idealMovementSteps, float timing)
         {
             _idealMovementSteps = idealMovementSteps; // ricomincia l'esercizio
@@ -26,6 +41,9 @@ namespace AI
             Restart();
         }
 
+        /// <summary>
+        /// Used to restart an exercise.
+        /// </summary>
         public void Restart()
         {
             PerformedMovementSteps.Clear();
@@ -35,6 +53,7 @@ namespace AI
 
         #region Utils
 
+        // Get the ideal step away from current of shift. Returns null if the step doesn't exist. 
         private ExerciseStep GetIdealStep(int shift)
         {
             int index = PerformedMovementSteps.Count - 1 + shift;
@@ -44,6 +63,7 @@ namespace AI
             return null;
         }
 
+        // Get the performed step away from current of shift. Returns null if the step doesn't exist.
         private ExerciseStep GetPerformedStep(int shift)
         {
             int index = PerformedMovementSteps.Count - 1 + shift;
@@ -52,13 +72,19 @@ namespace AI
             return null;
         }
 
-        private Vector3 DerivativeOf(Vector3 b, Vector3 a, float time)
+        // calculate the incremental ratio
+        private Vector3 IncrementalRatioOf(Vector3 b, Vector3 a, float time)
         {
             return (b - a) / time;
         }
 
         #endregion
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="currentStep"></param>
+        /// <returns></returns>
         public Dictionary<string, ArticolationError> Evaluate(ExerciseStep currentStep)
         {
             PerformedMovementSteps.Add(currentStep);
@@ -81,10 +107,10 @@ namespace AI
                 // 2/3. Speed
                 if (previousIdealArticolationPoint != null && previousArticolationPoint != null)
                 {
-                    articolationError.Position.Speed = DerivativeOf(currentIdealArticolationPoint.Position, previousIdealArticolationPoint.Position, _timing) -
-                        DerivativeOf(currentArticolationPoint.Position, previousArticolationPoint.Position, _timing);
-                    articolationError.Angle.Speed = DerivativeOf(currentIdealArticolationPoint.Angle, previousIdealArticolationPoint.Angle, _timing) -
-                        DerivativeOf(currentArticolationPoint.Angle, previousArticolationPoint.Angle, _timing);
+                    articolationError.Position.Speed = IncrementalRatioOf(currentIdealArticolationPoint.Position, previousIdealArticolationPoint.Position, _timing) -
+                        IncrementalRatioOf(currentArticolationPoint.Position, previousArticolationPoint.Position, _timing);
+                    articolationError.Angle.Speed = IncrementalRatioOf(currentIdealArticolationPoint.Angle, previousIdealArticolationPoint.Angle, _timing) -
+                        IncrementalRatioOf(currentArticolationPoint.Angle, previousArticolationPoint.Angle, _timing);
                 } else
                 {
                     articolationError.Position.Speed = Vector3.zero;
