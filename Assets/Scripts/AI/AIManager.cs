@@ -10,11 +10,11 @@ namespace AI
 
     public interface IAIManager
     {
-        // TODO generalize
+        // TODO generalize (v2.0)
 
         #region Arms
 
-        ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand, bool isRelative = false);
+        ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand);
         int CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing);
         int StartArmExercise(int armSessionID);
         EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep, int armExerciseID, int armSessionID);
@@ -23,13 +23,16 @@ namespace AI
         #endregion
     }
 
+
     public class AIManager : IAIManager
     {
         private List<Core> _armExerciseSessions = new List<Core>();
 
-        public ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand, bool isRelative = false)
+        public ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand)
         {
-            return new ArmExerciseStep(shoulder, elbow, hand, isRelative);
+            elbow = GlobalTransformToRelative(shoulder, elbow);
+            hand = GlobalTransformToRelative(elbow, hand);
+            return new ArmExerciseStep(shoulder, elbow, hand);
         }
 
         public OverallSessionResults CloseExerciseSession(int armSessionID)
@@ -62,5 +65,50 @@ namespace AI
         {
             throw new System.NotImplementedException();
         }
+
+        #region Convertions
+
+        private GameObject _utilityTranformGMOne = null;
+        private GameObject UtilityTranformGMOne
+        {
+            get
+            {
+                if (_utilityTranformGMOne == null)
+                {
+                    _utilityTranformGMOne = new GameObject();
+                    _utilityTranformGMOne.SetActive(false);
+                }
+                return _utilityTranformGMOne;
+            }
+        }
+
+        private GameObject _utilityTranformGMTwo = null;
+        private GameObject UtilityTranformGMTwo
+        {
+            get
+            {
+                if (_utilityTranformGMTwo == null)
+                {
+                    _utilityTranformGMTwo = new GameObject();
+                    _utilityTranformGMTwo.SetActive(false);
+                }
+                return _utilityTranformGMTwo;
+            }
+        }
+
+        public Transform GlobalTransformToRelative(Transform father, Transform child)
+        {
+            UtilityTranformGMOne.transform.position = father.position;
+            UtilityTranformGMOne.transform.eulerAngles = father.eulerAngles;
+            UtilityTranformGMTwo.transform.position = child.position;
+            UtilityTranformGMTwo.transform.eulerAngles = child.eulerAngles;
+
+            UtilityTranformGMTwo.transform.SetParent(UtilityTranformGMOne.transform);
+
+            // TODO casomai occhio ai puntatori del ciesso
+            return UtilityTranformGMTwo.transform;
+        }
+
+        #endregion
     }
 }

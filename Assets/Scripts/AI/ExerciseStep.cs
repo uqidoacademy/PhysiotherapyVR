@@ -62,12 +62,11 @@ namespace AI
         /// <param name="shoulder">Shoulder transform (interested in position and euler angles)</param>
         /// <param name="elbow">Elbow transform (interested in position and euler angles)</param>
         /// <param name="hand">Hand transform (interested in position and euler angles)</param>
-        /// <param name="alreadyRelative">If hand's transform is relative to elbow, and elbow's transform is relative to shoulder. If not, those will be recalculated.</param>
-        public ArmExerciseStep(Transform shoulder, Transform elbow, Transform hand, bool alreadyRelative = false)
+        public ArmExerciseStep(Transform shoulder, Transform elbow, Transform hand)
         {
-            ArticolationPoint Hand = new ArticolationPoint(hand.position, hand.eulerAngles, alreadyRelative);
-            ArticolationPoint Elbow = new ArticolationPoint(elbow.position, elbow.eulerAngles, alreadyRelative, Hand);
-            Root = new ArticolationPoint(shoulder.position, shoulder.eulerAngles, alreadyRelative, Elbow);
+            ArticolationPoint Hand = new ArticolationPoint(hand.position, hand.eulerAngles);
+            ArticolationPoint Elbow = new ArticolationPoint(elbow.position, elbow.eulerAngles, Hand);
+            Root = new ArticolationPoint(shoulder.position, shoulder.eulerAngles, Elbow);
             AAT.Add(ArmArticolationNameOf(ArmArticolationNamesEnum.SHOULDER), Root);
             AAT.Add(ArmArticolationNameOf(ArmArticolationNamesEnum.ELBOW), Elbow);
             AAT.Add(ArmArticolationNameOf(ArmArticolationNamesEnum.HAND), Hand);
