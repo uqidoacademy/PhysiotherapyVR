@@ -15,6 +15,16 @@ namespace AI
     }
 
     // TODO IN FUTURE GET FROM JSON (quite easy, but left to the reader as a simple exercise :* :* . Email me at antonio.terpin@gmail.com to get more info)
+    /* Banalmente il JSON può essere così (da una cosa del genere è semplice costruire un esercizio come successione di exercise step e anche l' AAT):
+     * [
+     *  {                                                       // articolation type
+     *      "position": [#float, #float, #float],               // posizione come vettore
+     *      "angle": [#float, #float, #float],                  // angolo come euler angles
+     *      "articolationName": #string,                        // nome dell'articolazione, da usare nel dictionary
+     *      "substaining": [...#articolationType]
+     *  }
+     * ]
+     */
 
     /// <summary>
     /// Un braccio è identificato dalle sue articolazioni, cioè la spalla, il gomito e il polso.
