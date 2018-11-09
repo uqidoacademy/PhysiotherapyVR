@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿/* CLASSE UIDesktopManager
+ * Classe che gestisce l'intera UI Desktop
+ * permettendo di passare da un pannello all'altro
+ * in base allo stato in cui è l'applicazione
+*/ 
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,5 +42,11 @@ public class UIDesktopManager : MonoBehaviour {
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
 
         SelectionPatientPanel.SetActive(true);
+    }
+
+    public void ActiveSelectionBodyPartPanel() {
+
+        SelectionPatientPanel.SetActive(false);
+        SelectionBodyPartPanel.SetActive(true);
     }
 }

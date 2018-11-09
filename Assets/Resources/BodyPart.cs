@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* CLASSE BodyPart
+ * Classe che permette di creare un ScriptableObj
+ * per una parte del corpo
+*/ 
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
