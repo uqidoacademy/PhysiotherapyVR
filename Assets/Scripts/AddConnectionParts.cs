@@ -9,12 +9,35 @@ public class AddConnectionParts : MonoBehaviour {
 	public GameObject userTrackers;
 
 	private float sizeLimb = 0.08f;
-	private List<GameObject> limbsTrackers = new  List<GameObject>();
+	private List<GameObject> limbsTrackers = new List<GameObject> ();
 
 	private List<string> partsOfBody;
 
-	// Use this for initialization
-	void Start () {
+	private bool connectLimbs = false;
+
+	// Update is called once per frame
+	void Update () {
+		if (connectLimbs) {
+			for (int i = 0; i < partsOfBody.Count - 1; i++) {
+				UpdateCylinderBetweenPoints (limbsTrackers[i].transform.position,
+					limbsTrackers[i + 1].transform.position, sizeLimb, transform.GetChild (i).gameObject);
+			}
+		}
+	}
+
+	private void UpdateCylinderBetweenPoints (Vector3 start, Vector3 end, float width, GameObject arto) {
+		Vector3 offset = end - start;
+		Vector3 scale = new Vector3 (width, offset.magnitude / 2.0f, width);
+		Vector3 position = start + (offset / 2.0f);
+
+		arto.transform.position = position;
+		arto.transform.rotation = Quaternion.identity;
+
+		arto.transform.up = offset;
+		arto.transform.localScale = scale;
+	}
+
+	public void PrepareConnections () {
 		partsOfBody = StaticTestList.ArtList;
 
 		//instantiate limbs
@@ -30,26 +53,6 @@ public class AddConnectionParts : MonoBehaviour {
 				}
 			}
 		}
-
-	}
-
-	// Update is called once per frame
-	void Update () {
-		for (int i = 0; i < partsOfBody.Count - 1; i++) {
-			UpdateCylinderBetweenPoints (limbsTrackers[i].transform.position,
-				limbsTrackers[i + 1].transform.position, sizeLimb, transform.GetChild (i).gameObject);
-		}
-	}
-
-	void UpdateCylinderBetweenPoints (Vector3 start, Vector3 end, float width, GameObject arto) {
-		Vector3 offset = end - start;
-		Vector3 scale = new Vector3 (width, offset.magnitude / 2.0f, width);
-		Vector3 position = start + (offset / 2.0f);
-
-		arto.transform.position = position;
-		arto.transform.rotation = Quaternion.identity;
-
-		arto.transform.up = offset;
-		arto.transform.localScale = scale;
+		connectLimbs = true;
 	}
 }
