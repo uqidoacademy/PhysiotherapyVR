@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
-namespace AI
+namespace Limb
 {
     /// <summary>
     /// Generic step of an exercise. It refers to a limb, so it has a single articolation point root. Combining more limbs can be done by splitting exercises.

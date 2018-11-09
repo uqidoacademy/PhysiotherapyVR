@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AI
+namespace Limb
 {
     /// <summary>
     /// Descrittore di un'articolazione, con posizione e angolazione.
