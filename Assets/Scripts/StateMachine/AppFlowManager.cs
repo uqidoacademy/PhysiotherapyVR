@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UI.Desktop;
 
 public class AppFlowManager : MonoBehaviour
 {
@@ -90,6 +90,8 @@ public class AppFlowManager : MonoBehaviour
 
 public struct AppFlowContext : IContext
 {
+    public List<PatientProfile> ListPatient;
+
     public Text DebugText;
 
     /// <summary>
