@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Physiotherapy.StateMachine
 {
-    public class ChooseBodyParts : BaseState
+    public class RegistrationSample : BaseState
     {
 
         AppFlowContext myContext;
 
         public override void Enter()
         {
-           
+
             myContext = (AppFlowContext)context;
 
 
@@ -21,15 +21,14 @@ namespace Physiotherapy.StateMachine
 
         public override void Tick()
         {
-
             if (Input.GetKeyDown(KeyCode.A))
                 myContext.DoneCallBack();
+
         }
 
         public override void Exit()
         {
-           
+
         }
     }
 }
-

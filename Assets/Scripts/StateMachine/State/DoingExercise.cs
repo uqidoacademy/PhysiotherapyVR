@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Physiotherapy.StateMachine
 {
-    public class ChooseBodyParts : BaseState
+    public class DoingExercise : BaseState
     {
 
         AppFlowContext myContext;
 
         public override void Enter()
         {
-           
+
             myContext = (AppFlowContext)context;
 
 
@@ -28,8 +28,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
-           
+
         }
     }
 }
-

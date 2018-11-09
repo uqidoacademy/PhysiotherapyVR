@@ -27,7 +27,7 @@ namespace Physiotherapy.StateMachine
 
         public virtual void Enter()
         {
-
+            context.GetDebugText().text = string.Format("Currentstate = {0}.", this.GetType());
         }
 
         public virtual void Exit()
@@ -47,6 +47,6 @@ namespace Physiotherapy.StateMachine
     /// </summary>
     public interface IContext
     {
-
+        UnityEngine.UI.Text GetDebugText();
     }
 }

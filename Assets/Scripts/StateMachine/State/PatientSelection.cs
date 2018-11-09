@@ -11,27 +11,23 @@ namespace Physiotherapy.StateMachine
 
         public override void Enter()
         {
-            Debug.LogFormat("State {0} loaded.", "GameplayState");
+           
             myContext = (AppFlowContext)context;
 
 
-
+            base.Enter();
         }
 
         
         public override void Tick()
         {
-            Debug.LogFormat("Setup state {0} tick.", "SetupState");
             if (Input.GetKeyDown(KeyCode.A))
-            {
-                myContext.PatientSelectionDoneCallback();
-            }
-            //myContext.SetupDoneCallback();
+                myContext.DoneCallBack();
         }
 
         public override void Exit()
         {
-            Debug.LogFormat("Setup state {0} unloaded.", "GameplayState");
+           
         }
     }
 }
