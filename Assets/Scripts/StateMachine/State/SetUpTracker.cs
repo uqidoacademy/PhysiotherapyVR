@@ -13,6 +13,9 @@ namespace Physiotherapy.StateMachine
         {
             myContext = (AppFlowContext)context;
             base.Enter();
+            TrackerManager tm = GameObject.FindObjectOfType<TrackerManager>();
+            tm.SetUpTrackers();
+
         }
 
 

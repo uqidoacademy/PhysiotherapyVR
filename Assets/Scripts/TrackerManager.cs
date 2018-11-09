@@ -9,8 +9,9 @@ public class TrackerManager : MonoBehaviour
 {
 
     public TrackerRenamer trackerRenamer;
-    // Use this for initialization
-    void Start()
+
+
+    public void SetUpTrackers()
     {
         TrackersCount();
         InstantiateTrackers(FindTrackerIndex());
