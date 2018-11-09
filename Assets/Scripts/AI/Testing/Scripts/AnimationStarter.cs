@@ -10,8 +10,6 @@ public class AnimationStarter : MonoBehaviour
     public KeyCode startKey = KeyCode.S;
     public string AnimatorStartBoolParamName = "animate";
 
-    // public Sampler realMovementSimulation = null;
-
     // Use this for initialization
     void Start()
     {
@@ -39,15 +37,11 @@ public class AnimationStarter : MonoBehaviour
     private void startSampling()
     {
         //sampler.StartSampling();
-        //if (realMovementSimulation != null)
-        //    realMovementSimulation.StartSampling();
     }
 
     private void stopSampling()
     {
         //sampler.StopSampling();
-        //if (realMovementSimulation != null)
-        //    realMovementSimulation.StopSampling();
     }
 
     public void animationEnded()
