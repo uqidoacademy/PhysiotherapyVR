@@ -45,7 +45,7 @@ namespace AI
             HAND
         }
 
-        private static string ArmArticolationNameOf(ArmArticolationNamesEnum articolationName)
+        public static string ArmArticolationNameOf(ArmArticolationNamesEnum articolationName)
         {
             DescriptionAttribute[] attributes = (
                     DescriptionAttribute[]) articolationName

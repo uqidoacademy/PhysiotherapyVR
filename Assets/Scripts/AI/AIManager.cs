@@ -1,12 +1,55 @@
-﻿using System.Collections;
+﻿using AI.Error;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AI
 {
-    public class EvaluationResults { } // TODO implement this to return results on single step
-    public class OverallExerciseResults { } // TODO implement this to return the overall results on the full exercise
-    public class OverallSessionResults { } // TODO implement this to return the overall results on the full session
+    public class EvaluationResults
+    {
+        public bool NiceWork { get; private set; }
+        public Dictionary<string, ArticolationError> Corrections { get; private set; }
+        public EvaluationResults(bool niceWork, Dictionary<string, ArticolationError> corrections)
+        {
+            NiceWork = niceWork;
+            Corrections = corrections;
+        }
+    }
+    public class OverallExerciseResults
+    {
+        // overall results on the full exercise
+
+        public float Score { get; private set; }
+        public OverallExerciseResults(float score)
+        {
+            Score = score;
+        }
+    }
+    public class OverallSessionResults
+    {
+        // overall results on the full session
+
+        public List<OverallExerciseResults> AllResults { get; private set; }
+        public float OverallScore { get; private set; }
+
+        public OverallSessionResults(List<OverallExerciseResults> allResults, float overallScore)
+        {
+            AllResults = allResults;
+            OverallScore = overallScore;
+        }
+    }
+    public class ArticolationTollerance
+    {
+        public float PositionTolleranceRadius { get; set; }
+        public float PositionSpeedTolleranceRadius { get; set; }
+        public float RotationTolleranceRadius { get; set; }
+        public float RotationSpeedTolleranceRadius { get; set; }
+        public string ArticolationName { get; set; }
+    }
+    public class Tollerance
+    {
+        public List<ArticolationTollerance> Tollerances { get; set; }
+    }
 
     public interface IAIManager
     {
@@ -15,10 +58,11 @@ namespace AI
         #region Arms
 
         ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand);
-        int CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing);
-        int StartArmExercise(int armSessionID);
-        EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep, int armExerciseID, int armSessionID);
-        OverallSessionResults CloseExerciseSession(int armSessionID);
+        void CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing); // inizia una serie di esercizi
+        void StartArmExercise(); // inizia una nuova ripetizione
+        EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep);
+        OverallExerciseResults EvaluateArmExercise(); // chiude una ripetizione
+        OverallSessionResults CloseArmSession();
 
         #endregion
     }
@@ -26,7 +70,16 @@ namespace AI
 
     public class AIManager : IAIManager
     {
-        private List<Core> _armExerciseSessions = new List<Core>();
+        public float MAX_SCORE = 10;
+
+        // TODO generalize (v2.0)
+
+        #region Arms
+        private Core _armEvaluator;
+        private List<OverallExerciseResults> _armExercisesResults = new List<OverallExerciseResults>();
+        private List<bool> _armExerciseStepsEvaluation = new List<bool>();
+
+        public Tollerance ArmTollerance { get; set; }
 
         public ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand)
         {
@@ -35,36 +88,66 @@ namespace AI
             return new ArmExerciseStep(shoulder, elbow, hand);
         }
 
-        public OverallSessionResults CloseExerciseSession(int armSessionID)
+        public OverallSessionResults CloseArmSession()
         {
-            throw new System.NotImplementedException();
+            if (_armExercisesResults == null || _armExercisesResults.Count <= 0) return null;
+            float overallScore = 0;
+            foreach(OverallExerciseResults ex in _armExercisesResults) overallScore += ex.Score;
+            OverallSessionResults results = new OverallSessionResults(_armExercisesResults, overallScore / _armExercisesResults.Count);
+            ClearArmSession();
+            return results;
         }
 
-        public int CreateArmSession()
+        private void ClearArmSession()
         {
-            throw new System.NotImplementedException();
+            _armEvaluator = null;
+            _armExercisesResults.Clear();
+            _armExerciseStepsEvaluation.Clear();
         }
 
-        public int CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing)
+        public void CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing)
         {
-            _armExerciseSessions.Add(new Core(exerciseSteps, timing));
-            return _armExerciseSessions.Count - 1;
+            _armEvaluator = new Core(exerciseSteps, timing);
         }
 
-        public EvaluationResults EvaluateArmStep(int armExerciseID, int armSessionID)
+        public EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep)
         {
-            throw new System.NotImplementedException();
+            bool niceWork = true;
+            Dictionary<string, ArticolationError> stepEvaluationResults = _armEvaluator.Evaluate(exerciseStep);
+            if (ArmTollerance != null)
+            {
+                // no checks so if there are bugs we get a null pointer exception during test.. I prefere a software with visible bugs
+                foreach(ArticolationTollerance tollerance in ArmTollerance.Tollerances)
+                {
+                    ArticolationError error = stepEvaluationResults[tollerance.ArticolationName];
+                    niceWork &= (error.Position.Speed.magnitude < tollerance.PositionSpeedTolleranceRadius)
+                        & (error.Position.Value.magnitude < tollerance.PositionTolleranceRadius)
+                        & (error.Angle.Speed.magnitude < tollerance.RotationSpeedTolleranceRadius)
+                        & (error.Angle.Value.magnitude < tollerance.RotationTolleranceRadius);
+                }
+            }
+
+            return new EvaluationResults(niceWork, stepEvaluationResults);
         }
 
-        public EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep, int armExerciseID, int armSessionID)
+        public void StartArmExercise()
         {
-            throw new System.NotImplementedException();
+            _armEvaluator.Restart();
         }
 
-        public int StartArmExercise(int armSessionID)
+        public OverallExerciseResults EvaluateArmExercise()
         {
-            throw new System.NotImplementedException();
+            float score = 0;
+            foreach(bool res in _armExerciseStepsEvaluation)
+            {
+                score += res ? 1 : 0;
+            }
+            OverallExerciseResults results = new OverallExerciseResults(score / _armExerciseStepsEvaluation.Count * MAX_SCORE);
+            _armExercisesResults.Add(results);
+            return results;
         }
+
+        #endregion
 
         #region Convertions
 
@@ -107,6 +190,11 @@ namespace AI
 
             // TODO casomai occhio ai puntatori del ciesso
             return UtilityTranformGMTwo.transform;
+        }
+
+        public OverallExerciseResults EvaluateArmExercise(int armExerciseID, int armSessionID)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
