@@ -111,10 +111,10 @@ namespace AI
                 {
                     ArticolationError error = stepEvaluationResults[articolationName];
                     ArticolationTollerance tollerance = ArmTollerance[articolationName];
-                    niceWork &= (error.Position.Speed.magnitude < tollerance.PositionSpeedTolleranceRadius)
-                        & (error.Position.Value.magnitude < tollerance.PositionTolleranceRadius)
-                        & (error.Angle.Speed.magnitude < tollerance.RotationSpeedTolleranceRadius)
-                        & (error.Angle.Value.magnitude < tollerance.RotationTolleranceRadius);
+                    niceWork &= (error.Position.Speed.magnitude < tollerance.positionSpeedTolleranceRadius)
+                        & (error.Position.Value.magnitude < tollerance.positionTolleranceRadius)
+                        & (error.Angle.Speed.magnitude < tollerance.rotationSpeedTolleranceRadius)
+                        & (error.Angle.Value.magnitude < tollerance.rotationTolleranceRadius);
                 }
             }
 
