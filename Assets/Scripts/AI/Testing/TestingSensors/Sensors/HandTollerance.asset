@@ -9,5 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0c49d8be7e71634abdebba7311aea99, type: 3}
-  m_Name: ArticolationTollerance
+  m_Name: HandTollerance
   m_EditorClassIdentifier: 
+  positionTolleranceRadius: 0
+  positionSpeedTolleranceRadius: 0
+  rotationTolleranceRadius: 0
+  rotationSpeedTolleranceRadius: 0

@@ -8,11 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 247ddeabb1960ce49914855f831d6941, type: 3}
+  m_Script: {fileID: 11500000, guid: 061c9784d77cdaf459ccffb5edf4837e, type: 3}
   m_Name: Arm
   m_EditorClassIdentifier: 
-  limb: 0
-  timing: 0
-  configuredFromUnityEditor: 0
-  sensorsNameFromUnityEditor: []
-  sensorsFromUnityEditor: []
+  PartName: Arm
+  icon: {fileID: 21300000, guid: dd144aa67ead59e4d9d88ad8091ee399, type: 3}
+  NumberTrackers: 3
+  PositionTollerance: 2
+  VelocityTollernace: 2
