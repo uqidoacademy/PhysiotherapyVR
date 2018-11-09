@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Valve.VR;
 
@@ -49,17 +51,19 @@ public class TrackerManager : MonoBehaviour {
 
   void TrackersCount()
   {
+    TrackerRenamer trackerRenamer = new TrackerRenamer();
     if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
     {
-      TrackerRenamer trackerRenamer = new TrackerRenamer();
-      trackerRenamer.SetInteraction(true); //script da aggiunggere al controller
-      
+      trackerRenamer.SetInteraction(true);
     }
     else
     {
-      Debug.LogWarning("There are " + (StaticTestList.ArtList.Count - FindTrackerIndex().Count) + " not initialized");
+      EditorUtility.DisplayDialog("Tracker missing",
+        "There are " + (StaticTestList.ArtList.Count - FindTrackerIndex().Count) + " not initialized", "OK");
+      trackerRenamer.SetInteraction(false);
 
     }
   }
+
 
 }
