@@ -10,9 +10,8 @@ public class TrackerManager : MonoBehaviour {
     public GameObject gameObjectTemplate;
 	// Use this for initialization
 	void Start () {
-
+        TrackersCount();
         InstantiateTrackers(FindTrackerIndex());
-
     }
 
     List<uint> FindTrackerIndex()
@@ -48,6 +47,9 @@ public class TrackerManager : MonoBehaviour {
         }
 
     }
+    //check how many trackers are active based on how many trackers are needed for the exercise
+    //if all ok, call trackerRenamer
+    //else if some trackers are missing--> display dialog box
 
   void TrackersCount()
   {
@@ -58,8 +60,12 @@ public class TrackerManager : MonoBehaviour {
     }
     else
     {
+      int notInitTrackers = StaticTestList.ArtList.Count - FindTrackerIndex().Count;
       EditorUtility.DisplayDialog("Tracker missing",
-        "There are " + (StaticTestList.ArtList.Count - FindTrackerIndex().Count) + " not initialized", "OK");
+        "There are " +
+        notInitTrackers + 
+        (notInitTrackers == 1? " tracker not initialized": "trackers not initialized"),
+        "OK");
       trackerRenamer.SetInteraction(false);
 
     }
