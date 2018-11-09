@@ -1,10 +1,12 @@
 ﻿using AI.Error;
+using Limb;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AI
 {
+    #region Results types
     public class EvaluationResults
     {
         public bool NiceWork { get; private set; }
@@ -38,18 +40,7 @@ namespace AI
             OverallScore = overallScore;
         }
     }
-    public class ArticolationTollerance
-    {
-        public float PositionTolleranceRadius { get; set; }
-        public float PositionSpeedTolleranceRadius { get; set; }
-        public float RotationTolleranceRadius { get; set; }
-        public float RotationSpeedTolleranceRadius { get; set; }
-        public string ArticolationName { get; set; }
-    }
-    public class Tollerance
-    {
-        public List<ArticolationTollerance> Tollerances { get; set; }
-    }
+    #endregion
 
     public interface IAIManager
     {
@@ -67,7 +58,6 @@ namespace AI
         #endregion
     }
 
-
     public class AIManager : IAIManager
     {
         public float MAX_SCORE = 10;
@@ -79,7 +69,7 @@ namespace AI
         private List<OverallExerciseResults> _armExercisesResults = new List<OverallExerciseResults>();
         private List<bool> _armExerciseStepsEvaluation = new List<bool>();
 
-        public Tollerance ArmTollerance { get; set; }
+        public Dictionary<string, ArticolationTollerance> ArmTollerance { get; set; }
 
         public ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand)
         {
@@ -117,9 +107,10 @@ namespace AI
             if (ArmTollerance != null)
             {
                 // no checks so if there are bugs we get a null pointer exception during test.. I prefere a software with visible bugs
-                foreach(ArticolationTollerance tollerance in ArmTollerance.Tollerances)
+                foreach(string articolationName in ArmTollerance.Keys)
                 {
-                    ArticolationError error = stepEvaluationResults[tollerance.ArticolationName];
+                    ArticolationError error = stepEvaluationResults[articolationName];
+                    ArticolationTollerance tollerance = ArmTollerance[articolationName];
                     niceWork &= (error.Position.Speed.magnitude < tollerance.PositionSpeedTolleranceRadius)
                         & (error.Position.Value.magnitude < tollerance.PositionTolleranceRadius)
                         & (error.Angle.Speed.magnitude < tollerance.RotationSpeedTolleranceRadius)
