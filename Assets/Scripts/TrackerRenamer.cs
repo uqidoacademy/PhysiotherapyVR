@@ -6,9 +6,13 @@ public class TrackerRenamer : MonoBehaviour {
 
     bool canInteract = false;
 
+    //this function is called by TrackerManager
     public void SetInteraction(bool value)
     {
         canInteract = value;
+
+        if (canInteract)
+            CreateCollider();
     }
 
     void OnTriggerEnter(Collider other)
@@ -25,4 +29,12 @@ public class TrackerRenamer : MonoBehaviour {
 
     }
 
+    void CreateCollider()
+    {
+        this.gameObject.AddComponent<BoxCollider>().isTrigger = true;
+        this.gameObject.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
+    }
+
+
+    //TODO boxcollider ai tracker. Testare che funzioni.
 }
