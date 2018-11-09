@@ -11,6 +11,8 @@ public class RandomNoise : MonoBehaviour {
     private float lastTime;
     public float speed = 10;
 
+    public bool Active = false;
+
 	// Use this for initialization
 	void Start () {
         lastTime = -speed;
@@ -18,7 +20,7 @@ public class RandomNoise : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Time.time - lastTime > speed)
+		if (Time.time - lastTime > speed && Active)
         {
             // change destination
             transform.DOLocalRotate(new Vector3(getRandomRotationComponent(), getRandomRotationComponent(), getRandomRotationComponent()), speed);
