@@ -5,11 +5,13 @@ using UnityEditor;
 using UnityEngine;
 using Valve.VR;
 
-public class TrackerManager : MonoBehaviour {
+public class TrackerManager : MonoBehaviour
+{
 
-    public GameObject gameObjectTemplate;
-	// Use this for initialization
-	void Start () {
+    public TrackerRenamer trackerRenamer;
+    // Use this for initialization
+    void Start()
+    {
         TrackersCount();
         InstantiateTrackers(FindTrackerIndex());
     }
@@ -26,7 +28,7 @@ public class TrackerManager : MonoBehaviour {
             if (result.ToString().Contains("tracker"))
             {
                 trackerIndex.Add(i);
-               
+
             }
         }
 
@@ -35,15 +37,18 @@ public class TrackerManager : MonoBehaviour {
     }
 
 
-  //instantiate game objects based on how many indexes there are in the indexList
+    //instantiate game objects based on how many indexes there are in the indexList
 
-  void InstantiateTrackers(List<uint> indexList)
+    void InstantiateTrackers(List<uint> indexList)
     {
-        foreach(uint index in indexList)
+        foreach (uint index in indexList)
         {
-            GameObject childTracker = Instantiate(gameObjectTemplate, transform);
+            GameObject childTracker = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), transform);
+            childTracker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            childTracker.AddComponent<BoxCollider>().isTrigger = true;
+            childTracker.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
             childTracker.name = "tracker_" + index;
-            childTracker.AddComponent<SteamVR_TrackedObject>().SetDeviceIndex((int) index);
+            childTracker.AddComponent<SteamVR_TrackedObject>().SetDeviceIndex((int)index);
         }
 
     }
@@ -51,25 +56,25 @@ public class TrackerManager : MonoBehaviour {
     //if all ok, call trackerRenamer
     //else if some trackers are missing--> display dialog box
 
-  void TrackersCount()
-  {
-    TrackerRenamer trackerRenamer = new TrackerRenamer();
-    if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
+    void TrackersCount()
     {
-      trackerRenamer.SetInteraction(true);
-    }
-    else
-    {
-      int notInitTrackers = StaticTestList.ArtList.Count - FindTrackerIndex().Count;
-      EditorUtility.DisplayDialog("Tracker missing",
-        "There are " +
-        notInitTrackers + 
-        (notInitTrackers == 1? " tracker not initialized": "trackers not initialized"),
-        "OK");
-      trackerRenamer.SetInteraction(false);
 
+        if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
+        {
+            trackerRenamer.SetInteraction(true);
+        }
+        else
+        {
+            int notInitTrackers = StaticTestList.ArtList.Count - FindTrackerIndex().Count;
+            EditorUtility.DisplayDialog("Tracker missing",
+              "There are " +
+              notInitTrackers +
+              (notInitTrackers == 1 ? " tracker not initialized" : " trackers not initialized"),
+              "OK");
+            trackerRenamer.SetInteraction(false);
+
+        }
     }
-  }
 
 
 }
