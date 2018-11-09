@@ -4,31 +4,23 @@ using UnityEngine;
 
 public class TrackerRenamer : MonoBehaviour {
 
-    List<string> nomi = new List<string>();
-
-    private void Start()
-    {
-        nomi[0] = "Spalla";
-        nomi[1] = "Gomito";
-        nomi[2] = "Mano";
-    }
-
-    //StaticTestList.ArtsList
+    bool canInteract = false;
 
     public void SetInteraction(bool value)
     {
-
-
-
+        canInteract = value;
     }
 
     void OnTriggerEnter(Collider other)
     {
-    
-      
-        for (int i = 0; i < nomi.Count; i++)
+
+        if (canInteract)
         {
-            other.gameObject.name = nomi[i];
+            for (int i = 0; i < StaticTestList.ArtList.Count; i++)
+            {
+                other.gameObject.name = StaticTestList.ArtList[i];
+            }
+            canInteract = false;
         }
 
     }
