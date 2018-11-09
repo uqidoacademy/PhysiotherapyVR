@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
@@ -12,7 +12,7 @@ public class TrackerManager : MonoBehaviour {
         InstantiateTrackers(FindTrackerIndex());
 
     }
-	
+
     List<uint> FindTrackerIndex()
     {
         List<uint> trackerIndex = new List<uint>();
@@ -34,7 +34,9 @@ public class TrackerManager : MonoBehaviour {
     }
 
 
-    void InstantiateTrackers(List<uint> indexList)
+  //instantiate game objects based on how many indexes there are in the indexList
+
+  void InstantiateTrackers(List<uint> indexList)
     {
         foreach(uint index in indexList)
         {
@@ -44,4 +46,20 @@ public class TrackerManager : MonoBehaviour {
         }
 
     }
+
+  void TrackersCount()
+  {
+    if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
+    {
+      TrackerRenamer trackerRenamer = new TrackerRenamer();
+      trackerRenamer.SetInteraction(true); //script da aggiunggere al controller
+      
+    }
+    else
+    {
+      Debug.LogWarning("There are " + (StaticTestList.ArtList.Count - FindTrackerIndex().Count) + " not initialized");
+
+    }
+  }
+
 }
