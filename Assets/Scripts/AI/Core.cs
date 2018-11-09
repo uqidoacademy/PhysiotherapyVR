@@ -36,6 +36,8 @@ namespace AI
         /// <param name="timing">The time between each step</param>
         public void Init(ExerciseStep[] idealMovementSteps, float timing)
         {
+            // check ideal movement steps are at least 2
+            if (_idealMovementSteps.Length < 2) throw new ArgumentException("Too few ideal movement steps");
             _idealMovementSteps = idealMovementSteps; // ricomincia l'esercizio
             _timing = timing;
             Restart();
@@ -91,6 +93,16 @@ namespace AI
             ExerciseStep previousStep = GetPerformedStep(-1),
                 currentIdealStep = GetIdealStep(0),
                 previousIdealStep = GetIdealStep(-1);
+
+            if(currentIdealStep == null)
+            {
+                // too much real steps !!! speed error
+                // TODO handle better maybe
+                // at the moment compare with last ideal step always
+                currentIdealStep = _idealMovementSteps[_idealMovementSteps.Length - 1];
+                previousIdealStep = _idealMovementSteps[_idealMovementSteps.Length - 2];
+            }
+
             Dictionary<string, ArticolationError> articolationErrors = new Dictionary<string, ArticolationError>();
             foreach(string articolationName in currentStep.AAT.Keys)
             {
