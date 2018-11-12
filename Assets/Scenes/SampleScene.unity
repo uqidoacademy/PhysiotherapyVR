@@ -443,8 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 918f519ef65c5304d8cd05f4b98bd5da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameObjectTemplate: {fileID: 1673860071447148, guid: 622216c9884ab5b438e97170b76cddea,
-    type: 2}
+  trackerRenamer: {fileID: 0}
 --- !u!4 &373977089
 Transform:
   m_ObjectHideFlags: 0

@@ -10,6 +10,10 @@ public class TrackerManager : MonoBehaviour
 
     public TrackerRenamer trackerRenamer;
 
+    private void Start()
+    {
+        SetUpTrackers();
+    }
 
     public void SetUpTrackers()
     {

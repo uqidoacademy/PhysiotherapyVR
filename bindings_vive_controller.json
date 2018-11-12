@@ -1,5 +1,5 @@
 {
-   "app_key" : "application.generated.unity.steamvr.exe",
+   "app_key" : "application.generated.unity.physiotherapyvr.exe",
    "bindings" : {
       "/actions/buggy" : {
          "sources" : [

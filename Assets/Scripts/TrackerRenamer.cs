@@ -5,10 +5,13 @@ using UnityEditor;
 
 public class TrackerRenamer : MonoBehaviour {
 
+    public SampleRecorder recorderSample;
+
     int partsRenamed = 0;
     bool canInteract = false;
     private void Start()
     {
+        recorderSample.trackersTransform = new List<Transform>();
         CreateCollider();
     }
 
@@ -26,7 +29,6 @@ public class TrackerRenamer : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        
         if (canInteract && other.gameObject.name.Contains("tracker"))
         {
             Debug.Log("COLPITO " + other.gameObject.name);
@@ -34,9 +36,17 @@ public class TrackerRenamer : MonoBehaviour {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
             other.gameObject.GetComponent<MeshRenderer>().material.color = StaticTestList.ColorList[partsRenamed];
             EditorUtility.DisplayDialog("Tracker Configurations", "HAI AGGIUNTO: " + (StaticTestList.ArtList[partsRenamed]), "OK");
-            if(partsRenamed < StaticTestList.ArtList.Count)
             partsRenamed++;
-            EditorUtility.DisplayDialog("Next Tracker", "DEVI ORA SELEZIONARE: " + (StaticTestList.ArtList[partsRenamed]), "OK");
+
+            recorderSample.trackersTransform.Add(other.gameObject.transform);
+
+            if (partsRenamed < StaticTestList.ArtList.Count)
+            {
+                EditorUtility.DisplayDialog("Next Tracker", "DEVI ORA SELEZIONARE: " + (StaticTestList.ArtList[partsRenamed]), "OK");
+            }
+            else {
+                //Ready to record
+            }
         }
 
     }
@@ -47,8 +57,4 @@ public class TrackerRenamer : MonoBehaviour {
         this.gameObject.AddComponent<Rigidbody>();
         this.gameObject.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
     }
-
-
-
-    //TODO boxcollider ai tracker. Testare che funzioni.
 }
