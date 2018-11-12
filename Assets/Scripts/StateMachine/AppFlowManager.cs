@@ -16,7 +16,7 @@ public class AppFlowManager : MonoBehaviour
 
     List<IState> states;
 
-    public AppFlowContext context;
+    AppFlowContext context;
 
 
     private static AppFlowManager _instance;
@@ -56,6 +56,7 @@ public class AppFlowManager : MonoBehaviour
             PatientSelectionDoneCallback = patientSelectionDone,
             DoneCallBack = goToNextState,
             TrackerWearDoneCallback = goToSetUpTracker,
+            SetUpTrackerDoneCallback = goToRegistrationSample,
            // ChooseBodyPartsDoneCallback = patientSelectionToDo,
         };
 
@@ -114,8 +115,17 @@ public class AppFlowManager : MonoBehaviour
     {
         if (context.currentPatient != null )
         {
-            trackerRenamer.SetInteraction(true);
+         
             sm.CurrentState = getState(typeof(SetUpTracker));
+        }
+    }
+
+    private void goToRegistrationSample()
+    {
+        if (context.currentPatient != null)
+        {
+            trackerRenamer.SetInteraction(true);
+            sm.CurrentState = getState(typeof(RegistrationSample));
         }
     }
 
@@ -153,6 +163,12 @@ public struct AppFlowContext : IContext
 
     public PatientProfile currentPatient;
 
+
+    public List<BodyPart> listBodyParts;
+
+    public BodyPart currentBodyPart;
+
+
     public Text DebugText;
 
     /// <summary>
@@ -169,6 +185,8 @@ public struct AppFlowContext : IContext
     /// COntiene la callback da richiamare quando sono stati indossati correttamente i tracker
     /// </summary>
     public Action TrackerWearDoneCallback;
+
+    public Action SetUpTrackerDoneCallback;
 
     /// <summary>
     /// Callback generica da richiamare quando finisco il lavoro dello stato

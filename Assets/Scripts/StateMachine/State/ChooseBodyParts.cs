@@ -13,7 +13,10 @@ namespace Physiotherapy.StateMachine
         {
            
             myContext = (AppFlowContext)context;
+            myContext.listBodyParts = new List<BodyPart>() ;
 
+            Object[] bodyParts = Resources.LoadAll("BodyPartScriptableObj", typeof(BodyPart));
+          
 
             base.Enter();
         }

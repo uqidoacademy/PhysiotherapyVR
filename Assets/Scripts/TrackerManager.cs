@@ -11,7 +11,7 @@ public class TrackerManager : MonoBehaviour
 
     // public TrackerRenamer trackerRenamer;
 
-    
+    public bool setUpTrackerDone = false;
 
     public void SetUpTrackers()
     {
@@ -64,9 +64,9 @@ public class TrackerManager : MonoBehaviour
 
         if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
         {
-
+            setUpTrackerDone = true;
             // trackerRenamer.SetInteraction(true);
-            AppFlowManager.I.context.TrackerWearDoneCallback();
+           
         }
         else
         {
