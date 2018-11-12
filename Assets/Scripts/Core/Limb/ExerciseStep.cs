@@ -5,36 +5,27 @@ using UnityEngine;
 
 namespace Limb
 {
+    /// <summary>
+    /// Generic step of an exercise. An exercise is made by a sequence of this steps.
+    /// </summary>
+    /// <extension>
+    /// To extend this implement an appropriate class on the example made below for the arm. Doing this provide safe names and referral to articulations.
+    /// </extension>
+    /// <author>Antonio Terpin</author>
     public abstract class ExerciseStep
     {
         public ArticolationPoint Root { get; set; }
         public Dictionary<string, ArticolationPoint> AAT = new Dictionary<string, ArticolationPoint>(); // articolation allocation table
     }
 
-    // TODO IN FUTURE GET FROM JSON (quite easy, but left to the reader as a simple exercise :* :* . Email me at antonio.terpin@gmail.com to get more info)
-    /* Banalmente il JSON può essere così (da una cosa del genere è semplice costruire un esercizio come successione di exercise step e anche l' AAT):
-     * [
-     *  {                                                       // articolation type
-     *      "position": [#float, #float, #float],               // posizione come vettore
-     *      "angle": [#float, #float, #float],                  // angolo come euler angles
-     *      "articolationName": #string,                        // nome dell'articolazione, da usare nel dictionary
-     *      "substaining": [...#articolationType]
-     *  }
-     * ]
-     */
+    #region ExerciseStep implementations
 
+    /// <summary>
+    /// Example of implementation of ExerciseStep. Describe an Arm exercise step
+    /// </summary>
+    /// <author>Antonio Terpin</author>
     public class ArmExerciseStep : ExerciseStep
     {
-        public enum ArmArticolationNamesEnum
-        {
-            [Description("shoulder")]
-            SHOULDER,
-            [Description("elbow")]
-            ELBOW,
-            [Description("hand")]
-            HAND
-        }
-
         public static string ArmArticolationNameOf(ArmArticolationNamesEnum articolationName)
         {
             DescriptionAttribute[] attributes = (
@@ -56,4 +47,23 @@ namespace Limb
             AAT.Add(ArmArticolationNameOf(ArmArticolationNamesEnum.HAND), Hand);
         }
     }
+
+    #endregion
+
+    #region Articolations names
+    /// <summary>
+    /// Arm naming
+    /// </summary>
+    /// <author>Antonio Terpin</author>
+    public enum ArmArticolationNamesEnum
+    {
+        [Description("shoulder")]
+        SHOULDER,
+        [Description("elbow")]
+        ELBOW,
+        [Description("hand")]
+        HAND
+    }
+
+    #endregion
 }
