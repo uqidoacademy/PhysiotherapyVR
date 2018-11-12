@@ -16,18 +16,20 @@ namespace Physiotherapy.StateMachine
             myContext = (AppFlowContext)context;
             base.Enter();
             tm = GameObject.FindObjectOfType<TrackerManager>();
-            tm.SetUpTrackers();
+            //tm.SetUpTrackers();
+
+            UIDesktopManager.I.ActiveWearTrakersPanel(myContext.listBodyParts[0]);
 
         }
 
 
         public override void Tick()
         {
-
+            /*
             if (Input.GetKeyDown(KeyCode.A))
                 myContext.DoneCallBack();
             if (tm.setUpTrackerDone)
-                myContext.TrackerWearDoneCallback();
+                myContext.TrackerWearDoneCallback();*/
         }
 
         public override void Exit()

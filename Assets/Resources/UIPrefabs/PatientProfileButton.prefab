@@ -85,7 +85,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114074336574147072, guid: 5f4632faaba87794ebfa84c0baeeb3aa,
+          type: 2}
         m_MethodName: PatientSelected
         m_Mode: 1
         m_Arguments:

@@ -74,6 +74,7 @@ public class UIDesktopManager : MonoBehaviour {
     }
 
     public void ActiveWearTrakersPanel(BodyPart bp) {
+        SelectionBodyPartPanel.SetActive(false);
         WearTrackersPanel.SetActive(true);
         foreach (string lp in bp.LimbPart) {
             limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
@@ -82,6 +83,10 @@ public class UIDesktopManager : MonoBehaviour {
     }
 
     public void PatientSelected() {
+        ClickForChangeState();
+    }
+
+    public void BodyPartSelected() {
         ClickForChangeState();
     }
 }
