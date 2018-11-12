@@ -1,3 +1,4 @@
+using Physiotherapy.StateMachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,12 +9,9 @@ using Valve.VR;
 public class TrackerManager : MonoBehaviour
 {
 
-    public TrackerRenamer trackerRenamer;
+    // public TrackerRenamer trackerRenamer;
 
-    private void Start()
-    {
-        SetUpTrackers();
-    }
+    public bool setUpTrackerDone = false;
 
     public void SetUpTrackers()
     {
@@ -66,7 +64,9 @@ public class TrackerManager : MonoBehaviour
 
         if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
         {
-            trackerRenamer.SetInteraction(true);
+            setUpTrackerDone = true;
+            // trackerRenamer.SetInteraction(true);
+           
         }
         else
         {
@@ -76,7 +76,7 @@ public class TrackerManager : MonoBehaviour
               notInitTrackers +
               (notInitTrackers == 1 ? " tracker not initialized" : " trackers not initialized"),
               "OK");
-            trackerRenamer.SetInteraction(false);
+           // trackerRenamer.SetInteraction(false);
 
         }
     }

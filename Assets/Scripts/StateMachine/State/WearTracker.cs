@@ -9,12 +9,14 @@ namespace Physiotherapy.StateMachine
 
         AppFlowContext myContext;
 
+        TrackerManager tm;
         public override void Enter()
         {
 
             myContext = (AppFlowContext)context;
-
             base.Enter();
+            tm = GameObject.FindObjectOfType<TrackerManager>();
+            tm.SetUpTrackers();
 
         }
 
@@ -24,6 +26,8 @@ namespace Physiotherapy.StateMachine
 
             if (Input.GetKeyDown(KeyCode.A))
                 myContext.DoneCallBack();
+            if (tm.setUpTrackerDone)
+                myContext.TrackerWearDoneCallback();
         }
 
         public override void Exit()
