@@ -45,7 +45,7 @@ public class UIDesktopManager : MonoBehaviour {
 
     GameObject bodyPartButton;
 
-    GameObject trakerIcon;
+    GameObject limbPart;
 
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
         SelectionPatientPanel.SetActive(true);
@@ -69,6 +69,9 @@ public class UIDesktopManager : MonoBehaviour {
     }
 
     public void ActiveWearTrakersPanel(BodyPart bp) {
-        trakerIcon = Instantiate(Resources.Load("UIPrefabs/TrakerIcon")) as GameObject;
+        foreach (string lp in bp.LimbPart) {
+            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
+            limbPart.GetComponentInChildren<Text>().text = lp;
+        }
     }
 }
