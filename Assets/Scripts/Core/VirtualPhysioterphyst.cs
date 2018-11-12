@@ -3,6 +3,13 @@ using AI;
 using Limb;
 using UnityEngine;
 
+
+/// <summary>
+/// Class used to register and evaluate errors made from the patient
+/// </summary>
+/// <author>
+/// Antonio Terpin
+/// </author>
 public class VirtualPhysioterphyst : MonoBehaviour
 {
     // TODO (v2.0) parallelize all this stuf (should be easy but require some time)
