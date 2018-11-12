@@ -39,14 +39,36 @@ public class UIDesktopManager : MonoBehaviour {
 
     public GameObject SelectionBodyPartPanel;
 
-    public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
+    public GameObject WearTrackersPanel;
 
+    GameObject patientButton;
+
+    GameObject bodyPartButton;
+
+    GameObject trakerIcon;
+
+    public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
         SelectionPatientPanel.SetActive(true);
+        foreach (PatientProfile pf in listPatient) {
+            patientButton = Instantiate(Resources.Load("UIPrefabs/PatientProfileButton")) as GameObject;
+            patientButton.GetComponentInChildren<Text>().text = pf.NamePatient + " " + pf.SurnamePatient;
+            patientButton.transform.parent = SelectionPatientPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        }  
     }
 
-    public void ActiveSelectionBodyPartPanel() {
-
-        SelectionPatientPanel.SetActive(false);
+    public void ActiveSelectionBodyPartPanel(List<BodyPart> listBodyPart)
+    {
         SelectionBodyPartPanel.SetActive(true);
+        foreach (BodyPart bp in listBodyPart)
+        {
+            bodyPartButton = Instantiate(Resources.Load("UIPrefabs/BodyPartButton")) as GameObject;
+            bodyPartButton.GetComponentInChildren<Text>().text = bp.name;
+            bodyPartButton.GetComponentInChildren<Image>().sprite = bp.icon;
+            bodyPartButton.transform.parent = SelectionBodyPartPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        }
+    }
+
+    public void ActiveWearTrakersPanel(BodyPart bp) {
+        trakerIcon = Instantiate(Resources.Load("UIPrefabs/TrakerIcon")) as GameObject;
     }
 }
