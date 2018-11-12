@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Physiotherapy.StateMachine
 {
@@ -13,6 +14,12 @@ namespace Physiotherapy.StateMachine
         {
            
             myContext = (AppFlowContext)context;
+            myContext.listBodyParts = new List<BodyPart>() ;
+
+            BodyPart[] bodyParts = Resources.LoadAll<BodyPart>("BodyPartScriptableObj");
+
+            myContext.listBodyParts = bodyParts.ToList();
+            UIDesktopManager.I.ActiveSelectionBodyPartPanel(myContext.listBodyParts);
 
 
             base.Enter();

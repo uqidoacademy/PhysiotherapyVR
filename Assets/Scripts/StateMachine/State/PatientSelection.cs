@@ -19,6 +19,7 @@ namespace Physiotherapy.StateMachine
             myContext.ListPatient.Add(new PatientProfile("MR", "Mario",
                 "Rossi", "Male", 1.7f, true, "Broken shoulder"));
             UIDesktopManager.I.ActiveSelectionPatientPanel(myContext.ListPatient);
+
                 
             base.Enter();
         }
@@ -32,6 +33,9 @@ namespace Physiotherapy.StateMachine
 
         public void DoneSelectionPatient()
         {
+            //TODO: mettere il paziente selezionato, non il primo della lista
+            myContext.currentPatient = myContext.ListPatient[0];
+
             myContext.DoneCallBack();
         }
 
