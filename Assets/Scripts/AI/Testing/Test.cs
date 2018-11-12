@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using AI;
+using DG.Tweening;
 using Limb;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,13 +11,15 @@ public class Test : MonoBehaviour {
     public Vector3 initialPositionShoulder, initialPositionElbow, initialPositionHand;
     GameObject elbow, shoulder, hand;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    public class ResultsHandler : VirtualPhysioterphyst.IResultsHandler
+    {
+        public void HandleResults(EvaluationResults results)
+        {
+            Debug.Log(results.NiceWork);
+        }
+    }
+    // Update is called once per frame
+    void Update () {
 		if(Input.GetKeyDown(keyIdeal))
         {
             Debug.Log("START TEST");
@@ -60,14 +63,14 @@ public class Test : MonoBehaviour {
 
             initialPositionHand = hand.transform.position;
 
-            LimbConfiguration config = new ArmConfiguration(shoulderSensor, elbowSensor, handSensor, timing);
+            LimbConfiguration config = new ArmConfiguration(shoulderSensor, elbowSensor, handSensor);
 
-            VirtualPhysioterapy eval = VirtualPhysioterapy.Instance;
+            VirtualPhysioterphyst eval = VirtualPhysioterphyst.Instance;
 
-            eval.configs.Clear();
-            eval.configs.Add(config);
+            eval.timingBetweenSamples = timing;
+            eval.resultsHandler = new ResultsHandler();
 
-            eval.ExerciseSetup(timing);
+            eval.ExerciseSetup(config);
             eval.StartSetup();
 
             Sequence sequence = DOTween.Sequence();
@@ -82,11 +85,11 @@ public class Test : MonoBehaviour {
             shoulder.transform.position = initialPositionShoulder;
 
 
-            VirtualPhysioterapy.Instance.StartEvaluation();
+            VirtualPhysioterphyst.Instance.StartEvaluation();
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(hand.transform.DOMove(hand.transform.position * 2, timing / 2));
-            sequence.OnComplete(() => VirtualPhysioterapy.Instance.StopEvaluation());
+            sequence.OnComplete(() => VirtualPhysioterphyst.Instance.StopEvaluation());
         }
 	}
 }

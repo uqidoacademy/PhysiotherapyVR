@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <author>
+/// Antonio Terpin
+/// </author>
 namespace AI
 {
     public class ExerciseEvaluatorTrainingSet
@@ -12,6 +15,9 @@ namespace AI
         public float timing;
     }
 
+    /// <summary>
+    /// Class used to perform calculations and retrieve results for the patient exercise execution
+    /// </summary>
     public class CoreExerciseEvaluator
     {
         private ExerciseEvaluatorTrainingSet _trainingSet;
