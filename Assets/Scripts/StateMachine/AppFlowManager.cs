@@ -157,7 +157,7 @@ public class AppFlowManager : MonoBehaviour
 }
 
 
-public struct AppFlowContext : IContext
+public class AppFlowContext : IContext
 {
     public List<PatientProfile> ListPatient;
 
