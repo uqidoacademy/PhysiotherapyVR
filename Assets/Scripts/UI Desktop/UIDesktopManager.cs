@@ -9,8 +9,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UI.Desktop;
+using Physiotherapy.StateMachine;
 
 public class UIDesktopManager : MonoBehaviour {
+
+    public delegate void ButtonClicked();
+    public static ButtonClicked ClickForChangeState;
 
     private static UIDesktopManager instance;
 
@@ -58,6 +62,7 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void ActiveSelectionBodyPartPanel(List<BodyPart> listBodyPart)
     {
+        SelectionPatientPanel.SetActive(false);
         SelectionBodyPartPanel.SetActive(true);
         foreach (BodyPart bp in listBodyPart)
         {
@@ -69,9 +74,14 @@ public class UIDesktopManager : MonoBehaviour {
     }
 
     public void ActiveWearTrakersPanel(BodyPart bp) {
+        WearTrackersPanel.SetActive(true);
         foreach (string lp in bp.LimbPart) {
             limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
             limbPart.GetComponentInChildren<Text>().text = lp;
         }
+    }
+
+    public void PatientSelected() {
+        ClickForChangeState();
     }
 }
