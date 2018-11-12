@@ -37,6 +37,11 @@ namespace Physiotherapy.StateMachine
         {
            
         }
+
+        public void BodyPartChosen()
+        {
+            myContext.DoneCallBack();
+        }
     }
 }
 
