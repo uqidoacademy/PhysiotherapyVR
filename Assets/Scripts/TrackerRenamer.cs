@@ -7,16 +7,12 @@ public class TrackerRenamer : MonoBehaviour {
 
     int partsRenamed = 0;
     bool canInteract = false;
-
     private void Start()
     {
         CreateCollider();
     }
 
-    private void Update()
-    {
-        Debug.Log(canInteract);
-    }
+  
 
     //this function is called by TrackerManager
     public void SetInteraction(bool value)
@@ -25,6 +21,7 @@ public class TrackerRenamer : MonoBehaviour {
         if(canInteract)
         EditorUtility.DisplayDialog("Next Tracker", "DEVI ORA SELEZIONARE: " + (StaticTestList.ArtList[partsRenamed]), "OK");
     }
+ 
  
 
     void OnTriggerEnter(Collider other)
@@ -50,6 +47,7 @@ public class TrackerRenamer : MonoBehaviour {
         this.gameObject.AddComponent<Rigidbody>();
         this.gameObject.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
     }
+
 
 
     //TODO boxcollider ai tracker. Testare che funzioni.
