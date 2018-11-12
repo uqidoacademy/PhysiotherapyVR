@@ -70,7 +70,8 @@ namespace UI.Desktop
 
         public PatientProfile() { }
 
-        public PatientProfile(string ID, string Name, string Surname, string Gender, float Height, bool Agonistic, string Disability)
+        public PatientProfile(string ID, string Name, string Surname, string Gender, 
+            float Height, bool Agonistic, string Disability)
         {
             this.ID = ID;
             this.Name = Name;

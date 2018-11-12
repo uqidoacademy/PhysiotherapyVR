@@ -15,6 +15,8 @@ public class BodyPart : ScriptableObject {
 
 	public int NumberTrackers;
 
+    public List<string> LimbPart;
+
 	public float PositionTollerance;
 
 	public float VelocityTollernace; 

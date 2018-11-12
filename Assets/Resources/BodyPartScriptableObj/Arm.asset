@@ -14,5 +14,9 @@ MonoBehaviour:
   PartName: Arm
   icon: {fileID: 21300000, guid: dd144aa67ead59e4d9d88ad8091ee399, type: 3}
   NumberTrackers: 3
+  LimbPart:
+  - Shoulder
+  - Elbow
+  - Wrist
   PositionTollerance: 2
   VelocityTollernace: 2
