@@ -43,7 +43,7 @@ public class UIDesktopManager : MonoBehaviour {
 
     public GameObject SelectionBodyPartPanel;
 
-    public GameObject WearTrackersPanel;
+    public GameObject SetupTrackersPanel;
 
     GameObject patientButton;
 
@@ -68,17 +68,19 @@ public class UIDesktopManager : MonoBehaviour {
         {
             bodyPartButton = Instantiate(Resources.Load("UIPrefabs/BodyPartButton")) as GameObject;
             bodyPartButton.GetComponentInChildren<Text>().text = bp.name;
-            bodyPartButton.GetComponentInChildren<Image>().sprite = bp.icon;
+            bodyPartButton.transform.GetChild(1).GetComponent<Image>().sprite = bp.icon;
             bodyPartButton.transform.parent = SelectionBodyPartPanel.transform.GetChild(0).GetChild(0).GetChild(0);
         }
     }
 
-    public void ActiveWearTrakersPanel(BodyPart bp) {
+    public void ActiveSetupTrackersPanel(BodyPart bp) {
         SelectionBodyPartPanel.SetActive(false);
-        WearTrackersPanel.SetActive(true);
+        SetupTrackersPanel.SetActive(true);
         foreach (string lp in bp.LimbPart) {
             limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
             limbPart.GetComponentInChildren<Text>().text = lp;
+            limbPart.transform.GetChild(0).GetComponent<Image>().color = Color.red;
+            limbPart.transform.parent = SetupTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
         }
     }
 
