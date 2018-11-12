@@ -9,7 +9,8 @@ namespace AI
     public class Core
     {
         private ExerciseStep[] _idealMovementSteps;
-        public List<ExerciseStep> PerformedMovementSteps { get; private set; }
+
+        private List<ExerciseStep> PerformedMovementSteps = new List<ExerciseStep>();
 
         private float _timing;
 
@@ -38,7 +39,7 @@ namespace AI
         public void Init(ExerciseStep[] idealMovementSteps, float timing)
         {
             // check ideal movement steps are at least 2
-            if (_idealMovementSteps.Length < 2) throw new ArgumentException("Too few ideal movement steps");
+            if (idealMovementSteps.Length < 2) throw new ArgumentException("Too few ideal movement steps");
             _idealMovementSteps = idealMovementSteps; // ricomincia l'esercizio
             _timing = timing;
             Restart();

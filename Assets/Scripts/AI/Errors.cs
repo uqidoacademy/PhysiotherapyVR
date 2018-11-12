@@ -17,7 +17,7 @@ namespace AI.Error
     /// </summary>
     public class ArticolationError
     {
-        public MovementError Position { get; set; }
-        public MovementError Angle { get; set; }
+        public MovementError Position = new MovementError();
+        public MovementError Angle = new MovementError();
     }
 }

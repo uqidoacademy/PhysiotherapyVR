@@ -4,12 +4,11 @@ using UnityEngine;
 
 namespace Limb
 {
-    [CreateAssetMenu(fileName = "ArticolationTollerance", menuName = "Limb/ArticolationTollerance", order = 2)]
-    public class ArticolationTollerance : ScriptableObject
+    public class ArticolationTollerance
     {
-        [SerializeField] public float positionTolleranceRadius;
-        [SerializeField] public float positionSpeedTolleranceRadius;
-        [SerializeField] public float rotationTolleranceRadius;
-        [SerializeField] public float rotationSpeedTolleranceRadius;
+        public float positionTolleranceRadius;
+        public float positionSpeedTolleranceRadius;
+        public float rotationTolleranceRadius;
+        public float rotationSpeedTolleranceRadius;
     }
 }

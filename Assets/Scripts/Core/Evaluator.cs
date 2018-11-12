@@ -9,9 +9,8 @@ using UnityEngine;
 public class Evaluator : MonoBehaviour
 {
     // TODO (v2.0) parallelize all this stuf (should be easy but require some time)
-    // Email me at antonio.terpin@gmai.com to get more info about all this structure
 
-    [SerializeField] public List<LimbConfiguration> configs;
+    public List<LimbConfiguration> configs = new List<LimbConfiguration>();
     private AIManager mAIManager;
     private float timing = 0.1f;
 
@@ -41,7 +40,7 @@ public class Evaluator : MonoBehaviour
 
     // TODO generalize this (v2.0)
     #region Arms
-    private List<ArmExerciseStep> idealArmsStepsSampling = new List<ArmExerciseStep>();
+    private List<ArmExerciseStep> _idealArmsStepsSampling = new List<ArmExerciseStep>();
     private ArmExerciseStep UnwrapArmFromSensors(Dictionary<string, Transform> sensorsData)
     {
         return mAIManager.ArmExerciseStepFromSensors(
@@ -58,7 +57,7 @@ public class Evaluator : MonoBehaviour
             // TODO generalize
             if (limbData.limb == LimbsEnum.ARM)
             {
-                idealArmsStepsSampling.Add(UnwrapArmFromSensors(limbData.articolations));
+                _idealArmsStepsSampling.Add(UnwrapArmFromSensors(limbData.articolations));
                 return;
             }
         }
@@ -72,6 +71,7 @@ public class Evaluator : MonoBehaviour
             if (limbData.limb == LimbsEnum.ARM)
             {
                 EvaluationResults results = mAIManager.EvaluateArmStep(UnwrapArmFromSensors(limbData.articolations));
+                // TODO implement error handling
                 Debug.Log(results.NiceWork);
                 return;
             }
@@ -101,9 +101,10 @@ public class Evaluator : MonoBehaviour
         }
     }
 
+    HandleSample setupSampleHandler = null;
+
     public void StartSetup()
     {
-        HandleSample sampleHandler = null;
         // TODO: fix AI Manager and use all the potential of this class
         LimbConfiguration config = configs[0];
         if (config.limb != LimbsEnum.ARM) throw new System.Exception("Not handled");
@@ -112,28 +113,33 @@ public class Evaluator : MonoBehaviour
         {
             case LimbsEnum.ARM:
                 {
-                    sampleHandler = ArmHandlerOnSetup;
+                    setupSampleHandler = ArmHandlerOnSetup;
                 }
                 break;
         }
 
-        OnSampleTaken += sampleHandler;
+        OnSampleTaken += setupSampleHandler;
+        StartSampling(timing);
     }
 
     public void StopSetup(bool save = true)
     {
         StopSampling();
-        mAIManager.CreateArmSession(idealArmsStepsSampling.ToArray(), timing);
-        idealArmsStepsSampling.Clear();
+        OnSampleTaken -= setupSampleHandler;
+
+        if (save) mAIManager.CreateArmSession(_idealArmsStepsSampling.ToArray(), timing);
+
+        _idealArmsStepsSampling.Clear();
     }
 
     public void SaveSetup() { StopSetup(true); }
 
     public void DiscardSetup() { StopSetup(false); }
 
+    HandleSample executionSampleHandler = null;
+
     public void StartEvaluation()
     {
-        HandleSample sampleHandler = null;
         // TODO: fix AI Manager and use all the potential of this class
         LimbConfiguration config = configs[0];
         if (config.limb != LimbsEnum.ARM) throw new System.Exception("Not handled");
@@ -142,17 +148,19 @@ public class Evaluator : MonoBehaviour
         {
             case LimbsEnum.ARM:
                 {
-                    sampleHandler = ArmHandlerOnExecution;
+                    executionSampleHandler = ArmHandlerOnExecution;
                 }
                 break;
         }
 
-        OnSampleTaken += sampleHandler;
+        OnSampleTaken += executionSampleHandler;
+        StartSampling(timing);
     }
 
     public void StopEvaluation()
     {
         StopSampling();
+        OnSampleTaken -= executionSampleHandler;
     }
 
     #endregion
@@ -161,7 +169,7 @@ public class Evaluator : MonoBehaviour
 
     public class Sample
     {
-        public List<LimbData> limbSamples;
+        public List<LimbData> limbSamples = new List<LimbData>();
     }
 
     delegate void HandleSample(Sample sample);
@@ -198,24 +206,8 @@ public class Evaluator : MonoBehaviour
 
     #endregion
 
-    private void ParseUnityEditorConfig()
-    {
-        foreach(LimbConfiguration config in configs)
-        {
-            if(config.configuredFromUnityEditor)
-            {
-                if (config.sensorsNameFromUnityEditor.Count != config.sensorsFromUnityEditor.Count) throw new UnityException("Can't match sensors with sensors name");
-                for(int i = 0; i < config.sensorsFromUnityEditor.Count; i++)
-                {
-                    config.sensors.Add(config.sensorsNameFromUnityEditor[i], config.sensorsFromUnityEditor[i]);
-                }
-            }
-        }
-    }
-
     private void Awake()
     {
-        ParseUnityEditorConfig();
         SetupSingleton();
     }
 }

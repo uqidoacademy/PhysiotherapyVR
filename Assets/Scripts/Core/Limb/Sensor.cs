@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace Limb
 {
-    [CreateAssetMenu(fileName = "Sensor", menuName = "Limb/Sensor", order = 1)]
-    public class Sensor : ScriptableObject
+    public class Sensor
     {
-        [SerializeField] public GameObject physicalSensor;
-        [SerializeField] public ArticolationTollerance sensorTollerance;
+        public GameObject physicalSensor;
+        public ArticolationTollerance sensorTollerance;
     }
 }

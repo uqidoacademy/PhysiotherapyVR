@@ -6,7 +6,7 @@ namespace Limb
 {
     public class LimbData
     {
-        public Dictionary<string, Transform> articolations;
+        public Dictionary<string, Transform> articolations = new Dictionary<string, Transform>();
         public LimbsEnum limb;
     }
 
