@@ -11,7 +11,7 @@ public class Test : MonoBehaviour {
     public Vector3 initialPositionShoulder, initialPositionElbow, initialPositionHand;
     GameObject elbow, shoulder, hand;
 
-    public class ResultsHandler : VirtualPhysioterapy.IResultsHandler
+    public class ResultsHandler : VirtualPhysioterphyst.IResultsHandler
     {
         public void HandleResults(EvaluationResults results)
         {
@@ -65,7 +65,7 @@ public class Test : MonoBehaviour {
 
             LimbConfiguration config = new ArmConfiguration(shoulderSensor, elbowSensor, handSensor);
 
-            VirtualPhysioterapy eval = VirtualPhysioterapy.Instance;
+            VirtualPhysioterphyst eval = VirtualPhysioterphyst.Instance;
 
             eval.timingBetweenSamples = timing;
             eval.resultsHandler = new ResultsHandler();
@@ -85,11 +85,11 @@ public class Test : MonoBehaviour {
             shoulder.transform.position = initialPositionShoulder;
 
 
-            VirtualPhysioterapy.Instance.StartEvaluation();
+            VirtualPhysioterphyst.Instance.StartEvaluation();
 
             Sequence sequence = DOTween.Sequence();
             sequence.Append(hand.transform.DOMove(hand.transform.position * 2, timing / 2));
-            sequence.OnComplete(() => VirtualPhysioterapy.Instance.StopEvaluation());
+            sequence.OnComplete(() => VirtualPhysioterphyst.Instance.StopEvaluation());
         }
 	}
 }

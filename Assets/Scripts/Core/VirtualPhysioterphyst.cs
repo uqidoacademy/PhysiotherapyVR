@@ -3,7 +3,7 @@ using AI;
 using Limb;
 using UnityEngine;
 
-public class VirtualPhysioterapy : MonoBehaviour
+public class VirtualPhysioterphyst : MonoBehaviour
 {
     // TODO (v2.0) parallelize all this stuf (should be easy but require some time)
 
@@ -15,8 +15,8 @@ public class VirtualPhysioterapy : MonoBehaviour
     public float timingBetweenSamples = 0.5f;
     public IResultsHandler resultsHandler = null;
 
-    private static VirtualPhysioterapy _instance = null;
-    public static VirtualPhysioterapy Instance
+    private static VirtualPhysioterphyst _instance = null;
+    public static VirtualPhysioterphyst Instance
     {
         get
         {
@@ -36,9 +36,6 @@ public class VirtualPhysioterapy : MonoBehaviour
     }
 
     #region AI API usage
-    
-    #region Sampling activities
-
     private class LimbExercise
     {
         public LimbConfiguration exerciseConfig;
@@ -49,6 +46,8 @@ public class VirtualPhysioterapy : MonoBehaviour
     }
 
     private List<LimbExercise> _exercises = new List<LimbExercise>();
+
+    #region Sampling activities
 
     private HandleSample GetIdealSamplerHandlerForExercise(int exID)
     {
@@ -71,6 +70,10 @@ public class VirtualPhysioterapy : MonoBehaviour
 
     #region Exercise setup and ideal movements recording
 
+    /// <summary>
+    /// Used to setup a new limb exercise
+    /// </summary>
+    /// <param name="config">Configuration of the limb that has to perform the exercise</param>
     public void ExerciseSetup(LimbConfiguration config)
     {
         LimbExercise exercise = new LimbExercise();
@@ -88,6 +91,9 @@ public class VirtualPhysioterapy : MonoBehaviour
 
     HandleSample[] setupSampleHandlers;
 
+    /// <summary>
+    /// Start recording exercise steps for the set up exercise (ExerciseSetup method)
+    /// </summary>
     public void StartSetup()
     {
         setupSampleHandlers = new HandleSample[_exercises.Count];
@@ -100,7 +106,7 @@ public class VirtualPhysioterapy : MonoBehaviour
         StartSampling(timingBetweenSamples);
     }
 
-    public void StopSetup(bool save = true)
+    private void StopSetup(bool save = true)
     {
         StopSampling();
         foreach(HandleSample handler in setupSampleHandlers) OnSampleTaken -= handler;
@@ -116,8 +122,14 @@ public class VirtualPhysioterapy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Use this to save the registered setup
+    /// </summary>
     public void SaveSetup() { StopSetup(true); }
 
+    /// <summary>
+    /// Use this to discard the registered setup
+    /// </summary>
     public void DiscardSetup() { StopSetup(false); }
 
     #endregion
@@ -126,6 +138,9 @@ public class VirtualPhysioterapy : MonoBehaviour
 
     HandleSample[] executionSampleHandlers = null;
 
+    /// <summary>
+    /// Use this to start evaluating the recorded exercises
+    /// </summary>
     public void StartEvaluation()
     {
         executionSampleHandlers = new HandleSample[_exercises.Count];
@@ -137,6 +152,9 @@ public class VirtualPhysioterapy : MonoBehaviour
         StartSampling(timingBetweenSamples);
     }
 
+    /// <summary>
+    /// Use this to stop evaluated the recorded exercises
+    /// </summary>
     public void StopEvaluation()
     {
         StopSampling();
