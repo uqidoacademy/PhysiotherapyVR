@@ -552,7 +552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionPatientPanel: {fileID: 1812102035324708}
-  SelectionBodyPartPanel: {fileID: 0}
+  SelectionBodyPartPanel: {fileID: 1899992514951478}
   WearTrackersPanel: {fileID: 0}
 --- !u!114 &114102919756139060
 MonoBehaviour:
