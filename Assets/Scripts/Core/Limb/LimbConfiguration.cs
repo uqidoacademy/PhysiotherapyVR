@@ -6,7 +6,6 @@ namespace Limb
 {
     public abstract class LimbConfiguration {
         public Dictionary<string, Sensor> sensors = new Dictionary<string, Sensor>();
-        public float timingBetweenSamples;
 
         public abstract LimbData ExtractLimbData();
 
@@ -23,12 +22,11 @@ namespace Limb
 
     public class ArmConfiguration : LimbConfiguration
     {
-        public ArmConfiguration(Sensor shoulder, Sensor elbow, Sensor hand, float timingBetweenSamples)
+        public ArmConfiguration(Sensor shoulder, Sensor elbow, Sensor hand)
         {
             sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.SHOULDER), shoulder);
             sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.ELBOW), elbow);
             sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.HAND), hand);
-            this.timingBetweenSamples = timingBetweenSamples;
         }
 
         public override LimbData ExtractLimbData()
