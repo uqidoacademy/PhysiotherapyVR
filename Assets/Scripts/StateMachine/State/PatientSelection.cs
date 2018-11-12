@@ -30,6 +30,11 @@ namespace Physiotherapy.StateMachine
                 myContext.DoneCallBack();
         }
 
+        public void DoneSelectionPatient()
+        {
+            myContext.DoneCallBack();
+        }
+
         public override void Exit()
         {
            
