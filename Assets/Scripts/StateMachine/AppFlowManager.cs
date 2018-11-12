@@ -8,12 +8,16 @@ using UI.Desktop;
 
 public class AppFlowManager : MonoBehaviour
 {
+    public TrackerRenamer trackerRenamer;
 
     public Text DebugText;
 
     MyStateMachine sm;
 
     List<IState> states;
+
+    public AppFlowContext context;
+
 
     private static AppFlowManager _instance;
 
@@ -51,6 +55,7 @@ public class AppFlowManager : MonoBehaviour
             DebugText = DebugText,
             PatientSelectionDoneCallback = patientSelectionDone,
             DoneCallBack = goToNextState,
+            TrackerWearDoneCallback = goToSetUpTracker,
            // ChooseBodyPartsDoneCallback = patientSelectionToDo,
         };
 
@@ -70,21 +75,9 @@ public class AppFlowManager : MonoBehaviour
         patientSelectionToDo();
     }
 
-    private void goToNextState()
-    {
-        for (int i = 0; i < states.Count ; i++)
-        {
-            if (states[i] == sm.CurrentState )
-            {
-                if (i +1 == states.Count)
-                    sm.CurrentState = states[0];
-                else
-                    sm.CurrentState = states[i + 1];
-                break;
-            }
-            
-        }
-    }
+    
+
+
 
     #region routes
 
@@ -99,6 +92,46 @@ public class AppFlowManager : MonoBehaviour
         Debug.Log("Second State");
         sm.CurrentState = sm.States[1];
     }
+
+
+    private void goToNextState()
+    {
+        for (int i = 0; i < states.Count; i++)
+        {
+            if (states[i] == sm.CurrentState)
+            {
+                if (i + 1 == states.Count)
+                    sm.CurrentState = states[0];
+                else
+                    sm.CurrentState = states[i + 1];
+                break;
+            }
+
+        }
+    }
+
+    private void goToSetUpTracker()
+    {
+        if (context.currentPatient != null )
+        {
+            trackerRenamer.SetInteraction(true);
+            sm.CurrentState = getState(typeof(SetUpTracker));
+        }
+    }
+
+    private IState getState(Type _state)
+    {
+        foreach (IState state in states)
+        {
+            if (state.GetType() == _state)
+                return state;
+        
+
+        }
+
+        return null;
+    }
+
 
     #endregion
 
@@ -118,6 +151,8 @@ public struct AppFlowContext : IContext
 {
     public List<PatientProfile> ListPatient;
 
+    public PatientProfile currentPatient;
+
     public Text DebugText;
 
     /// <summary>
@@ -129,6 +164,11 @@ public struct AppFlowContext : IContext
     /// Contiene la callback da richiamare quando è stata fatta la scelta delle parti del corpo
     /// </summary>
     public Action ChooseBodyPartsDoneCallback;
+
+    /// <summary>
+    /// COntiene la callback da richiamare quando sono stati indossati correttamente i tracker
+    /// </summary>
+    public Action TrackerWearDoneCallback;
 
     /// <summary>
     /// Callback generica da richiamare quando finisco il lavoro dello stato
