@@ -7,6 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Class used to register and evaluate errors made from the patient
 /// </summary>
+/// TODO: use session concept, to provide repetitions and so on and so forth
 /// <author>
 /// Antonio Terpin
 /// </author>

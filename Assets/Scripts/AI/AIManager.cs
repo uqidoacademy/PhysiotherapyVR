@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace AI
 {
+    /// <summary>
+    /// Types that are return by this proxy class
+    /// </summary>
+    /// <author>Antonio Terpin</author>
     #region Results types
     public class EvaluationResults
     {
@@ -41,6 +45,7 @@ namespace AI
     /// <summary>
     /// Wrap the ai core to return well formatted results through its api
     /// </summary>
+    /// <author>Antonio Terpin</author>
     public class AIManager
     {
         public float MAX_SCORE = 10;
@@ -54,6 +59,13 @@ namespace AI
         /// </summary>
         public Dictionary<string, ArticolationTollerance> ExerciseTollerance { get; set; }
 
+        private void ClearExerciseSession()
+        {
+            _exerciseEvaluator = null;
+            _exercisesResults.Clear();
+            _exerciseStepsEvaluation.Clear();
+        }
+
         #region API
 
         public OverallSessionResults CloseExerciseSession()
@@ -66,16 +78,9 @@ namespace AI
             return results;
         }
 
-        private void ClearExerciseSession()
-        {
-            _exerciseEvaluator = null;
-            _exercisesResults.Clear();
-            _exerciseStepsEvaluation.Clear();
-        }
-
         public void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing)
         {
-            ExerciseEvaluatorTrainingSet trainingSet = new ExerciseEvaluatorTrainingSet();
+            CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet trainingSet = new CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet();
             trainingSet.idealMovementSteps = exerciseSteps;
             trainingSet.timing = timing;
             _exerciseEvaluator = new CoreExerciseEvaluator(trainingSet);
