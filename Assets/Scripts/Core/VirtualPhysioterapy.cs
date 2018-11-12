@@ -7,11 +7,8 @@ public class VirtualPhysioterapy : MonoBehaviour
 {
     // TODO (v2.0) parallelize all this stuf (should be easy but require some time)
 
-    public List<LimbConfiguration> configs = new List<LimbConfiguration>();
-    private AIManager mAIManager;
-    private float timing = 0.1f;
-
     #region Singleton
+    public float timingBetweenSamples = 0.5f;
 
     private static VirtualPhysioterapy _instance = null;
     public static VirtualPhysioterapy Instance
@@ -37,89 +34,113 @@ public class VirtualPhysioterapy : MonoBehaviour
     
     #region Sampling activities
 
-    // TODO handle different exercises
-    private List<ExerciseStep> _idealStepsSampling = new List<ExerciseStep>();
-
-    private void HandlerOnSetup(Sample sample)
+    private class LimbExercise
     {
-        foreach (LimbData limbData in sample.limbSamples)
-        {
-            _idealStepsSampling.Add(limbData.UnwrapFromSensors());
-            return; // TODO handle different exercises (only one allowed at the moment)
-        }
+        public LimbConfiguration exerciseConfig;
+        public List<ExerciseStep> idealStepsSampling = new List<ExerciseStep>();
+        public List<ExerciseStep> realStepsSampling = new List<ExerciseStep>();
+        public AIManager aiManager = new AIManager();
+        public bool isTemporary = true;
     }
 
-    private void HandlerOnExecution(Sample sample)
+    private List<LimbExercise> _exercises = new List<LimbExercise>();
+
+    private HandleSample GetIdealSamplerHandlerForExercise(int exID)
     {
-        foreach (LimbData limbData in sample.limbSamples)
+        return (Sample sample) =>
         {
-            EvaluationResults results = mAIManager.EvaluateExerciseStep((ArmExerciseStep) limbData.UnwrapFromSensors());
+            _exercises[exID].idealStepsSampling.Add(sample.sampleDataForExercise[exID].UnwrapFromSensors());
+        };
+    }
+
+    private HandleSample GetExecutionSamplerHandlerForExercise(int exID)
+    {
+        return (Sample sample) =>
+        {
+            EvaluationResults results = _exercises[exID].aiManager.EvaluateExerciseStep(sample.sampleDataForExercise[exID].UnwrapFromSensors());
             // TODO implement error handling
             Debug.Log(results.NiceWork);
-            return; // TODO handle different exercises (only one allowed at the moment)
-        }
+        };
     }
+    
     #endregion
 
-    public void ExerciseSetup(float timing)
+    #region Exercise setup and ideal movements recording
+
+    public void ExerciseSetup(LimbConfiguration config)
     {
-        this.timing = timing;
-        mAIManager = new AIManager();
-        // TODO: fix AI Manager and use all the potential of this class (not only one limb and one exercise)
-        LimbConfiguration config = configs[0];
+        LimbExercise exercise = new LimbExercise();
+        exercise.exerciseConfig = config;
 
         Dictionary<string, ArticolationTollerance> tollerance = new Dictionary<string, ArticolationTollerance>();
         foreach (string sensorArticolationName in config.sensors.Keys)
         {
             tollerance.Add(sensorArticolationName, config.sensors[sensorArticolationName].sensorTollerance);
         }
-        mAIManager.ExerciseTollerance = tollerance;
+        exercise.aiManager.ExerciseTollerance = tollerance;
+
+        _exercises.Add(exercise);
     }
 
-    HandleSample setupSampleHandler = null;
+    HandleSample[] setupSampleHandlers;
 
     public void StartSetup()
     {
-        // TODO: fix AI Manager and use all the potential of this class
-        LimbConfiguration config = configs[0];
-        setupSampleHandler = HandlerOnSetup;
-
-        OnSampleTaken += setupSampleHandler;
-        StartSampling(timing);
+        setupSampleHandlers = new HandleSample[_exercises.Count];
+        for(int exID = 0; exID < _exercises.Count; exID++)
+        {
+            setupSampleHandlers[exID] = GetIdealSamplerHandlerForExercise(exID);
+            OnSampleTaken += setupSampleHandlers[exID];
+        }
+        
+        StartSampling(timingBetweenSamples);
     }
 
     public void StopSetup(bool save = true)
     {
         StopSampling();
-        OnSampleTaken -= setupSampleHandler;
+        foreach(HandleSample handler in setupSampleHandlers) OnSampleTaken -= handler;
+        setupSampleHandlers = null;
 
-        // TODO handle more exercises
-        if (save) mAIManager.CreateExerciseSession(_idealStepsSampling.ToArray(), timing);
-
-        _idealStepsSampling.Clear();
+        foreach (LimbExercise ex in _exercises)
+        {
+            if(ex.isTemporary)
+            {
+                if (save) ex.aiManager.CreateExerciseSession(ex.idealStepsSampling.ToArray(), timingBetweenSamples);
+                else _exercises.Remove(ex);
+            }
+        }
     }
 
     public void SaveSetup() { StopSetup(true); }
 
     public void DiscardSetup() { StopSetup(false); }
 
-    HandleSample executionSampleHandler = null;
+    #endregion
+
+    #region Execution sampling
+
+    HandleSample[] executionSampleHandlers = null;
 
     public void StartEvaluation()
     {
-        // TODO: fix AI Manager and use all the potential of this class
-        LimbConfiguration config = configs[0];
-        executionSampleHandler = HandlerOnExecution;
-
-        OnSampleTaken += executionSampleHandler;
-        StartSampling(timing);
+        executionSampleHandlers = new HandleSample[_exercises.Count];
+        for(int exID = 0; exID < _exercises.Count; exID++)
+        {
+            executionSampleHandlers[exID] = GetExecutionSamplerHandlerForExercise(exID);
+            OnSampleTaken += executionSampleHandlers[exID];
+        }
+        StartSampling(timingBetweenSamples);
     }
 
     public void StopEvaluation()
     {
         StopSampling();
-        OnSampleTaken -= executionSampleHandler;
+        foreach (HandleSample handler in executionSampleHandlers) OnSampleTaken -= handler;
+        executionSampleHandlers = null;
     }
+
+    #endregion
 
     #endregion
 
@@ -127,7 +148,7 @@ public class VirtualPhysioterapy : MonoBehaviour
 
     public class Sample
     {
-        public List<LimbData> limbSamples = new List<LimbData>();
+        public LimbData[] sampleDataForExercise;
     }
 
     delegate void HandleSample(Sample sample);
@@ -146,10 +167,10 @@ public class VirtualPhysioterapy : MonoBehaviour
     private void SampleSensors()
     {
         Sample sample = new Sample();
-        for (int i = 0; i < configs.Count; i++)
+        sample.sampleDataForExercise = new LimbData[_exercises.Count];
+        for(int exID = 0; exID < _exercises.Count; exID++)
         {
-            LimbConfiguration config = configs[i];
-            sample.limbSamples.Add(config.ExtractLimbData());
+            sample.sampleDataForExercise[exID] = _exercises[exID].exerciseConfig.ExtractLimbData();
         }
         OnSampleTaken(sample);
     }

@@ -40,8 +40,6 @@ namespace AI
 
     public interface IAIManager
     {
-        // TODO handle more exercises (v2.0)
-
         void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing);
         void StartExercise();
         EvaluationResults EvaluateExerciseStep(ExerciseStep exerciseStep);

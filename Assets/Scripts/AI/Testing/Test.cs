@@ -60,14 +60,13 @@ public class Test : MonoBehaviour {
 
             initialPositionHand = hand.transform.position;
 
-            LimbConfiguration config = new ArmConfiguration(shoulderSensor, elbowSensor, handSensor, timing);
+            LimbConfiguration config = new ArmConfiguration(shoulderSensor, elbowSensor, handSensor);
 
             VirtualPhysioterapy eval = VirtualPhysioterapy.Instance;
 
-            eval.configs.Clear();
-            eval.configs.Add(config);
+            eval.timingBetweenSamples = timing;
 
-            eval.ExerciseSetup(timing);
+            eval.ExerciseSetup(config);
             eval.StartSetup();
 
             Sequence sequence = DOTween.Sequence();
