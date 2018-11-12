@@ -6,90 +6,99 @@ using UnityEngine;
 
 namespace AI
 {
-    public class Core
+    public class ExerciseEvaluatorTrainingSet
     {
-        private ExerciseStep[] _idealMovementSteps;
+        public ExerciseStep[] idealMovementSteps;
+        public float timing;
+    }
+
+    public class ExerciseEvaluator
+    {
+        private ExerciseEvaluatorTrainingSet _trainingSet;
 
         private List<ExerciseStep> PerformedMovementSteps = new List<ExerciseStep>();
 
-        private float _timing;
+        #region Neural Network initialization
 
-        /*
-         * TODO as another simple exercise for the reader (first is importing from JSON exercise step) implement a function to wrap the ideal movement steps concept, 
-         * so if you want to use more ideal movements steps and something like that you can. Email me at antonio.terpin@gmail.com to get more info. :* :*
-         */
-
-        #region Initialization
-
-        /// <summary>
-        /// Constructor of core (core initialization)
-        /// </summary>
-        /// <param name="idealMovementSteps">How the exercise should be done</param>
-        /// <param name="timing">The time between each step</param>
-        public Core(ExerciseStep[] idealMovementSteps, float timing)
+        public ExerciseEvaluator(ExerciseEvaluatorTrainingSet trainingSet)
         {
-            Init(idealMovementSteps, timing);
+            Init(trainingSet);
         }
 
-        /// <summary>
-        /// Can be used to initialize again the core object.
-        /// </summary>
-        /// <param name="idealMovementSteps">How the exercise should be done</param>
-        /// <param name="timing">The time between each step</param>
-        public void Init(ExerciseStep[] idealMovementSteps, float timing)
+        public void Init(ExerciseEvaluatorTrainingSet trainingSet)
         {
-            // check ideal movement steps are at least 2
-            if (idealMovementSteps.Length < 2) throw new ArgumentException("Too few ideal movement steps");
-            _idealMovementSteps = idealMovementSteps; // ricomincia l'esercizio
-            _timing = timing;
-            Restart();
+            if (IsTrainingSetValid(trainingSet)) throw new ArgumentException("Too few ideal movement steps");
+            _trainingSet = trainingSet;
+            RestartExercise();
         }
 
-        /// <summary>
-        /// Used to restart an exercise.
-        /// </summary>
-        public void Restart()
+        private bool IsTrainingSetValid(ExerciseEvaluatorTrainingSet trainingSet)
         {
-            PerformedMovementSteps.Clear();
+            return trainingSet.idealMovementSteps.Length < 2;
         }
 
         #endregion
 
-        #region Utils
-
-        // Get the ideal step away from current of shift. Returns null if the step doesn't exist. 
-        private ExerciseStep GetIdealStep(int shift)
+        public void RestartExercise()
         {
-            int index = PerformedMovementSteps.Count - 1 + shift;
+            PerformedMovementSteps.Clear();
+        }
+
+        #region Utils
+        
+        private ExerciseStep GetIdealStep(int shiftFromLastPerformedIndex)
+        {
+            int index = PerformedMovementSteps.Count - 1 + shiftFromLastPerformedIndex;
             if (index >= 0 && index < PerformedMovementSteps.Count)
-                return _idealMovementSteps[index];
+                return _trainingSet.idealMovementSteps[index];
 
             return null;
         }
-
-        // Get the performed step away from current of shift. Returns null if the step doesn't exist.
-        private ExerciseStep GetPerformedStep(int shift)
+        
+        private ExerciseStep GetPerformedStep(int shiftFromLastPerformedIndex)
         {
-            int index = PerformedMovementSteps.Count - 1 + shift;
+            int index = PerformedMovementSteps.Count - 1 + shiftFromLastPerformedIndex;
             if (index >= 0 && index < PerformedMovementSteps.Count)
                 return PerformedMovementSteps[index];
             return null;
         }
-
-        // calculate the incremental ratio
+        
         private Vector3 IncrementalRatioOf(Vector3 b, Vector3 a, float time)
         {
             return (b - a) / time;
         }
 
+        private Vector3 CalculateSpeedError(Vector3 idealMagnitude1, Vector3 idealMagnitude2, Vector3 realMagnitude1, Vector3 realMagnitude2, float timing)
+        {
+            return IncrementalRatioOf(idealMagnitude1, idealMagnitude2, timing) - IncrementalRatioOf(realMagnitude1, realMagnitude2, timing);
+        }
+
+        private void CalculateSpeedErrors(ArticolationError articolationError,
+        ArticolationPoint currentArticolationPoint, ArticolationPoint previousArticolationPoint,
+        ArticolationPoint currentIdealArticolationPoint, ArticolationPoint previousIdealArticolationPoint)
+        {
+            if (previousIdealArticolationPoint != null && previousArticolationPoint != null)
+            {
+                articolationError.Position.Speed = CalculateSpeedError(
+                    currentIdealArticolationPoint.Position, previousIdealArticolationPoint.Position,
+                    currentArticolationPoint.Position, previousArticolationPoint.Position,
+                    _trainingSet.timing);
+
+                articolationError.Angle.Speed = CalculateSpeedError(
+                    currentIdealArticolationPoint.Angle, previousIdealArticolationPoint.Angle,
+                    currentArticolationPoint.Angle, previousArticolationPoint.Angle,
+                    _trainingSet.timing);
+            }
+            else
+            {
+                articolationError.Position.Speed = Vector3.zero;
+                articolationError.Angle.Speed = Vector3.zero;
+            }
+        }
+
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="currentStep"></param>
-        /// <returns></returns>
-        public Dictionary<string, ArticolationError> Evaluate(ExerciseStep currentStep)
+        public Dictionary<string, ArticolationError> EvaluateExerciseStep(ExerciseStep currentStep)
         {
             PerformedMovementSteps.Add(currentStep);
             ExerciseStep previousStep = GetPerformedStep(-1),
@@ -98,39 +107,27 @@ namespace AI
 
             if(currentIdealStep == null)
             {
-                // too much real steps !!! speed error
-                // TODO handle better maybe
-                // at the moment compare with last ideal step always
-                currentIdealStep = _idealMovementSteps[_idealMovementSteps.Length - 1];
-                previousIdealStep = _idealMovementSteps[_idealMovementSteps.Length - 2];
+                int lastStepIndex = _trainingSet.idealMovementSteps.Length - 1;
+                currentIdealStep = _trainingSet.idealMovementSteps[lastStepIndex];
+                previousIdealStep = _trainingSet.idealMovementSteps[lastStepIndex - 1];
             }
 
             Dictionary<string, ArticolationError> articolationErrors = new Dictionary<string, ArticolationError>();
             foreach(string articolationName in currentStep.AAT.Keys)
             {
                 ArticolationError articolationError = new ArticolationError();
-                // 1. Aggiungo current step alla lista dei movimenti effettuati e prendo il precedente
+                
                 ArticolationPoint currentArticolationPoint = currentStep.AAT[articolationName],
                                   previousArticolationPoint = previousStep != null ? previousStep.AAT[articolationName] : null,
                                   currentIdealArticolationPoint = currentIdealStep.AAT[articolationName],
                                   previousIdealArticolationPoint = previousIdealStep != null ? previousIdealStep.AAT[articolationName] : null;
-                // 2. Posizione
-                articolationError.Position.Value = currentIdealArticolationPoint.Position - currentArticolationPoint.Position;
-                // 3. Angolazione
-                articolationError.Angle.Value = currentIdealArticolationPoint.Angle - currentArticolationPoint.Angle;
-                // 2/3. Speed
-                if (previousIdealArticolationPoint != null && previousArticolationPoint != null)
-                {
-                    articolationError.Position.Speed = IncrementalRatioOf(currentIdealArticolationPoint.Position, previousIdealArticolationPoint.Position, _timing) -
-                        IncrementalRatioOf(currentArticolationPoint.Position, previousArticolationPoint.Position, _timing);
-                    articolationError.Angle.Speed = IncrementalRatioOf(currentIdealArticolationPoint.Angle, previousIdealArticolationPoint.Angle, _timing) -
-                        IncrementalRatioOf(currentArticolationPoint.Angle, previousArticolationPoint.Angle, _timing);
-                } else
-                {
-                    articolationError.Position.Speed = Vector3.zero;
-                    articolationError.Angle.Speed = Vector3.zero;
-                }
-                // 4. Memorizzo l'errore
+                
+                articolationError.Position.Magnitude = currentIdealArticolationPoint.Position - currentArticolationPoint.Position;
+                
+                articolationError.Angle.Magnitude = currentIdealArticolationPoint.Angle - currentArticolationPoint.Angle;
+
+                CalculateSpeedErrors(articolationError, currentArticolationPoint, previousArticolationPoint, currentIdealArticolationPoint, previousIdealArticolationPoint);
+                
                 articolationErrors.Add(articolationName, articolationError);
             }
             return articolationErrors;

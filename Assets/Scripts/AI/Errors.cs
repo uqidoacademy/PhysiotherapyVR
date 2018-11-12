@@ -8,7 +8,7 @@ namespace AI.Error
     /// </summary>
     public class MovementError
     {
-        public Vector3 Value { get; set; }
+        public Vector3 Magnitude { get; set; }
         public Vector3 Speed { get; set; }
     }
 

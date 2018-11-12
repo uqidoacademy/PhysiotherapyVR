@@ -19,8 +19,6 @@ namespace AI
     }
     public class OverallExerciseResults
     {
-        // overall results on the full exercise
-
         public float Score { get; private set; }
         public OverallExerciseResults(float score)
         {
@@ -29,8 +27,6 @@ namespace AI
     }
     public class OverallSessionResults
     {
-        // overall results on the full session
-
         public List<OverallExerciseResults> AllResults { get; private set; }
         public float OverallScore { get; private set; }
 
@@ -65,7 +61,7 @@ namespace AI
         // TODO generalize (v2.0)
 
         #region Arms
-        private Core _armEvaluator;
+        private ExerciseEvaluator _armEvaluator;
         private List<OverallExerciseResults> _armExercisesResults = new List<OverallExerciseResults>();
         private List<bool> _armExerciseStepsEvaluation = new List<bool>();
 
@@ -97,13 +93,16 @@ namespace AI
 
         public void CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing)
         {
-            _armEvaluator = new Core(exerciseSteps, timing);
+            ExerciseEvaluatorTrainingSet trainingSet = new ExerciseEvaluatorTrainingSet();
+            trainingSet.idealMovementSteps = exerciseSteps;
+            trainingSet.timing = timing;
+            _armEvaluator = new ExerciseEvaluator(trainingSet);
         }
 
         public EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep)
         {
             bool niceWork = true;
-            Dictionary<string, ArticolationError> stepEvaluationResults = _armEvaluator.Evaluate(exerciseStep);
+            Dictionary<string, ArticolationError> stepEvaluationResults = _armEvaluator.EvaluateExerciseStep(exerciseStep);
             if (ArmTollerance != null)
             {
                 // no checks so if there are bugs we get a null pointer exception during test.. I prefere a software with visible bugs
@@ -112,9 +111,9 @@ namespace AI
                     ArticolationError error = stepEvaluationResults[articolationName];
                     ArticolationTollerance tollerance = ArmTollerance[articolationName];
                     niceWork &= (error.Position.Speed.magnitude < tollerance.positionSpeedTolleranceRadius)
-                        & (error.Position.Value.magnitude < tollerance.positionTolleranceRadius)
+                        & (error.Position.Magnitude.magnitude < tollerance.positionTolleranceRadius)
                         & (error.Angle.Speed.magnitude < tollerance.rotationSpeedTolleranceRadius)
-                        & (error.Angle.Value.magnitude < tollerance.rotationTolleranceRadius);
+                        & (error.Angle.Magnitude.magnitude < tollerance.rotationTolleranceRadius);
                 }
             }
 
@@ -123,7 +122,7 @@ namespace AI
 
         public void StartArmExercise()
         {
-            _armEvaluator.Restart();
+            _armEvaluator.RestartExercise();
         }
 
         public OverallExerciseResults EvaluateArmExercise()
