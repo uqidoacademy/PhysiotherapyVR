@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UI.Desktop;
+using UnityEngine.UI;
 
 namespace Physiotherapy.StateMachine
 {
-    public class PatientSelection : BaseState
+    public class PatientSelection : BaseState 
     {
+
+        public UnityEngine.UI.Button button;
 
         AppFlowContext myContext;
 
+        
+
         public override void Enter()
         {
-           
+            UIDesktopManager.ClickForChangeState += DoneSelectionPatient;
+
             myContext = (AppFlowContext)context;
 
             myContext.ListPatient = new List<PatientProfile>();
@@ -20,7 +26,11 @@ namespace Physiotherapy.StateMachine
                 "Rossi", "Male", 1.7f, true, "Broken shoulder"));
             UIDesktopManager.I.ActiveSelectionPatientPanel(myContext.ListPatient);
 
-                
+            
+
+
+
+
             base.Enter();
         }
 
@@ -41,7 +51,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
-           
+            UIDesktopManager.ClickForChangeState -= DoneSelectionPatient;
         }
     }
 }
