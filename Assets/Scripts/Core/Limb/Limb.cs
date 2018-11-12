@@ -4,14 +4,22 @@ using System.Collections.Generic;
 
 namespace Limb
 {
-    public class LimbData
+    public abstract class LimbData
     {
         public Dictionary<string, Transform> articolations = new Dictionary<string, Transform>();
-        public LimbsEnum limb;
+
+        public abstract ExerciseStep UnwrapFromSensors();
     }
 
-    public enum LimbsEnum
+    public class ArmData : LimbData
     {
-        ARM
+        public override ExerciseStep UnwrapFromSensors()
+        {
+            return new ArmExerciseStep(
+                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.SHOULDER)],
+                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.ELBOW)],
+                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.HAND)]
+                );
+        }
     }
 }

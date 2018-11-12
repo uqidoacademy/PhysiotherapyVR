@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace Limb
 {
-    /// <summary>
-    /// Generic step of an exercise. It refers to a limb, so it has a single articolation point root. Combining more limbs can be done by splitting exercises.
-    /// </summary>
-    public class ExerciseStep
+    public abstract class ExerciseStep
     {
         public ArticolationPoint Root { get; set; }
         public Dictionary<string, ArticolationPoint> AAT = new Dictionary<string, ArticolationPoint>(); // articolation allocation table
@@ -26,15 +23,8 @@ namespace Limb
      * ]
      */
 
-    /// <summary>
-    /// Un braccio è identificato dalle sue articolazioni, cioè la spalla, il gomito e il polso.
-    /// Ogni punto ha una posizione (quella del gomito relativa alla spalla, quella del polso relativa al gomito) e un'angolazione, anch'essa relativa.
-    /// </summary>
     public class ArmExerciseStep : ExerciseStep
     {
-        /// <summary>
-        /// To access particular arm's articulations.
-        /// </summary>
         public enum ArmArticolationNamesEnum
         {
             [Description("shoulder")]
@@ -56,12 +46,6 @@ namespace Limb
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="shoulder">Shoulder transform (interested in position and euler angles)</param>
-        /// <param name="elbow">Elbow transform (interested in position and euler angles)</param>
-        /// <param name="hand">Hand transform (interested in position and euler angles)</param>
         public ArmExerciseStep(Transform shoulder, Transform elbow, Transform hand)
         {
             ArticolationPoint Hand = new ArticolationPoint(hand.position, hand.eulerAngles);

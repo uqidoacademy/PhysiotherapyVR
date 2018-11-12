@@ -12,7 +12,7 @@ namespace AI
         public float timing;
     }
 
-    public class ExerciseEvaluator
+    public class CoreExerciseEvaluator
     {
         private ExerciseEvaluatorTrainingSet _trainingSet;
 
@@ -20,7 +20,7 @@ namespace AI
 
         #region Neural Network initialization
 
-        public ExerciseEvaluator(ExerciseEvaluatorTrainingSet trainingSet)
+        public CoreExerciseEvaluator(ExerciseEvaluatorTrainingSet trainingSet)
         {
             Init(trainingSet);
         }

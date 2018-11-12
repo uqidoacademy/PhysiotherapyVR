@@ -40,76 +40,60 @@ namespace AI
 
     public interface IAIManager
     {
-        // TODO generalize (v2.0)
+        // TODO handle more exercises (v2.0)
 
-        #region Arms
-
-        ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand);
-        void CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing); // inizia una serie di esercizi
-        void StartArmExercise(); // inizia una nuova ripetizione
-        EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep);
-        OverallExerciseResults EvaluateArmExercise(); // chiude una ripetizione
-        OverallSessionResults CloseArmSession();
-
-        #endregion
+        void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing);
+        void StartExercise();
+        EvaluationResults EvaluateExerciseStep(ExerciseStep exerciseStep);
+        OverallExerciseResults EvaluateExercise();
+        OverallSessionResults CloseExerciseSession();
     }
 
     public class AIManager : IAIManager
     {
         public float MAX_SCORE = 10;
+        
+        private CoreExerciseEvaluator _exerciseEvaluator;
+        private List<OverallExerciseResults> _exercisesResults = new List<OverallExerciseResults>();
+        private List<bool> _exerciseStepsEvaluation = new List<bool>();
 
-        // TODO generalize (v2.0)
+        public Dictionary<string, ArticolationTollerance> ExerciseTollerance { get; set; }
 
-        #region Arms
-        private ExerciseEvaluator _armEvaluator;
-        private List<OverallExerciseResults> _armExercisesResults = new List<OverallExerciseResults>();
-        private List<bool> _armExerciseStepsEvaluation = new List<bool>();
-
-        public Dictionary<string, ArticolationTollerance> ArmTollerance { get; set; }
-
-        public ArmExerciseStep ArmExerciseStepFromSensors(Transform shoulder, Transform elbow, Transform hand)
+        public OverallSessionResults CloseExerciseSession()
         {
-            elbow = GlobalTransformToRelative(shoulder, elbow);
-            hand = GlobalTransformToRelative(elbow, hand);
-            return new ArmExerciseStep(shoulder, elbow, hand);
-        }
-
-        public OverallSessionResults CloseArmSession()
-        {
-            if (_armExercisesResults == null || _armExercisesResults.Count <= 0) return null;
+            if (_exercisesResults == null || _exercisesResults.Count <= 0) return null;
             float overallScore = 0;
-            foreach(OverallExerciseResults ex in _armExercisesResults) overallScore += ex.Score;
-            OverallSessionResults results = new OverallSessionResults(_armExercisesResults, overallScore / _armExercisesResults.Count);
-            ClearArmSession();
+            foreach(OverallExerciseResults ex in _exercisesResults) overallScore += ex.Score;
+            OverallSessionResults results = new OverallSessionResults(_exercisesResults, overallScore / _exercisesResults.Count);
+            ClearExerciseSession();
             return results;
         }
 
-        private void ClearArmSession()
+        private void ClearExerciseSession()
         {
-            _armEvaluator = null;
-            _armExercisesResults.Clear();
-            _armExerciseStepsEvaluation.Clear();
+            _exerciseEvaluator = null;
+            _exercisesResults.Clear();
+            _exerciseStepsEvaluation.Clear();
         }
 
-        public void CreateArmSession(ArmExerciseStep[] exerciseSteps, float timing)
+        public void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing)
         {
             ExerciseEvaluatorTrainingSet trainingSet = new ExerciseEvaluatorTrainingSet();
             trainingSet.idealMovementSteps = exerciseSteps;
             trainingSet.timing = timing;
-            _armEvaluator = new ExerciseEvaluator(trainingSet);
+            _exerciseEvaluator = new CoreExerciseEvaluator(trainingSet);
         }
 
-        public EvaluationResults EvaluateArmStep(ArmExerciseStep exerciseStep)
+        public EvaluationResults EvaluateExerciseStep(ExerciseStep exerciseStep)
         {
             bool niceWork = true;
-            Dictionary<string, ArticolationError> stepEvaluationResults = _armEvaluator.EvaluateExerciseStep(exerciseStep);
-            if (ArmTollerance != null)
+            Dictionary<string, ArticolationError> stepEvaluationResults = _exerciseEvaluator.EvaluateExerciseStep(exerciseStep);
+            if (ExerciseTollerance != null)
             {
-                // no checks so if there are bugs we get a null pointer exception during test.. I prefere a software with visible bugs
-                foreach(string articolationName in ArmTollerance.Keys)
+                foreach(string articolationName in ExerciseTollerance.Keys)
                 {
                     ArticolationError error = stepEvaluationResults[articolationName];
-                    ArticolationTollerance tollerance = ArmTollerance[articolationName];
+                    ArticolationTollerance tollerance = ExerciseTollerance[articolationName];
                     niceWork &= (error.Position.Speed.magnitude < tollerance.positionSpeedTolleranceRadius)
                         & (error.Position.Magnitude.magnitude < tollerance.positionTolleranceRadius)
                         & (error.Angle.Speed.magnitude < tollerance.rotationSpeedTolleranceRadius)
@@ -120,24 +104,22 @@ namespace AI
             return new EvaluationResults(niceWork, stepEvaluationResults);
         }
 
-        public void StartArmExercise()
+        public void StartExercise()
         {
-            _armEvaluator.RestartExercise();
+            _exerciseEvaluator.RestartExercise();
         }
 
-        public OverallExerciseResults EvaluateArmExercise()
+        public OverallExerciseResults EvaluateExercise()
         {
             float score = 0;
-            foreach(bool res in _armExerciseStepsEvaluation)
+            foreach(bool res in _exerciseStepsEvaluation)
             {
                 score += res ? 1 : 0;
             }
-            OverallExerciseResults results = new OverallExerciseResults(score / _armExerciseStepsEvaluation.Count * MAX_SCORE);
-            _armExercisesResults.Add(results);
+            OverallExerciseResults results = new OverallExerciseResults(score / _exerciseStepsEvaluation.Count * MAX_SCORE);
+            _exercisesResults.Add(results);
             return results;
         }
-
-        #endregion
 
         #region Convertions
 

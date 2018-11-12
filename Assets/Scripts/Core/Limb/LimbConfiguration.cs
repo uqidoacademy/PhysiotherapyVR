@@ -4,18 +4,38 @@ using UnityEngine;
 
 namespace Limb
 {
-    public class LimbConfiguration {
+    public abstract class LimbConfiguration {
         public Dictionary<string, Sensor> sensors = new Dictionary<string, Sensor>();
-        public LimbsEnum limb; // set this to understand what articolation name look for
-        public float timing;
+        public float timingBetweenSamples;
 
-        /// <summary>
-        /// Use this to avoid mispelling when setting arm articolation name
-        /// </summary>
-        /// <param name="armArticolation">Arm articolation</param>
-        public void SetArmArticolation(ArmExerciseStep.ArmArticolationNamesEnum armArticolation, Sensor armSensor)
+        public abstract LimbData ExtractLimbData();
+
+        protected Dictionary<string, Transform> GetTransformOutOfSensors()
         {
-            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(armArticolation), armSensor);
+            Dictionary<string, Transform> transforms = new Dictionary<string, Transform>();
+            foreach(string articolationName in sensors.Keys)
+            {
+                transforms.Add(articolationName, sensors[articolationName].physicalSensor.transform);
+            }
+            return transforms;
+        }
+    }
+
+    public class ArmConfiguration : LimbConfiguration
+    {
+        public ArmConfiguration(Sensor shoulder, Sensor elbow, Sensor hand, float timingBetweenSamples)
+        {
+            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.SHOULDER), shoulder);
+            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.ELBOW), elbow);
+            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.HAND), hand);
+            this.timingBetweenSamples = timingBetweenSamples;
+        }
+
+        public override LimbData ExtractLimbData()
+        {
+            ArmData data = new ArmData();
+            data.articolations = GetTransformOutOfSensors();
+            return data;
         }
     }
 }
