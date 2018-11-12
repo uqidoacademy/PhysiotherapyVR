@@ -41,6 +41,7 @@ namespace AI
     /// <summary>
     /// Wrap the ai core to return well formatted results through its api
     /// </summary>
+    /// <author>Antonio Terpin</author>
     public class AIManager
     {
         public float MAX_SCORE = 10;
@@ -75,7 +76,7 @@ namespace AI
 
         public void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing)
         {
-            ExerciseEvaluatorTrainingSet trainingSet = new ExerciseEvaluatorTrainingSet();
+            CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet trainingSet = new CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet();
             trainingSet.idealMovementSteps = exerciseSteps;
             trainingSet.timing = timing;
             _exerciseEvaluator = new CoreExerciseEvaluator(trainingSet);

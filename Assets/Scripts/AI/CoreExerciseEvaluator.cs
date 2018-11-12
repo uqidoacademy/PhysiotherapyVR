@@ -4,22 +4,22 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <author>
-/// Antonio Terpin
-/// </author>
 namespace AI
 {
-    public class ExerciseEvaluatorTrainingSet
-    {
-        public ExerciseStep[] idealMovementSteps;
-        public float timing;
-    }
-
     /// <summary>
     /// Class used to perform calculations and retrieve results for the patient exercise execution
     /// </summary>
+    /// <author>
+    /// Antonio Terpin
+    /// </author>
     public class CoreExerciseEvaluator
     {
+        public class ExerciseEvaluatorTrainingSet
+        {
+            public ExerciseStep[] idealMovementSteps;
+            public float timing;
+        }
+
         private ExerciseEvaluatorTrainingSet _trainingSet;
 
         private List<ExerciseStep> PerformedMovementSteps = new List<ExerciseStep>();

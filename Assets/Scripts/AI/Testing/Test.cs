@@ -5,6 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Example usage of VirtualPhysioteraphyst
+/// </summary>
+/// <author>Antonio Terpin</author>
 public class Test : MonoBehaviour {
     public KeyCode keyIdeal = KeyCode.X, keyReal = KeyCode.N;
     public float timing = 1;
