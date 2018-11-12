@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UI.Desktop;
 
 public class AppFlowManager : MonoBehaviour
 {
@@ -14,6 +14,32 @@ public class AppFlowManager : MonoBehaviour
     MyStateMachine sm;
 
     List<IState> states;
+
+    private static AppFlowManager _instance;
+
+    public static AppFlowManager I
+    {
+        get
+        {
+            return _instance;
+        }
+
+        set
+        {
+            _instance = value;
+        }
+    }
+
+    private void Awake()
+    {
+        if (I == null)
+        {
+            I = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+            Destroy(this);
+    }
 
     void Start()
     {
@@ -90,6 +116,8 @@ public class AppFlowManager : MonoBehaviour
 
 public struct AppFlowContext : IContext
 {
+    public List<PatientProfile> ListPatient;
+
     public Text DebugText;
 
     /// <summary>
