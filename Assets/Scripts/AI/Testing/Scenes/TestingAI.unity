@@ -468,9 +468,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 568144fb2d6372442bdb33ea188586ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timing: 1
+  elbow: {fileID: 2042777476}
+  shoulder: {fileID: 46001805}
+  hand: {fileID: 122950599}
   keyIdeal: 120
   keyReal: 110
-  timing: 1
   initialPositionShoulder: {x: 0, y: 0, z: 0}
   initialPositionElbow: {x: 0, y: 0, z: 0}
   initialPositionHand: {x: 0, y: 0, z: 0}

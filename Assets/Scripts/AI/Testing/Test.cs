@@ -12,7 +12,7 @@ using UnityEngine;
 public class Test : MonoBehaviour {
     
     public float timing = 1;
-    GameObject elbow, shoulder, hand;
+    public GameObject elbow, shoulder, hand;
 
     // Implement a results handler
     public class ResultsHandler : VirtualPhysioterphyst.IResultsHandler
@@ -41,17 +41,14 @@ public class Test : MonoBehaviour {
             // example made for the arm
 
             // instance sensors
-            shoulder = GameObject.FindGameObjectWithTag("shoulder");
             Sensor shoulderSensor = new Sensor();
             shoulderSensor.physicalSensor = shoulder;
             shoulderSensor.sensorTollerance = tollerance;
             
-            elbow = GameObject.FindGameObjectWithTag("elbow");
             Sensor elbowSensor = new Sensor();
             elbowSensor.physicalSensor = elbow;
             elbowSensor.sensorTollerance = tollerance;
 
-            hand = GameObject.FindGameObjectWithTag("hand");
             Sensor handSensor = new Sensor();
             handSensor.physicalSensor = hand;
             handSensor.sensorTollerance = tollerance;

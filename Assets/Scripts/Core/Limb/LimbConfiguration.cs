@@ -39,9 +39,9 @@ namespace Limb
     {
         public ArmConfiguration(Sensor shoulder, Sensor elbow, Sensor hand)
         {
-            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.SHOULDER), shoulder);
-            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.ELBOW), elbow);
-            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.HAND), hand);
+            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.SHOULDER), shoulder);
+            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.ELBOW), elbow);
+            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.HAND), hand);
         }
 
         public override LimbData ExtractLimbData()

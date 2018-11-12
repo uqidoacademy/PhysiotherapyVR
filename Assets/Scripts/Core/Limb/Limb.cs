@@ -29,9 +29,9 @@ namespace Limb
         public override ExerciseStep UnwrapFromSensors()
         {
             return new ArmExerciseStep(
-                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.SHOULDER)],
-                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.ELBOW)],
-                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmExerciseStep.ArmArticolationNamesEnum.HAND)]
+                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.SHOULDER)],
+                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.ELBOW)],
+                articolations[ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.HAND)]
                 );
         }
     }
