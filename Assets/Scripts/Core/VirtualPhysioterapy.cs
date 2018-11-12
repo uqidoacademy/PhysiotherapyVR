@@ -7,8 +7,13 @@ public class VirtualPhysioterapy : MonoBehaviour
 {
     // TODO (v2.0) parallelize all this stuf (should be easy but require some time)
 
+    public interface IResultsHandler {
+        void HandleResults(EvaluationResults results);
+    }
+
     #region Singleton
     public float timingBetweenSamples = 0.5f;
+    public IResultsHandler resultsHandler = null;
 
     private static VirtualPhysioterapy _instance = null;
     public static VirtualPhysioterapy Instance
@@ -58,8 +63,7 @@ public class VirtualPhysioterapy : MonoBehaviour
         return (Sample sample) =>
         {
             EvaluationResults results = _exercises[exID].aiManager.EvaluateExerciseStep(sample.sampleDataForExercise[exID].UnwrapFromSensors());
-            // TODO implement error handling
-            Debug.Log(results.NiceWork);
+            if (resultsHandler != null) resultsHandler.HandleResults(results);
         };
     }
     

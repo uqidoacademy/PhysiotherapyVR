@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using AI;
+using DG.Tweening;
 using Limb;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,13 +11,15 @@ public class Test : MonoBehaviour {
     public Vector3 initialPositionShoulder, initialPositionElbow, initialPositionHand;
     GameObject elbow, shoulder, hand;
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    public class ResultsHandler : VirtualPhysioterapy.IResultsHandler
+    {
+        public void HandleResults(EvaluationResults results)
+        {
+            Debug.Log(results.NiceWork);
+        }
+    }
+    // Update is called once per frame
+    void Update () {
 		if(Input.GetKeyDown(keyIdeal))
         {
             Debug.Log("START TEST");
@@ -65,6 +68,7 @@ public class Test : MonoBehaviour {
             VirtualPhysioterapy eval = VirtualPhysioterapy.Instance;
 
             eval.timingBetweenSamples = timing;
+            eval.resultsHandler = new ResultsHandler();
 
             eval.ExerciseSetup(config);
             eval.StartSetup();
