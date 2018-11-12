@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace AI
 {
+    /// <summary>
+    /// Types that are return by this proxy class
+    /// </summary>
+    /// <author>Antonio Terpin</author>
     #region Results types
     public class EvaluationResults
     {
@@ -55,6 +59,13 @@ namespace AI
         /// </summary>
         public Dictionary<string, ArticolationTollerance> ExerciseTollerance { get; set; }
 
+        private void ClearExerciseSession()
+        {
+            _exerciseEvaluator = null;
+            _exercisesResults.Clear();
+            _exerciseStepsEvaluation.Clear();
+        }
+
         #region API
 
         public OverallSessionResults CloseExerciseSession()
@@ -65,13 +76,6 @@ namespace AI
             OverallSessionResults results = new OverallSessionResults(_exercisesResults, overallScore / _exercisesResults.Count);
             ClearExerciseSession();
             return results;
-        }
-
-        private void ClearExerciseSession()
-        {
-            _exerciseEvaluator = null;
-            _exercisesResults.Clear();
-            _exerciseStepsEvaluation.Clear();
         }
 
         public void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing)
