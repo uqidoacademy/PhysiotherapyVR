@@ -16,7 +16,7 @@ namespace Physiotherapy.StateMachine
             myContext = (AppFlowContext)context;
             base.Enter();
             tm = GameObject.FindObjectOfType<TrackerManager>();
-            tm.SetUpTrackers();
+            tm.SetUpTrackers(myContext.currentBodyPart.LimbPart);
             UIDesktopManager.I.ActiveWearTrakersPanel();
             myContext.trackerManager = tm;
         }
