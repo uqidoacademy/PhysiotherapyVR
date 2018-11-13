@@ -65,7 +65,7 @@ public class TrackerManager : MonoBehaviour
         if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
         {
             setUpTrackerDone = true;
-            // trackerRenamer.SetInteraction(true);
+            //trackerRenamer.SetInteraction(true);
             
         }
         else

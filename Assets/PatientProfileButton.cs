@@ -13,7 +13,7 @@ public class PatientProfileButton : MonoBehaviour {
 	public PatientProfile PatientProfileObj {
             get { return pp; }
             set { pp = value;
-            text.text = pp.NamePatient;
+            text.text = pp.NamePatient + " " + pp.SurnamePatient;
             }
     }
 

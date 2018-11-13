@@ -26,6 +26,8 @@ namespace Physiotherapy.StateMachine
                 "Rossi", "Male", 1.7f, true, "Broken shoulder"));
             myContext.ListPatient.Add(new PatientProfile("SN", "Simone",
                "Niero", "Male", 1.7f, true, "Broken shoulder"));
+            myContext.ListPatient.Add(new PatientProfile("SN", "Alessio",
+               "Varone", "Male", 1.7f, true, "Broken shoulder"));
             UIDesktopManager.I.ActiveSelectionPatientPanel(myContext.ListPatient);
 
             
