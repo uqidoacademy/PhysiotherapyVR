@@ -1,9 +1,13 @@
 ﻿using AI;
+using AI.Error;
+using AI.Proxy;
+using AI.Results;
 using DG.Tweening;
 using Limb;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRPhysiotheraphyst;
 
 /// <summary>
 /// Example usage of VirtualPhysioteraphyst
@@ -13,15 +17,6 @@ public class Test : MonoBehaviour {
     
     public float timing = 1;
     public GameObject elbow, shoulder, hand;
-
-    // Implement a results handler
-    public class ResultsHandler : VirtualPhysioterphyst.IResultsHandler
-    {
-        public void HandleResults(EvaluationResults results)
-        {
-            Debug.Log(results.NiceWork);
-        }
-    } 
 
     void Update () {
 		if(Input.GetKeyDown(keyIdeal))
@@ -41,21 +36,29 @@ public class Test : MonoBehaviour {
             // example made for the arm
 
             // instance sensors
-            Sensor shoulderSensor = new Sensor();
-            shoulderSensor.physicalSensor = shoulder;
-            shoulderSensor.sensorTollerance = tollerance;
+            Sensor shoulderSensor = new Sensor(shoulder, tollerance, "spalla");
             
-            Sensor elbowSensor = new Sensor();
-            elbowSensor.physicalSensor = elbow;
-            elbowSensor.sensorTollerance = tollerance;
+            Sensor elbowSensor = new Sensor(elbow, tollerance, "gomito");
 
-            Sensor handSensor = new Sensor();
-            handSensor.physicalSensor = hand;
-            handSensor.sensorTollerance = tollerance;
+            Sensor handSensor = new Sensor(hand, tollerance, "mano");
 
             // with the sensors instances create a limb configuration
 
-            LimbConfiguration config = new ArmConfiguration(shoulderSensor, elbowSensor, handSensor);
+            LimbConfiguration config = new LimbConfiguration(shoulderSensor, elbowSensor, handSensor);
+
+            // configure exercise
+
+            ExerciseConfiguration exerciseConfiguration = new ExerciseConfiguration(
+                config,
+                (EvaluationResults results) =>
+                {
+                    AIProxy aiProxy = new ArmAIProxy(); // should be taken from context
+                    ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
+                }
+                );
+
+            // to add more events handler:
+            exerciseConfiguration.OnExecutionStepEvaluated += (EvaluationResults results) => { }; // exercise configuration should be taken from somewhere
 
             // configure the virtual physioteraphyst
             VirtualPhysioterphyst eval = VirtualPhysioterphyst.Instance;
@@ -64,11 +67,8 @@ public class Test : MonoBehaviour {
             float timing = 0.5f, totalDuration = 2f;
             eval.timingBetweenSamples = timing;
 
-            // assign the results handler defined above
-            eval.resultsHandler = new ResultsHandler();
-
             // setup the exercise with the built configuration
-            eval.ExerciseSetup(config);
+            eval.ExerciseSetup(exerciseConfiguration);
 
             // start recording
             eval.StartSetup();
