@@ -21,8 +21,10 @@ namespace Physiotherapy.StateMachine
             get { return _currentState; }
             set
             {
+                /*
                 if (_currentState == value)
                     return;
+                    */
                 OldState = _currentState;
                 OnPreStateChanged(_currentState, OldState);
                 _currentState = value;

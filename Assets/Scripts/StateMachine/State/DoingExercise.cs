@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRPhysiotheraphyst;
 
 namespace Physiotherapy.StateMachine
 {
@@ -13,6 +14,8 @@ namespace Physiotherapy.StateMachine
         {
 
             myContext = (AppFlowContext)context;
+            
+            UIDesktopManager.I.ActiveTrackersFeedbackPanel(myContext.currentBodyPart);
 
 
             base.Enter();
