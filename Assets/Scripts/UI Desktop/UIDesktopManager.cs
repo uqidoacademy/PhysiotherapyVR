@@ -196,7 +196,7 @@ public class UIDesktopManager : MonoBehaviour {
         if (true)
         {
             // ARM
-            aiProxy = new ArmAIProxy();
+            aiProxy = new AIProxy();
         }
 
         List<string> limbsIDs = ArmListIDs;

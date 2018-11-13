@@ -65,11 +65,11 @@ public class SenderExerciseAI : MonoBehaviour {
             config,
             (EvaluationResults results) =>
             {
-                AIProxy aiProxy = new ArmAIProxy(); // should be taken from context
+                AIProxy aiProxy = new AIProxy(); // should be taken from context
                 List<string> articolationNames = new List<string>() { "spalla", "gomito", "mano" };
                 foreach(string articolationName in articolationNames)
                 {
-                    ArticolationError error = aiProxy.UnwrapFromResults(articolationName, results);
+                    ArticolationError error = aiProxy.UnwrapFromResults(articolationName, results, articolationNames);
                     bool isPositionCorrect = error.Position.IsSpeedCorrect && error.Position.IsMagnitudeCorrect,
                     isRotationCorrect = error.Angle.IsSpeedCorrect && error.Angle.IsMagnitudeCorrect;
                     Debug.Log(articolationName + ": POSITION IS CORRECT - " + isPositionCorrect.ToString() 
