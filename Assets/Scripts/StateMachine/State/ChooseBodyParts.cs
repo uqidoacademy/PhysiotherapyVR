@@ -12,11 +12,10 @@ namespace Physiotherapy.StateMachine
 
         public override void Enter()
         {
-            UIDesktopManager.ClickForChangeState += BodyPartChosen;
-
-
             myContext = (AppFlowContext)context;
             myContext.listBodyParts = new List<BodyPart>() ;
+
+            UIDesktopManager.ClickForChangeState += BodyPartChosen;
 
             BodyPart[] bodyParts = Resources.LoadAll<BodyPart>("BodyPartScriptableObj");
 
