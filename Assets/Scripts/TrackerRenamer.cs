@@ -9,48 +9,41 @@ public class TrackerRenamer : MonoBehaviour {
     private TrackerManager trackerManager;
 
     int partsRenamed = 0;
-    bool canInteract = false;
+    List<string> limbParts;
 
     private void Start()
     {
         trackerManager = FindObjectOfType<TrackerManager>();
+        if (trackerManager == null)
+            Debug.LogError("MANCA TRACKER");
         CreateCollider();
     }
 
     //this function is called by TrackerManager
-    public void SetInteraction(bool value)
+    public void StartRename(List<string> list)
     {
-        canInteract = value;
-        if(canInteract)
-        EditorUtility.DisplayDialog("Next Tracker", "DEVI ORA SELEZIONARE: " + (StaticTestList.ArtList[partsRenamed]), "OK");
+        limbParts = list;
     }
  
  
 
     void OnTriggerEnter(Collider other)
     {
-        if (canInteract && other.gameObject.name.Contains("tracker"))
+        if (other.gameObject.name.Contains("tracker"))
         {
-            Debug.Log("COLPITO " + other.gameObject.name);
-            other.gameObject.name = StaticTestList.ArtList[partsRenamed];
+
+            other.gameObject.name = limbParts[partsRenamed];
             other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
             other.gameObject.GetComponent<MeshRenderer>().material.color = StaticTestList.ColorList[partsRenamed];
-            EditorUtility.DisplayDialog("Tracker Configurations", "HAI AGGIUNTO: " + (StaticTestList.ArtList[partsRenamed]), "OK");
             trackerManager.trackerListReady.Add(new TrackerManager.trackerReady() {
 
                 TrackerID = other.gameObject.name,
                 reference = other.gameObject,
 
             });
+            UIDesktopManager.I.LimbPartReady(limbParts[partsRenamed]);
             partsRenamed++;
 
-            if (partsRenamed < StaticTestList.ArtList.Count)
-            {
-                EditorUtility.DisplayDialog("Next Tracker", "DEVI ORA SELEZIONARE: " + (StaticTestList.ArtList[partsRenamed]), "OK");
-            }
-            else {
-                //Ready to record
-            }
         }
 
     }

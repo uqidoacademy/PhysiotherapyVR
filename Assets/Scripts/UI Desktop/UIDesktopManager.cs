@@ -26,6 +26,9 @@ public class UIDesktopManager : MonoBehaviour {
     public delegate void ButtonWearButtonClicked();
     public static ButtonWearButtonClicked EventWearButtonClicked;
 
+    public delegate void SetUpButtonClicked();
+    public static SetUpButtonClicked EventSetUpTrackers;
+
     private static UIDesktopManager instance;
 
     private TrackerManager trackerManager;
@@ -108,7 +111,7 @@ public class UIDesktopManager : MonoBehaviour {
         
         trackerManager = FindObjectOfType<TrackerManager>();
 
-        if (trackerManager.setUpTrackerDone == false)
+        if (trackerManager.setUpTrackerDone)
         {
             wearTrackerReadyButton.GetComponent<Button>().interactable = true;
             trackerStatus.GetComponentInChildren<Text>().text = "Devices are ready";
@@ -149,7 +152,12 @@ public class UIDesktopManager : MonoBehaviour {
             if (limbPartScript.LimbPartName == LimbPartName)
             {
                 lp.GetComponent<LimbPartScript>().SetColor(Color.green);
+                LimbPartList.Remove(lp);
             }
+        }
+        if (LimbPartList.Count == 0)
+        {
+            EventSetUpTrackers();
         }
     }
 }

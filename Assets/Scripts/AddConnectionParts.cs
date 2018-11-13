@@ -38,7 +38,7 @@ public class AddConnectionParts : MonoBehaviour {
 	}
 
 	public void PrepareConnections () {
-		partsOfBody = StaticTestList.ArtList;
+		//partsOfBody = StaticTestList.ArtList;
 
 		//instantiate limbs
 		for (int i = 0; i < partsOfBody.Count - 1; i++) {

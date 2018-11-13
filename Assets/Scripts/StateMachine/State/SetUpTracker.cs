@@ -13,10 +13,10 @@ namespace Physiotherapy.StateMachine
         {
             myContext = (AppFlowContext)context;
             base.Enter();
-
+            UIDesktopManager.EventSetUpTrackers += SetUpTrackersDone;
             trackerRenamer = GameObject.FindObjectOfType<TrackerRenamer>();
             UIDesktopManager.I.ActiveSetupTrackersPanel(myContext.currentBodyPart);
-            trackerRenamer.SetInteraction(true);
+            trackerRenamer.StartRename(myContext.currentBodyPart.LimbPart);
 
         }
 
@@ -32,7 +32,12 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
+            UIDesktopManager.EventSetUpTrackers -= SetUpTrackersDone;
+        }
 
+        public void SetUpTrackersDone()
+        {
+            myContext.DoneCallBack();
         }
     }
 }

@@ -9,12 +9,15 @@ using Valve.VR;
 public class TrackerManager : MonoBehaviour
 {
 
-    public List<trackerReady> trackerListReady;
+    public List<trackerReady> trackerListReady = new List<trackerReady>();
 
     public bool setUpTrackerDone = false;
 
-    public void SetUpTrackers()
+    private List<string> limbArts;
+
+    public void SetUpTrackers(List<string> list)
     {
+        limbArts = list;
         TrackersCount();
         InstantiateTrackers(FindTrackerIndex());
     }
@@ -62,7 +65,7 @@ public class TrackerManager : MonoBehaviour
     void TrackersCount()
     {
 
-        if (StaticTestList.ArtList.Count == FindTrackerIndex().Count)
+        if (limbArts.Count == FindTrackerIndex().Count)
         {
             setUpTrackerDone = true;
             //trackerRenamer.SetInteraction(true);
@@ -70,7 +73,7 @@ public class TrackerManager : MonoBehaviour
         }
         else
         {
-            int notInitTrackers = StaticTestList.ArtList.Count - FindTrackerIndex().Count;
+            int notInitTrackers = limbArts.Count - FindTrackerIndex().Count;
             EditorUtility.DisplayDialog("Tracker missing",
               "There are " +
               notInitTrackers +
