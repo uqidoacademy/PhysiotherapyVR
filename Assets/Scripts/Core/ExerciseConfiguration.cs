@@ -12,7 +12,7 @@ namespace VRPhysiotheraphyst
         public delegate void HandleResults(EvaluationResults results);
         public event HandleResults OnExecutionStepEvaluated;
 
-        public ExerciseConfiguration(LimbConfiguration limbConfig, HandleResults resultsHandler)
+        public ExerciseConfiguration(LimbConfiguration limbConfig, HandleResults resultsHandler = null)
         {
             limbConfiguration = limbConfig;
             OnExecutionStepEvaluated += resultsHandler;
@@ -20,7 +20,7 @@ namespace VRPhysiotheraphyst
 
         public void ProvideExerciseResults(EvaluationResults results)
         {
-            OnExecutionStepEvaluated(results);
+            if(OnExecutionStepEvaluated != null) OnExecutionStepEvaluated(results);
         }
     }
 }

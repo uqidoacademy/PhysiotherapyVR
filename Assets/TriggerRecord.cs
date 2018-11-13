@@ -5,46 +5,48 @@ using UnityEngine;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
-    public class TriggerRecord : MonoBehaviour
+public class TriggerRecord : MonoBehaviour
+{
+    public SteamVR_Action_Boolean recordAction;
+
+    private SenderExerciseAI recorder;
+
+    private Hand hand;
+
+    private void OnEnable()
     {
-        public SteamVR_Action_Boolean recordAction;
+        if (hand == null)
+            hand = this.GetComponent<Hand>();
 
-        public SampleRecorder recorder;
+        recorder = FindObjectOfType<SenderExerciseAI>();
 
-        private Hand hand;
-
-        private void OnEnable()
+        if (recordAction == null)
         {
-            if (hand == null)
-                hand = this.GetComponent<Hand>();
-
-            if (recordAction == null)
-            {
-                Debug.LogError("No action assigned");
-                return;
-            }
-
-            recordAction.AddOnChangeListener(OnTriggerActionChange, hand.handType);
+            Debug.LogError("No action assigned");
+            return;
         }
 
-        private void OnDisable()
-        {
-            if (recordAction != null)
+        recordAction.AddOnChangeListener(OnTriggerActionChange, hand.handType);
+    }
+
+    private void OnDisable()
+    {
+        if (recordAction != null)
             recordAction.RemoveOnChangeListener(OnTriggerActionChange, hand.handType);
-        }
+    }
 
-        private void OnTriggerActionChange(SteamVR_Action_In actionIn)
+    private void OnTriggerActionChange(SteamVR_Action_In actionIn)
+    {
+        if (recordAction.GetStateDown(hand.handType))
         {
-            if (recordAction.GetStateDown(hand.handType))
-            {
-                Grip();
-            }
-
-            if (recordAction.GetStateUp(hand.handType))
-            {
-                LoseGrip();    
-            }
+            Grip();
         }
+
+        if (recordAction.GetStateUp(hand.handType))
+        {
+            LoseGrip();
+        }
+    }
 
     private void Update()
     {
@@ -53,33 +55,27 @@ using Valve.VR.InteractionSystem;
         if (Input.GetKeyUp("space"))
             LoseGrip();
 
-        if (Input.GetKeyDown(KeyCode.P))
-            recorder.StartPlayback();
-        if (Input.GetKeyUp(KeyCode.P))
-            recorder.StopPlayback();
-
-        
     }
 
     private void Grip()
-        {
-            StartCoroutine(StartRecording());
-        }
+    {
+        StartCoroutine(StartRecording());
+    }
 
-        private void LoseGrip()
-        {
-            StartCoroutine(StopRecording());
-        }
+    private void LoseGrip()
+    {
+        StartCoroutine(StopRecording());
+    }
 
     private IEnumerator StartRecording()
-        {
-        recorder.StartRecording();
+    {
+        recorder.StartSendRecording();
         yield return null;
-        }
+    }
 
     private IEnumerator StopRecording()
     {
-        recorder.StopRecording();
+        recorder.StopSendRecording();
         yield return null;
     }
 }

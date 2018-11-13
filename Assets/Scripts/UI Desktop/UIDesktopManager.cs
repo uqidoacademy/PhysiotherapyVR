@@ -146,17 +146,18 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void LimbPartReady(string LimbPartName)
     {
-        foreach (GameObject lp in LimbPartList)
+        for(int i=0; i < LimbPartList.Count; i++)
         {
-            limbPartScript = lp.GetComponent<LimbPartScript>();
+            limbPartScript = LimbPartList[i].GetComponent<LimbPartScript>();
             if (limbPartScript.LimbPartName == LimbPartName)
             {
-                lp.GetComponent<LimbPartScript>().SetColor(Color.green);
-                LimbPartList.Remove(lp);
+                LimbPartList[i].GetComponent<LimbPartScript>().SetColor(Color.green);
+                LimbPartList.Remove(LimbPartList[i]);
             }
         }
         if (LimbPartList.Count == 0)
         {
+            if(EventSetUpTrackers != null)
             EventSetUpTrackers();
         }
     }
