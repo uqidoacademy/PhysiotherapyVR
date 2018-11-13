@@ -123,7 +123,6 @@ public class AppFlowManager : MonoBehaviour
     {
         if (context.currentPatient != null)
         {
-            trackerRenamer.SetInteraction(true);
             sm.CurrentState = getState(typeof(RegistrationSample));
         }
     }

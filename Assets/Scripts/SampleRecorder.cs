@@ -67,7 +67,7 @@ public class SampleRecorder : MonoBehaviour {
             trackersPreview = new List<GameObject> ();
             for (int i = 0; i < trackersTransform.Count; i++) {
                 trackersPreview.Add (Instantiate (prefabTrackerCube, transform));
-                trackersPreview[i].name = StaticTestList.ArtList[i];
+              // trackersPreview[i].name = StaticTestList.ArtList[i];
                 trackersPreview[i].GetComponent<MeshRenderer>().material.color = StaticTestList.ColorList[i];
             }
         }
