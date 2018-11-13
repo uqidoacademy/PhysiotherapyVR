@@ -55,7 +55,7 @@ namespace AI
         private ExerciseStep GetIdealStep(int shiftFromLastPerformedIndex)
         {
             int index = PerformedMovementSteps.Count - 1 + shiftFromLastPerformedIndex;
-            if (index >= 0 && index < PerformedMovementSteps.Count)
+            if (index >= 0 && index < _trainingSet.idealMovementSteps.Length)
                 return _trainingSet.idealMovementSteps[index];
 
             return null;

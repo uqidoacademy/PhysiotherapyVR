@@ -56,7 +56,10 @@ public class AppFlowManager : MonoBehaviour
             DoneCallBack = goToNextState,
             TrackerWearDoneCallback = goToSetUpTracker,
             SetUpTrackerDoneCallback = goToRegistrationSample,
-           // ChooseBodyPartsDoneCallback = patientSelectionToDo,
+            RetryRegistrationCallback = goToRegistrationSample,
+            RegistrationOkCallback = goToExerciseReady,
+
+            // ChooseBodyPartsDoneCallback = patientSelectionToDo,
         };
 
         states = new List<IState>() {
@@ -121,9 +124,17 @@ public class AppFlowManager : MonoBehaviour
 
     private void goToRegistrationSample()
     {
-        if (context.currentPatient != null)
+        if (context.currentPatient != null && context.currentBodyPart != null)
         {
             sm.CurrentState = getState(typeof(RegistrationSample));
+        }
+    }
+
+    private void goToExerciseReady()
+    {
+        if (context.currentPatient != null && context.currentBodyPart != null)
+        {
+            sm.CurrentState = getState(typeof(ExerciseReady));
         }
     }
 
@@ -139,6 +150,8 @@ public class AppFlowManager : MonoBehaviour
 
         return null;
     }
+
+   
 
 
     #endregion
@@ -185,6 +198,13 @@ public class AppFlowContext : IContext
     public Action TrackerWearDoneCallback;
 
     public Action SetUpTrackerDoneCallback;
+
+    /// <summary>
+    /// callback da richiamare quando si vuole rifare la registrazione
+    /// </summary>
+    public Action RetryRegistrationCallback;
+
+    public Action RegistrationOkCallback;
 
     /// <summary>
     /// Callback generica da richiamare quando finisco il lavoro dello stato

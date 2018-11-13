@@ -11,7 +11,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Enter()
         {
-
+            
             myContext = (AppFlowContext)context;
 
             SenderExerciseAI senderToCreate = GameObject.FindObjectOfType<SenderExerciseAI>();
