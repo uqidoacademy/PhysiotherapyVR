@@ -26,6 +26,9 @@ public class UIDesktopManager : MonoBehaviour {
     public delegate void ButtonWearButtonClicked();
     public static ButtonWearButtonClicked EventWearButtonClicked;
 
+    public delegate void SetUpButtonClicked();
+    public static SetUpButtonClicked EventSetUpTrackers;
+
     private static UIDesktopManager instance;
 
     private TrackerManager trackerManager;
@@ -150,7 +153,12 @@ public class UIDesktopManager : MonoBehaviour {
             if (limbPartScript.LimbPartName == LimbPartName)
             {
                 lp.GetComponent<LimbPartScript>().SetColor(Color.green);
+                LimbPartList.Remove(lp);
             }
+        }
+        if (LimbPartList.Count == 0)
+        {
+            EventSetUpTrackers();
         }
     }
 }
