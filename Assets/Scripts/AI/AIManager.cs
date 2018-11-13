@@ -54,17 +54,14 @@ namespace AI
         public EvaluationResults EvaluateExerciseStep(ExerciseStep exerciseStep)
         {
             bool niceWork = true;
-            ArticolationError[] stepEvaluationResults = _exerciseEvaluator.EvaluateExerciseStep(exerciseStep);
+            ArticolationError[] stepEvaluationResults = _exerciseEvaluator.EvaluateExerciseStep(exerciseStep, ExerciseTollerance);
             if (ExerciseTollerance != null)
             {
-                for(int i = 0; i < ExerciseTollerance.Length; i++)
+                for(int i = 0; i < stepEvaluationResults.Length; i++)
                 {
                     ArticolationError error = stepEvaluationResults[i];
-                    ArticolationTollerance tollerance = ExerciseTollerance[i];
-                    niceWork &= (error.Position.Speed.magnitude < tollerance.positionSpeedTolleranceRadius)
-                        & (error.Position.Magnitude.magnitude < tollerance.positionTolleranceRadius)
-                        & (error.Angle.Speed.magnitude < tollerance.rotationSpeedTolleranceRadius)
-                        & (error.Angle.Magnitude.magnitude < tollerance.rotationTolleranceRadius);
+                    niceWork &= error.Position.IsMagnitudeCorrect && error.Position.IsSpeedCorrect
+                        && error.Angle.IsSpeedCorrect && error.Angle.IsMagnitudeCorrect;
                 }
             }
 

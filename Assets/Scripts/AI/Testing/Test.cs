@@ -52,7 +52,6 @@ public class Test : MonoBehaviour {
                 config,
                 (EvaluationResults results) =>
                 {
-                    Debug.Log("Fuck U.");
                     AIProxy aiProxy = new ArmAIProxy(); // should be taken from context
                     ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
                 }

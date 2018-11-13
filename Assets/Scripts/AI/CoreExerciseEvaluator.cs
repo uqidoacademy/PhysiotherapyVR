@@ -104,7 +104,7 @@ namespace AI
 
         #endregion
 
-        public ArticolationError[] EvaluateExerciseStep(ExerciseStep currentStep)
+        public ArticolationError[] EvaluateExerciseStep(ExerciseStep currentStep, ArticolationTollerance[] tollerances)
         {
             PerformedMovementSteps.Add(currentStep);
             ExerciseStep previousStep = GetPerformedStep(-1),
@@ -123,15 +123,21 @@ namespace AI
                 previousStepArticolationPoint = previousStep == null ? null : previousStep.Root,
                 currentStepIdealArticolationPoint = currentIdealStep.Root,
                 previousStepIdealArticolationPoint = previousIdealStep == null ? null : previousIdealStep.Root;
+            int i = 0;
             while(currentStepArticolationPoint != null)
             {
                 ArticolationError articolationError = new ArticolationError();
+                ArticolationTollerance tollerance = tollerances[i++];
 
                 articolationError.Position.Magnitude = currentStepIdealArticolationPoint.Position - currentStepArticolationPoint.Position;
+                articolationError.Position.IsMagnitudeCorrect = articolationError.Position.Magnitude.magnitude < tollerance.positionTolleranceRadius;
 
                 articolationError.Angle.Magnitude = currentStepIdealArticolationPoint.Angle - currentStepArticolationPoint.Angle;
+                articolationError.Angle.IsMagnitudeCorrect = articolationError.Angle.Magnitude.magnitude < tollerance.rotationTolleranceRadius;
 
                 CalculateSpeedErrors(articolationError, currentStepArticolationPoint, previousStepArticolationPoint, currentStepIdealArticolationPoint, previousStepIdealArticolationPoint);
+                articolationError.Position.IsSpeedCorrect = articolationError.Position.Speed.magnitude < tollerance.positionSpeedTolleranceRadius;
+                articolationError.Angle.IsSpeedCorrect = articolationError.Angle.Speed.magnitude < tollerance.positionSpeedTolleranceRadius;
 
                 articolationErrors.Add(articolationError);
                 
