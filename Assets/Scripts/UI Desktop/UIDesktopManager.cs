@@ -99,13 +99,13 @@ public class UIDesktopManager : MonoBehaviour {
 
     void WearButtonReady()
     {
-        
-        wearTrackerReadyButton = Instantiate(Resources.Load("UIPrefabs/WearButton")) as GameObject;
-        wearTrackerReadyButton.GetComponentInChildren<Text>().text = "Start selection body parts";
-        wearTrackerReadyButton.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
-
         trackerStatus = Instantiate(Resources.Load("UIPrefabs/WearTrackerStatusText")) as GameObject;
         trackerStatus.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        wearTrackerReadyButton = Instantiate(Resources.Load("UIPrefabs/WearButton")) as GameObject;
+        wearTrackerReadyButton.GetComponentInChildren<Text>().text = "Start setup trakers";
+        wearTrackerReadyButton.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+
+        
         trackerManager = FindObjectOfType<TrackerManager>();
 
         if (trackerManager.setUpTrackerDone == false)
@@ -128,7 +128,6 @@ public class UIDesktopManager : MonoBehaviour {
     public void ActiveSetupTrackersPanel(BodyPart bp)
     {
         LimbPartList = new List<GameObject>();
-        Debug.Log("Ciao!");
         WearTrackersPanel.SetActive(false);
         SetupTrackersPanel.SetActive(true);
         foreach (string lp in bp.LimbPart)
