@@ -78,7 +78,12 @@ public class Test : MonoBehaviour {
             sequence.Append(hand.transform.DOMove(hand.transform.position * 2, totalDuration));
 
             // once finished the exercise, stop setup
-            sequence.OnComplete(() => eval.SaveSetup());
+            sequence.OnComplete(() => {
+                eval.EndSetup(); // stop registering
+                // ... evaluating if the movement has to be saved or discarded
+                eval.SaveSetup(); // save registration
+                // eval.DiscardSetup(); // discard registration
+            });
 
         }
         if(Input.GetKeyDown(keyReal))

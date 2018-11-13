@@ -18,7 +18,7 @@ namespace AI.Proxy
     {
         public override ArticolationError UnwrapFromResults(string id, EvaluationResults results)
         {
-            return results.Corrections[GetIndexOf(id, null)];
+            return results.Corrections[GetIndexOf(id, StaticTestList.ArtList)];
         }
     }
 }

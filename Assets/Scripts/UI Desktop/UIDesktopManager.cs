@@ -1,4 +1,4 @@
-﻿/* CLASSE UIDesktopManager
+/* CLASSE UIDesktopManager
  * Classe che gestisce l'intera UI Desktop
  * permettendo di passare da un pannello all'altro
  * in base allo stato in cui è l'applicazione
@@ -10,6 +10,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UI.Desktop;
 using Physiotherapy.StateMachine;
+using VRPhysiotheraphyst;
+using AI.Results;
+using AI.Proxy;
+using AI.Error;
 
 public class UIDesktopManager : MonoBehaviour {
 
@@ -28,6 +32,12 @@ public class UIDesktopManager : MonoBehaviour {
 
     public delegate void SetUpButtonClicked();
     public static SetUpButtonClicked EventSetUpTrackers;
+
+    public delegate void RetryRegistrationButtonClicked();
+    public static RetryRegistrationButtonClicked EventRetryRegistration;
+
+    public delegate void GoToExerciseButtonClicked();
+    public static GoToExerciseButtonClicked EventGoToExercise;
 
     private static UIDesktopManager instance;
 
@@ -62,6 +72,10 @@ public class UIDesktopManager : MonoBehaviour {
 
     public GameObject SetupTrackersPanel;
 
+    public GameObject TrackersFeedbackPanel;
+
+    public GameObject RegistrationExercisePanel;
+
     GameObject patientButton;
 
     GameObject bodyPartButton;
@@ -71,6 +85,8 @@ public class UIDesktopManager : MonoBehaviour {
     GameObject trackerStatus;
 
     GameObject limbPart;
+
+    Dictionary<string, Image> colorizers;
 
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
         SelectionPatientPanel.SetActive(true);
@@ -102,13 +118,13 @@ public class UIDesktopManager : MonoBehaviour {
 
     void WearButtonReady()
     {
-        
-        wearTrackerReadyButton = Instantiate(Resources.Load("UIPrefabs/WearButton")) as GameObject;
-        wearTrackerReadyButton.GetComponentInChildren<Text>().text = "Start selection body parts";
-        wearTrackerReadyButton.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
-
         trackerStatus = Instantiate(Resources.Load("UIPrefabs/WearTrackerStatusText")) as GameObject;
         trackerStatus.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        wearTrackerReadyButton = Instantiate(Resources.Load("UIPrefabs/WearButton")) as GameObject;
+        wearTrackerReadyButton.GetComponentInChildren<Text>().text = "Start setup trakers";
+        wearTrackerReadyButton.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+
+        
         trackerManager = FindObjectOfType<TrackerManager>();
 
         if (trackerManager.setUpTrackerDone)
@@ -131,7 +147,6 @@ public class UIDesktopManager : MonoBehaviour {
     public void ActiveSetupTrackersPanel(BodyPart bp)
     {
         LimbPartList = new List<GameObject>();
-        Debug.Log("Ciao!");
         WearTrackersPanel.SetActive(false);
         SetupTrackersPanel.SetActive(true);
         foreach (string lp in bp.LimbPart)
@@ -145,20 +160,81 @@ public class UIDesktopManager : MonoBehaviour {
         }
     }
 
+    public void ActiveTrackersFeedbackPanel(BodyPart bp)
+    {
+        ExerciseConfiguration configuration = FindObjectOfType<SenderExerciseAI>().exerciseConfiguration;
+        RegistrationExercisePanel.SetActive(false);
+        TrackersFeedbackPanel.SetActive(true);
+
+        colorizers.Clear();
+
+        foreach (string lp in bp.LimbPart)
+        {
+            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
+            limbPart.GetComponentInChildren<Text>().text = lp;
+            Image colorizer = limbPart.transform.GetChild(0).GetComponent<Image>();
+            colorizer.color = Color.yellow;
+            colorizers[lp] = colorizer;
+            limbPart.transform.parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        }
+        StopTrackingFeedback(bp.LimbPart, configuration);
+        configuration.OnExecutionStepEvaluated += HandleFeedbackResults;
+    }
+
+    List<string> ArmListIDs = new List<string>();
+    public void StopTrackingFeedback(List<string> limbIDs, ExerciseConfiguration configuration)
+    {
+        ArmListIDs = limbIDs;
+        configuration.OnExecutionStepEvaluated -= HandleFeedbackResults;
+    }
+
+    private void HandleFeedbackResults(EvaluationResults results)
+    {
+        AIProxy aiProxy;
+
+        // TODO: get bodypart type
+        if (true)
+        {
+            // ARM
+            aiProxy = new ArmAIProxy();
+        }
+
+        List<string> limbsIDs = ArmListIDs;
+        foreach (string limbID in limbsIDs)
+        {
+            ArticolationError limbError = aiProxy.UnwrapFromResults(limbID, results);
+            colorizers[limbID].color = limbError.isCorrect ? Color.green : Color.red;
+        }
+    }
+
     public void LimbPartReady(string LimbPartName)
     {
-        foreach (GameObject lp in LimbPartList)
+        for(int i=0; i < LimbPartList.Count; i++)
         {
-            limbPartScript = lp.GetComponent<LimbPartScript>();
+            limbPartScript = LimbPartList[i].GetComponent<LimbPartScript>();
             if (limbPartScript.LimbPartName == LimbPartName)
             {
-                lp.GetComponent<LimbPartScript>().SetColor(Color.green);
-                LimbPartList.Remove(lp);
+                LimbPartList[i].GetComponent<LimbPartScript>().SetColor(Color.green);
+                LimbPartList.Remove(LimbPartList[i]);
             }
         }
         if (LimbPartList.Count == 0)
         {
+            if(EventSetUpTrackers != null)
             EventSetUpTrackers();
         }
+    }
+
+    public void ActiveRegistrationExercisePanel() {
+        SetupTrackersPanel.SetActive(false);
+        RegistrationExercisePanel.SetActive(true);
+    }
+
+    public void RetryRegistration() {
+        EventRetryRegistration();
+    }
+
+    public void GoToExercise() {
+        EventGoToExercise();
     }
 }

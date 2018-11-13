@@ -115,10 +115,6 @@ namespace VRPhysiotheraphyst
 
         private void StopSetup(bool save = true)
         {
-            StopSampling();
-            foreach (HandleSample handler in setupSampleHandlers) OnSampleTaken -= handler;
-            setupSampleHandlers = null;
-
             foreach (LimbExercise ex in _exercises)
             {
                 if (ex.isTemporary)
@@ -138,6 +134,18 @@ namespace VRPhysiotheraphyst
         /// Use this to discard the registered setup
         /// </summary>
         public void DiscardSetup() { StopSetup(false); }
+
+        /// <summary>
+        /// Use this to end registering the setup (not saving or discarding it yet)
+        /// </summary>
+        public void EndSetup()
+        {
+            StopSampling();
+            foreach (HandleSample handler in setupSampleHandlers) OnSampleTaken -= handler;
+            setupSampleHandlers = null;
+        }
+
+
 
         #endregion
 
