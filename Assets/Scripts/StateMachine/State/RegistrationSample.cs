@@ -14,6 +14,10 @@ namespace Physiotherapy.StateMachine
 
             myContext = (AppFlowContext)context;
 
+            SenderExerciseAI senderToCreate = GameObject.FindObjectOfType<SenderExerciseAI>();
+            senderToCreate.shoulder = myContext.trackerManager.trackerListReady[0].reference;
+            senderToCreate.elbow = myContext.trackerManager.trackerListReady[1].reference;
+            senderToCreate.hand = myContext.trackerManager.trackerListReady[2].reference;
 
             base.Enter();
         }

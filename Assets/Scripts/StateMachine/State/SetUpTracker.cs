@@ -25,14 +25,12 @@ namespace Physiotherapy.StateMachine
         {
             if (Input.GetKeyDown(KeyCode.A))
                 myContext.DoneCallBack();
-
-
-
         }
 
         public override void Exit()
         {
             UIDesktopManager.EventSetUpTrackers -= SetUpTrackersDone;
+            UIDesktopManager.I.SetupTrackersPanel.SetActive(false);
         }
 
         public void SetUpTrackersDone()
