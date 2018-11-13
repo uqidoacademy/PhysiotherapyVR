@@ -8,62 +8,25 @@ namespace Limb
     /// <summary>
     /// Generic step of an exercise. An exercise is made by a sequence of this steps.
     /// </summary>
-    /// <extension>
-    /// To extend this implement an appropriate class on the example made below for the arm. Doing this provide safe names and referral to articulations.
-    /// </extension>
     /// <author>Antonio Terpin & Gabriel Ciulei</author>
-    public abstract class ExerciseStep
+    public class ExerciseStep
     {
         public ArticolationPoint Root { get; set; }
-        public Dictionary<string, ArticolationPoint> AAT = new Dictionary<string, ArticolationPoint>(); // articolation allocation table
-    }
 
-    #region ExerciseStep implementations
-
-    /// <summary>
-    /// Example of implementation of ExerciseStep. Describe an Arm exercise step
-    /// </summary>
-    /// <author>Antonio Terpin & Gabriel Ciulei</author>
-    public class ArmExerciseStep : ExerciseStep
-    {
-        public static string ArmArticolationNameOf(ArmArticolationNamesEnum articolationName)
+        public ExerciseStep(params Transform[] articulations)
         {
-            DescriptionAttribute[] attributes = (
-                    DescriptionAttribute[]) articolationName
-                   .GetType()
-                   .GetField(articolationName.ToString())
-                   .GetCustomAttributes(typeof(DescriptionAttribute), false
-               );
-            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
-        }
-
-        public ArmExerciseStep(Transform shoulder, Transform elbow, Transform hand)
-        {
-            ArticolationPoint Hand = new ArticolationPoint(hand.position, hand.eulerAngles);
-            ArticolationPoint Elbow = new ArticolationPoint(elbow.position, elbow.eulerAngles, Hand);
-            Root = new ArticolationPoint(shoulder.position, shoulder.eulerAngles, Elbow);
-            AAT.Add(ArmArticolationNameOf(ArmArticolationNamesEnum.SHOULDER), Root);
-            AAT.Add(ArmArticolationNameOf(ArmArticolationNamesEnum.ELBOW), Elbow);
-            AAT.Add(ArmArticolationNameOf(ArmArticolationNamesEnum.HAND), Hand);
+            if (articulations.Length == 0) throw new NullReferenceException("Exercise step without sensors");
+            ArticolationPoint[] articulationsPoints = new ArticolationPoint[articulations.Length];
+            for(int i = 0; i < articulations.Length; i++)
+            {
+                Transform articulation = articulations[i];
+                articulationsPoints[i] = new ArticolationPoint(articulation.position, articulation.eulerAngles);
+            }
+            for(int i = 0; i < articulationsPoints.Length - 1; i++)
+            {
+                articulationsPoints[i].Substaining = articulationsPoints[i + 1];
+            }
+            Root = articulationsPoints[0];
         }
     }
-
-    #endregion
-
-    #region Articolations names
-    /// <summary>
-    /// Arm naming
-    /// </summary>
-    /// <author>Antonio Terpin</author>
-    public enum ArmArticolationNamesEnum
-    {
-        [Description("shoulder")]
-        SHOULDER,
-        [Description("elbow")]
-        ELBOW,
-        [Description("hand")]
-        HAND
-    }
-
-    #endregion
 }

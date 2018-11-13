@@ -7,27 +7,32 @@ namespace Limb
     /// Describe how an articolation point is made:
     /// 1) an articolation has a position and an angle
     /// 2) an articolation may be attached to another (single) articulation
-    /// 3) an articolation may substain many other articulations
+    /// 3) an articolation may substain only one other articulation (if you need multiple substainings, then consider it as a multiple limbs composition)
     /// </summary>
     /// <author>Antonio Terpin & Gabriel Ciulei & Giovanni Niero</author>
     public class ArticolationPoint
     {
+        private Transform _articulationTransform;
         public Vector3 Position { get; set; }
         public Vector3 Angle { get; set; }
-        
-        public ArticolationPoint AttachedTo { get; set; }
-        public ArticolationPoint[] Substaining { get; set; }
 
-        public ArticolationPoint(Vector3 position, Vector3 angle, params ArticolationPoint[] substaining)
+        private ArticolationPoint _substaining;
+        public ArticolationPoint Substaining {
+            get
+            {
+                return _substaining;
+            }
+            set
+            {
+                // TODO transform position and angle to relative
+                _substaining = value;
+            }
+        }
+
+        public ArticolationPoint(Vector3 position, Vector3 angle)
         {
             Position = position;
             Angle = angle;
-            Substaining = substaining;
-            foreach(ArticolationPoint articolation in Substaining)
-            {
-                articolation.AttachedTo = this;
-            }
-
         }
     }
 }

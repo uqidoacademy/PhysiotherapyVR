@@ -12,5 +12,13 @@ namespace Limb
     {
         public GameObject physicalSensor;
         public ArticolationTollerance sensorTollerance;
+        public string sensorID;
+
+        public Sensor(GameObject physicalSensor, ArticolationTollerance sensorTollerance, string sensorID)
+        {
+            this.physicalSensor = physicalSensor;
+            this.sensorTollerance = sensorTollerance;
+            this.sensorID = sensorID;
+        }
     }
 }

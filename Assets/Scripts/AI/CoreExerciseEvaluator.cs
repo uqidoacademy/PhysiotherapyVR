@@ -104,7 +104,7 @@ namespace AI
 
         #endregion
 
-        public Dictionary<string, ArticolationError> EvaluateExerciseStep(ExerciseStep currentStep)
+        public ArticolationError[] EvaluateExerciseStep(ExerciseStep currentStep)
         {
             PerformedMovementSteps.Add(currentStep);
             ExerciseStep previousStep = GetPerformedStep(-1),
@@ -118,25 +118,29 @@ namespace AI
                 previousIdealStep = _trainingSet.idealMovementSteps[lastStepIndex - 1];
             }
 
-            Dictionary<string, ArticolationError> articolationErrors = new Dictionary<string, ArticolationError>();
-            foreach(string articolationName in currentStep.AAT.Keys)
+            List<ArticolationError> articolationErrors = new List<ArticolationError>();
+            ArticolationPoint currentStepArticolationPoint = currentStep.Root,
+                previousStepArticolationPoint = previousStep == null ? null : previousStep.Root,
+                currentStepIdealArticolationPoint = currentIdealStep.Root,
+                previousStepIdealArticolationPoint = previousIdealStep == null ? null : previousIdealStep.Root;
+            while(currentStepArticolationPoint != null)
             {
                 ArticolationError articolationError = new ArticolationError();
-                
-                ArticolationPoint currentArticolationPoint = currentStep.AAT[articolationName],
-                                  previousArticolationPoint = previousStep != null ? previousStep.AAT[articolationName] : null,
-                                  currentIdealArticolationPoint = currentIdealStep.AAT[articolationName],
-                                  previousIdealArticolationPoint = previousIdealStep != null ? previousIdealStep.AAT[articolationName] : null;
-                
-                articolationError.Position.Magnitude = currentIdealArticolationPoint.Position - currentArticolationPoint.Position;
-                
-                articolationError.Angle.Magnitude = currentIdealArticolationPoint.Angle - currentArticolationPoint.Angle;
 
-                CalculateSpeedErrors(articolationError, currentArticolationPoint, previousArticolationPoint, currentIdealArticolationPoint, previousIdealArticolationPoint);
+                articolationError.Position.Magnitude = currentStepIdealArticolationPoint.Position - currentStepArticolationPoint.Position;
+
+                articolationError.Angle.Magnitude = currentStepIdealArticolationPoint.Angle - currentStepArticolationPoint.Angle;
+
+                CalculateSpeedErrors(articolationError, currentStepArticolationPoint, previousStepArticolationPoint, currentStepIdealArticolationPoint, previousStepIdealArticolationPoint);
+
+                articolationErrors.Add(articolationError);
                 
-                articolationErrors.Add(articolationName, articolationError);
+                currentStepArticolationPoint = currentStepArticolationPoint.Substaining;
+                previousStepArticolationPoint = previousStepArticolationPoint == null ? null : previousStepArticolationPoint.Substaining;
+                currentStepIdealArticolationPoint = currentStepIdealArticolationPoint.Substaining;
+                previousStepIdealArticolationPoint = previousStepIdealArticolationPoint == null ? null : previousStepIdealArticolationPoint.Substaining;
             }
-            return articolationErrors;
+            return articolationErrors.ToArray();
         }
     }
 }
