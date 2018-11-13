@@ -11,10 +11,12 @@ namespace Physiotherapy.StateMachine
         SenderExerciseAI senderToCreate;
         public override void Enter()
         {
+            myContext = (AppFlowContext)context;
 
             UIDesktopManager.EventRetryRegistration += RetryRegistration;
             UIDesktopManager.EventGoToExercise += GoToExercise;
-            myContext = (AppFlowContext)context;
+
+            UIDesktopManager.I.ActiveRegistrationExercisePanel();
 
             senderToCreate = GameObject.FindObjectOfType<SenderExerciseAI>();
             senderToCreate.shoulder = myContext.trackerManager.trackerListReady[0].reference;

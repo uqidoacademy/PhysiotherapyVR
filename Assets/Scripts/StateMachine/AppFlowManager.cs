@@ -49,7 +49,7 @@ public class AppFlowManager : MonoBehaviour
         // Setup SM
         sm = gameObject.AddComponent<MyStateMachine>();
 
-        AppFlowContext context = new AppFlowContext()
+        context = new AppFlowContext()
         {
             DebugText = DebugText,
             PatientSelectionDoneCallback = patientSelectionDone,
