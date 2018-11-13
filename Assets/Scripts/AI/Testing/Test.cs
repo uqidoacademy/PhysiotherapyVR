@@ -52,8 +52,8 @@ public class Test : MonoBehaviour {
                 config,
                 (EvaluationResults results) =>
                 {
-                    AIProxy aiProxy = new ArmAIProxy(); // should be taken from context
-                    ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
+                    AIProxy aiProxy = new AIProxy(); // should be taken from context
+                    //ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
                 }
                 );
 

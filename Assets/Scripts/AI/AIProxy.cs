@@ -4,21 +4,16 @@ using System.Collections.Generic;
 
 namespace AI.Proxy
 {
-    public abstract class AIProxy
+    public class AIProxy
     {
-        public abstract ArticolationError UnwrapFromResults(string id, EvaluationResults results);
+        public ArticolationError UnwrapFromResults(string id, EvaluationResults results, List<string> limbIds)
+        {
+            return results.Corrections[GetIndexOf(id, limbIds)];
+        }
 
         protected int GetIndexOf(string id, List<string> names)
         {
             return 0;
-        }
-    }
-
-    public class ArmAIProxy : AIProxy
-    {
-        public override ArticolationError UnwrapFromResults(string id, EvaluationResults results)
-        {
-            return results.Corrections[GetIndexOf(id, StaticTestList.ArtList)];
         }
     }
 }

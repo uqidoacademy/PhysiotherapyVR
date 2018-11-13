@@ -16,13 +16,13 @@ public class SenderExerciseAI : MonoBehaviour {
 
     public ExerciseConfiguration exerciseConfiguration;
 
-    public bool isThisSample = false;
+    public bool isThisExercise = false;
 
     public void StartSendRecording()
     {
         Debug.Log("start recording");
 
-    if(isThisSample == false)
+    if(isThisExercise == false)
         {
             CreateAI();
             VirtualPhysioterphyst.Instance.StartSetup();
@@ -37,7 +37,7 @@ public class SenderExerciseAI : MonoBehaviour {
     {
         Debug.Log("stop recording");
 
-        if (isThisSample == false)
+        if (isThisExercise == false)
         {
             VirtualPhysioterphyst.Instance.SaveSetup();
         }
@@ -65,8 +65,16 @@ public class SenderExerciseAI : MonoBehaviour {
             config,
             (EvaluationResults results) =>
             {
-                AIProxy aiProxy = new ArmAIProxy(); // should be taken from context
-                ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
+                AIProxy aiProxy = new AIProxy(); // should be taken from context
+                List<string> articolationNames = new List<string>() { "spalla", "gomito", "mano" };
+                foreach(string articolationName in articolationNames)
+                {
+                    ArticolationError error = aiProxy.UnwrapFromResults(articolationName, results, articolationNames);
+                    bool isPositionCorrect = error.Position.IsSpeedCorrect && error.Position.IsMagnitudeCorrect,
+                    isRotationCorrect = error.Angle.IsSpeedCorrect && error.Angle.IsMagnitudeCorrect;
+                    Debug.Log(articolationName + ": POSITION IS CORRECT - " + isPositionCorrect.ToString() 
+                        + " # ROTATION IS CORRECT - " + isRotationCorrect.ToString());
+                }
             }
             );
         exerciseConfiguration.OnExecutionStepEvaluated += (EvaluationResults results) => { }; // exercise configuration should be taken from somewhere
@@ -76,7 +84,4 @@ public class SenderExerciseAI : MonoBehaviour {
         eval.ExerciseSetup(exerciseConfiguration);
     }
 
-    #region DemoUtils 
-
-    #endregion
 }
