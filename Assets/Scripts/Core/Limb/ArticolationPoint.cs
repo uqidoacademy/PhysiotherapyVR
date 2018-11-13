@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace Limb
 {
+    /// <summary>
+    /// Describe how an articolation point is made:
+    /// 1) an articolation has a position and an angle
+    /// 2) an articolation may be attached to another (single) articulation
+    /// 3) an articolation may substain many other articulations
+    /// </summary>
+    /// <author>Antonio Terpin</author>
     public class ArticolationPoint
     {
         public Vector3 Position { get; set; }

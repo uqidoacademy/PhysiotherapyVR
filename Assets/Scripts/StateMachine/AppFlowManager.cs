@@ -12,7 +12,7 @@ public class AppFlowManager : MonoBehaviour
 
     public Text DebugText;
 
-    MyStateMachine sm;
+    public MyStateMachine sm;
 
     List<IState> states;
 
@@ -157,12 +157,11 @@ public class AppFlowManager : MonoBehaviour
 }
 
 
-public struct AppFlowContext : IContext
+public class AppFlowContext : IContext
 {
     public List<PatientProfile> ListPatient;
 
     public PatientProfile currentPatient;
-
 
     public List<BodyPart> listBodyParts;
 

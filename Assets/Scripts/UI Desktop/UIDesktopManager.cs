@@ -9,8 +9,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UI.Desktop;
+using Physiotherapy.StateMachine;
 
 public class UIDesktopManager : MonoBehaviour {
+
+    public delegate void ButtonClicked();
+    public static ButtonClicked ClickForChangeState;
 
     private static UIDesktopManager instance;
 
@@ -39,13 +43,13 @@ public class UIDesktopManager : MonoBehaviour {
 
     public GameObject SelectionBodyPartPanel;
 
-    public GameObject WearTrackersPanel;
+    public GameObject SetupTrackersPanel;
 
     GameObject patientButton;
 
     GameObject bodyPartButton;
 
-    GameObject trakerIcon;
+    GameObject limbPart;
 
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
         SelectionPatientPanel.SetActive(true);
@@ -58,17 +62,33 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void ActiveSelectionBodyPartPanel(List<BodyPart> listBodyPart)
     {
+        SelectionPatientPanel.SetActive(false);
         SelectionBodyPartPanel.SetActive(true);
         foreach (BodyPart bp in listBodyPart)
         {
             bodyPartButton = Instantiate(Resources.Load("UIPrefabs/BodyPartButton")) as GameObject;
             bodyPartButton.GetComponentInChildren<Text>().text = bp.name;
-            bodyPartButton.GetComponentInChildren<Image>().sprite = bp.icon;
+            bodyPartButton.transform.GetChild(1).GetComponent<Image>().sprite = bp.icon;
             bodyPartButton.transform.parent = SelectionBodyPartPanel.transform.GetChild(0).GetChild(0).GetChild(0);
         }
     }
 
-    public void ActiveWearTrakersPanel(BodyPart bp) {
-        trakerIcon = Instantiate(Resources.Load("UIPrefabs/TrakerIcon")) as GameObject;
+    public void ActiveSetupTrackersPanel(BodyPart bp) {
+        SelectionBodyPartPanel.SetActive(false);
+        SetupTrackersPanel.SetActive(true);
+        foreach (string lp in bp.LimbPart) {
+            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
+            limbPart.GetComponentInChildren<Text>().text = lp;
+            limbPart.transform.GetChild(0).GetComponent<Image>().color = Color.red;
+            limbPart.transform.parent = SetupTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        }
+    }
+
+    public void PatientSelected() {
+        ClickForChangeState();
+    }
+
+    public void BodyPartSelected() {
+        ClickForChangeState();
     }
 }

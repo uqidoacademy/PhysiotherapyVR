@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace AI
 {
+    /// <summary>
+    /// Types that are return by this proxy class
+    /// </summary>
+    /// <author>Antonio Terpin</author>
     #region Results types
     public class EvaluationResults
     {
@@ -38,18 +42,11 @@ namespace AI
     }
     #endregion
 
-    public interface IAIManager
-    {
-        // TODO handle more exercises (v2.0)
-
-        void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing);
-        void StartExercise();
-        EvaluationResults EvaluateExerciseStep(ExerciseStep exerciseStep);
-        OverallExerciseResults EvaluateExercise();
-        OverallSessionResults CloseExerciseSession();
-    }
-
-    public class AIManager : IAIManager
+    /// <summary>
+    /// Wrap the ai core to return well formatted results through its api
+    /// </summary>
+    /// <author>Antonio Terpin</author>
+    public class AIManager
     {
         public float MAX_SCORE = 10;
         
@@ -57,7 +54,19 @@ namespace AI
         private List<OverallExerciseResults> _exercisesResults = new List<OverallExerciseResults>();
         private List<bool> _exerciseStepsEvaluation = new List<bool>();
 
+        /// <summary>
+        /// Use this to set exercise tollerance for all the articulations
+        /// </summary>
         public Dictionary<string, ArticolationTollerance> ExerciseTollerance { get; set; }
+
+        private void ClearExerciseSession()
+        {
+            _exerciseEvaluator = null;
+            _exercisesResults.Clear();
+            _exerciseStepsEvaluation.Clear();
+        }
+
+        #region API
 
         public OverallSessionResults CloseExerciseSession()
         {
@@ -69,16 +78,9 @@ namespace AI
             return results;
         }
 
-        private void ClearExerciseSession()
-        {
-            _exerciseEvaluator = null;
-            _exercisesResults.Clear();
-            _exerciseStepsEvaluation.Clear();
-        }
-
         public void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing)
         {
-            ExerciseEvaluatorTrainingSet trainingSet = new ExerciseEvaluatorTrainingSet();
+            CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet trainingSet = new CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet();
             trainingSet.idealMovementSteps = exerciseSteps;
             trainingSet.timing = timing;
             _exerciseEvaluator = new CoreExerciseEvaluator(trainingSet);
@@ -121,6 +123,13 @@ namespace AI
             return results;
         }
 
+        public OverallExerciseResults EvaluateArmExercise(int armExerciseID, int armSessionID)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
+
         #region Convertions
 
         private GameObject _utilityTranformGMOne = null;
@@ -151,7 +160,7 @@ namespace AI
             }
         }
 
-        public Transform GlobalTransformToRelative(Transform father, Transform child)
+        private Transform GlobalTransformToRelative(Transform father, Transform child)
         {
             UtilityTranformGMOne.transform.position = father.position;
             UtilityTranformGMOne.transform.eulerAngles = father.eulerAngles;
@@ -162,11 +171,6 @@ namespace AI
 
             // TODO casomai occhio ai puntatori del ciesso
             return UtilityTranformGMTwo.transform;
-        }
-
-        public OverallExerciseResults EvaluateArmExercise(int armExerciseID, int armSessionID)
-        {
-            throw new System.NotImplementedException();
         }
 
         #endregion
