@@ -7,7 +7,7 @@ namespace Limb
     /// <summary>
     /// Describe the tollerance that is given to the movement of an articolation
     /// </summary>
-    /// <author>Antonio Terpin</author>
+    /// <author>Antonio Terpin & Gabriel Ciulei & Giovanni Niero</author>
     public class ArticolationTollerance
     {
         public float positionTolleranceRadius;

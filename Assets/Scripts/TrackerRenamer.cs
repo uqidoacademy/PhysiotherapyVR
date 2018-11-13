@@ -5,14 +5,17 @@ using UnityEditor;
 
 public class TrackerRenamer : MonoBehaviour {
 
+
+    private TrackerManager trackerManager;
+
     int partsRenamed = 0;
     bool canInteract = false;
+
     private void Start()
     {
+        trackerManager = FindObjectOfType<TrackerManager>();
         CreateCollider();
     }
-
-  
 
     //this function is called by TrackerManager
     public void SetInteraction(bool value)
@@ -26,7 +29,6 @@ public class TrackerRenamer : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        
         if (canInteract && other.gameObject.name.Contains("tracker"))
         {
             Debug.Log("COLPITO " + other.gameObject.name);
@@ -34,9 +36,21 @@ public class TrackerRenamer : MonoBehaviour {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
             other.gameObject.GetComponent<MeshRenderer>().material.color = StaticTestList.ColorList[partsRenamed];
             EditorUtility.DisplayDialog("Tracker Configurations", "HAI AGGIUNTO: " + (StaticTestList.ArtList[partsRenamed]), "OK");
-            if(partsRenamed < StaticTestList.ArtList.Count)
+            trackerManager.trackerListReady.Add(new TrackerManager.trackerReady() {
+
+                TrackerID = other.gameObject.name,
+                reference = other.gameObject,
+
+            });
             partsRenamed++;
-            EditorUtility.DisplayDialog("Next Tracker", "DEVI ORA SELEZIONARE: " + (StaticTestList.ArtList[partsRenamed]), "OK");
+
+            if (partsRenamed < StaticTestList.ArtList.Count)
+            {
+                EditorUtility.DisplayDialog("Next Tracker", "DEVI ORA SELEZIONARE: " + (StaticTestList.ArtList[partsRenamed]), "OK");
+            }
+            else {
+                //Ready to record
+            }
         }
 
     }
@@ -47,8 +61,4 @@ public class TrackerRenamer : MonoBehaviour {
         this.gameObject.AddComponent<Rigidbody>();
         this.gameObject.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
     }
-
-
-
-    //TODO boxcollider ai tracker. Testare che funzioni.
 }

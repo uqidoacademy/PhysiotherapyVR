@@ -12,14 +12,17 @@ namespace Physiotherapy.StateMachine
         TrackerManager tm;
         public override void Enter()
         {
-
+            UIDesktopManager.EventWearButtonClicked += TrackerWorn;
             myContext = (AppFlowContext)context;
             base.Enter();
             tm = GameObject.FindObjectOfType<TrackerManager>();
-            //tm.SetUpTrackers();
+            tm.SetUpTrackers();
+            UIDesktopManager.I.ActiveWearTrakersPanel();
+            myContext.trackerManager = tm;
+        }
 
-            UIDesktopManager.I.ActiveSetupTrackersPanel(myContext.listBodyParts[0]);
-
+        public void TrackerWorn() {
+            myContext.DoneCallBack();
         }
 
 
@@ -34,7 +37,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
-
+            UIDesktopManager.EventWearButtonClicked -= TrackerWorn;
         }
     }
 }

@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 222457427126555424}
   - component: {fileID: 114512935277296688}
   - component: {fileID: 114240129491730104}
+  - component: {fileID: 114513566638571572}
   m_Layer: 5
   m_Name: BodyPartButton
   m_TagString: Untagged
@@ -102,9 +103,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114074336574147072, guid: 5f4632faaba87794ebfa84c0baeeb3aa,
-          type: 2}
-        m_MethodName: BodyPartSelected
+      - m_Target: {fileID: 114513566638571572}
+        m_MethodName: ButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -176,6 +176,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114513566638571572
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1313362388384184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beddb12750b01fa419f076ea2310cf7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 114318745745267182}
+  img: {fileID: 114732871969565148}
 --- !u!114 &114732871969565148
 MonoBehaviour:
   m_ObjectHideFlags: 1
