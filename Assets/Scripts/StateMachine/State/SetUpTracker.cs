@@ -8,13 +8,14 @@ namespace Physiotherapy.StateMachine
     {
 
         AppFlowContext myContext;
-        TrackerManager tm;
+        TrackerRenamer trackerRenamer;
         public override void Enter()
         {
             myContext = (AppFlowContext)context;
             base.Enter();
-            tm = GameObject.FindObjectOfType<TrackerManager>();
-            tm.SetUpTrackers();
+
+            trackerRenamer = GameObject.FindObjectOfType<TrackerRenamer>();
+            trackerRenamer.SetInteraction(true);
 
         }
 
