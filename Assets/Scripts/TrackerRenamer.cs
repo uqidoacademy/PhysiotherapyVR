@@ -5,17 +5,17 @@ using UnityEditor;
 
 public class TrackerRenamer : MonoBehaviour {
 
-    public SampleRecorder recorderSample;
+
+    private TrackerManager trackerManager;
 
     int partsRenamed = 0;
     bool canInteract = false;
+
     private void Start()
     {
-        recorderSample.trackersTransform = new List<Transform>();
+        trackerManager = FindObjectOfType<TrackerManager>();
         CreateCollider();
     }
-
-  
 
     //this function is called by TrackerManager
     public void SetInteraction(bool value)
@@ -36,9 +36,13 @@ public class TrackerRenamer : MonoBehaviour {
             other.gameObject.GetComponent<BoxCollider>().isTrigger = true;
             other.gameObject.GetComponent<MeshRenderer>().material.color = StaticTestList.ColorList[partsRenamed];
             EditorUtility.DisplayDialog("Tracker Configurations", "HAI AGGIUNTO: " + (StaticTestList.ArtList[partsRenamed]), "OK");
-            partsRenamed++;
+            trackerManager.trackerListReady.Add(new TrackerManager.trackerReady() {
 
-            recorderSample.trackersTransform.Add(other.gameObject.transform);
+                TrackerID = other.gameObject.name,
+                reference = other.gameObject,
+
+            });
+            partsRenamed++;
 
             if (partsRenamed < StaticTestList.ArtList.Count)
             {

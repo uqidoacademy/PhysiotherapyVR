@@ -9,7 +9,7 @@ using Valve.VR;
 public class TrackerManager : MonoBehaviour
 {
 
-    // public TrackerRenamer trackerRenamer;
+    public List<trackerReady> trackerListReady;
 
     public bool setUpTrackerDone = false;
 
@@ -66,7 +66,7 @@ public class TrackerManager : MonoBehaviour
         {
             setUpTrackerDone = true;
             // trackerRenamer.SetInteraction(true);
-           
+            
         }
         else
         {
@@ -81,5 +81,15 @@ public class TrackerManager : MonoBehaviour
         }
     }
 
+    public struct trackerReady
+    {
+        public string TrackerID;
+        public GameObject reference;
+
+        public bool isReady{ get {
+                    return reference;
+            } }
+
+    }
 
 }
