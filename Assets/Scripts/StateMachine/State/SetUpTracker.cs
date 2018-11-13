@@ -15,6 +15,7 @@ namespace Physiotherapy.StateMachine
             base.Enter();
 
             trackerRenamer = GameObject.FindObjectOfType<TrackerRenamer>();
+            UIDesktopManager.I.ActiveSetupTrackersPanel(myContext.currentBodyPart);
             trackerRenamer.SetInteraction(true);
 
         }

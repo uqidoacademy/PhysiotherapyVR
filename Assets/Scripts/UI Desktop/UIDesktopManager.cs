@@ -13,11 +13,18 @@ using Physiotherapy.StateMachine;
 
 public class UIDesktopManager : MonoBehaviour {
 
+    private LimbPartScript limbPartScript;
+
+    private List<GameObject> LimbPartList;
+
     public delegate void ButtonProfileSelectedClicked(PatientProfile pp);
     public static ButtonProfileSelectedClicked EventProfileSelected;
 
     public delegate void ButtonBodyPartClicked(BodyPart pp);
     public static ButtonBodyPartClicked EventBodyPartSelected;
+
+    public delegate void ButtonWearButtonClicked();
+    public static ButtonWearButtonClicked EventWearButtonClicked;
 
     private static UIDesktopManager instance;
 
@@ -47,6 +54,8 @@ public class UIDesktopManager : MonoBehaviour {
     public GameObject SelectionPatientPanel;
 
     public GameObject SelectionBodyPartPanel;
+
+    public GameObject WearTrackersPanel;
 
     public GameObject SetupTrackersPanel;
 
@@ -81,24 +90,11 @@ public class UIDesktopManager : MonoBehaviour {
         }
     }
 
-    public void ActiveWearTrakersPanel(BodyPart bp) {
+    public void ActiveWearTrakersPanel() {
 
         SelectionBodyPartPanel.SetActive(false);
         WearTrackersPanel.SetActive(true);
         WearButtonReady();
-
-        foreach (string lp in bp.LimbPart) {
-
-            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
-            limbPart.GetComponentInChildren<Text>().text = lp;
-            limbPart.transform.GetChild(0).GetComponent<Image>().color = Color.red;
-            limbPart.transform.parent = SetupTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
-        }
-    }
-
-    public void WearReadySelection()
-    {
-        ClickForChangeState();
     }
 
     void WearButtonReady()
@@ -112,7 +108,7 @@ public class UIDesktopManager : MonoBehaviour {
         trackerStatus.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
         trackerManager = FindObjectOfType<TrackerManager>();
 
-        if (trackerManager.setUpTrackerDone)
+        if (trackerManager.setUpTrackerDone == false)
         {
             wearTrackerReadyButton.GetComponent<Button>().interactable = true;
             trackerStatus.GetComponentInChildren<Text>().text = "Devices are ready";
@@ -122,6 +118,39 @@ public class UIDesktopManager : MonoBehaviour {
             wearTrackerReadyButton.GetComponent<Button>().interactable = false;
             trackerStatus.GetComponentInChildren<Text>().text = "Devices are not ready";
         }
+    }
 
+    public void WearButtonClicked()
+    {
+        EventWearButtonClicked();
+    }
+
+    public void ActiveSetupTrackersPanel(BodyPart bp)
+    {
+        LimbPartList = new List<GameObject>();
+        Debug.Log("Ciao!");
+        WearTrackersPanel.SetActive(false);
+        SetupTrackersPanel.SetActive(true);
+        foreach (string lp in bp.LimbPart)
+        {
+            
+            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
+            limbPart.GetComponent<LimbPartScript>().LimbPartName = lp;
+            limbPart.GetComponent<LimbPartScript>().SetColor(Color.red);
+            limbPart.transform.parent = SetupTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+            LimbPartList.Add(limbPart);
+        }
+    }
+
+    public void LimbPartReady(string LimbPartName)
+    {
+        foreach (GameObject lp in LimbPartList)
+        {
+            limbPartScript = lp.GetComponent<LimbPartScript>();
+            if (limbPartScript.LimbPartName == LimbPartName)
+            {
+                lp.GetComponent<LimbPartScript>().SetColor(Color.green);
+            }
+        }
     }
 }
