@@ -72,6 +72,8 @@ public class UIDesktopManager : MonoBehaviour {
 
     public GameObject SetupTrackersPanel;
 
+    public GameObject TrackersFeedbackPanel;
+
     public GameObject RegistrationExercisePanel;
 
     GameObject patientButton;
@@ -83,6 +85,8 @@ public class UIDesktopManager : MonoBehaviour {
     GameObject trackerStatus;
 
     GameObject limbPart;
+
+    Dictionary<string, Image> colorizers;
 
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
         SelectionPatientPanel.SetActive(true);
@@ -156,9 +160,10 @@ public class UIDesktopManager : MonoBehaviour {
         }
     }
 
-    public void ActiveTrackersFeedbackPanel(BodyPart bp, ExerciseConfiguration configuration)
+    public void ActiveTrackersFeedbackPanel(BodyPart bp)
     {
-        SetupTrackersPanel.SetActive(false);
+        ExerciseConfiguration configuration = FindObjectOfType<SenderExerciseAI>().exerciseConfiguration;
+        RegistrationExercisePanel.SetActive(false);
         TrackersFeedbackPanel.SetActive(true);
 
         colorizers.Clear();
@@ -172,12 +177,14 @@ public class UIDesktopManager : MonoBehaviour {
             colorizers[lp] = colorizer;
             limbPart.transform.parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
         }
-        StopTrackingFeedback(configuration);
+        StopTrackingFeedback(bp.LimbPart, configuration);
         configuration.OnExecutionStepEvaluated += HandleFeedbackResults;
     }
 
-    public void StopTrackingFeedback(ExerciseConfiguration configuration)
+    List<string> ArmListIDs = new List<string>();
+    public void StopTrackingFeedback(List<string> limbIDs, ExerciseConfiguration configuration)
     {
+        ArmListIDs = limbIDs;
         configuration.OnExecutionStepEvaluated -= HandleFeedbackResults;
     }
 
@@ -192,7 +199,7 @@ public class UIDesktopManager : MonoBehaviour {
             aiProxy = new ArmAIProxy();
         }
 
-        List<string> limbsIDs = StaticTestList.ArtList;
+        List<string> limbsIDs = ArmListIDs;
         foreach (string limbID in limbsIDs)
         {
             ArticolationError limbError = aiProxy.UnwrapFromResults(limbID, results);
@@ -216,5 +223,18 @@ public class UIDesktopManager : MonoBehaviour {
             if(EventSetUpTrackers != null)
             EventSetUpTrackers();
         }
+    }
+
+    public void ActiveRegistrationExercisePanel() {
+        SetupTrackersPanel.SetActive(false);
+        RegistrationExercisePanel.SetActive(true);
+    }
+
+    public void RetryRegistration() {
+        EventRetryRegistration();
+    }
+
+    public void GoToExercise() {
+        EventGoToExercise();
     }
 }
