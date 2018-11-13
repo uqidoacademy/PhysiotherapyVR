@@ -12,7 +12,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Enter()
         {
-            UIDesktopManager.ClickForChangeState += BodyPartChosen;
+            UIDesktopManager.EventBodyPartSelected += BodyPartChosen;
 
 
             myContext = (AppFlowContext)context;
@@ -37,11 +37,12 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
-            UIDesktopManager.ClickForChangeState -= BodyPartChosen;
+            UIDesktopManager.EventBodyPartSelected -= BodyPartChosen;
         }
 
-        public void BodyPartChosen()
+        public void BodyPartChosen(BodyPart bp)
         {
+            myContext.currentBodyPart = bp;
             myContext.DoneCallBack();
         }
     }

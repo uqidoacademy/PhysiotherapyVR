@@ -17,13 +17,15 @@ namespace Physiotherapy.StateMachine
 
         public override void Enter()
         {
-            UIDesktopManager.ClickForChangeState += DoneSelectionPatient;
+            UIDesktopManager.EventProfileSelected += DoneSelectionPatient;
 
             myContext = (AppFlowContext)context;
 
             myContext.ListPatient = new List<PatientProfile>();
             myContext.ListPatient.Add(new PatientProfile("MR", "Mario",
                 "Rossi", "Male", 1.7f, true, "Broken shoulder"));
+            myContext.ListPatient.Add(new PatientProfile("SN", "Simone",
+               "Niero", "Male", 1.7f, true, "Broken shoulder"));
             UIDesktopManager.I.ActiveSelectionPatientPanel(myContext.ListPatient);
 
             
@@ -41,17 +43,17 @@ namespace Physiotherapy.StateMachine
                 myContext.DoneCallBack();
         }
 
-        public void DoneSelectionPatient()
+        public void DoneSelectionPatient(PatientProfile pp)
         {
             //TODO: mettere il paziente selezionato, non il primo della lista
-            myContext.currentPatient = myContext.ListPatient[0];
+            myContext.currentPatient = pp;
 
             myContext.DoneCallBack();
         }
 
         public override void Exit()
         {
-            UIDesktopManager.ClickForChangeState -= DoneSelectionPatient;
+            UIDesktopManager.EventProfileSelected -= DoneSelectionPatient;
         }
     }
 }
