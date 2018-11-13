@@ -16,13 +16,13 @@ public class SenderExerciseAI : MonoBehaviour {
 
     public ExerciseConfiguration exerciseConfiguration;
 
-    public bool isThisSample = false;
+    public bool isThisExercise = false;
 
     public void StartSendRecording()
     {
         Debug.Log("start recording");
 
-    if(isThisSample == false)
+    if(isThisExercise == false)
         {
             CreateAI();
             VirtualPhysioterphyst.Instance.StartSetup();
@@ -37,7 +37,7 @@ public class SenderExerciseAI : MonoBehaviour {
     {
         Debug.Log("stop recording");
 
-        if (isThisSample == false)
+        if (isThisExercise == false)
         {
             VirtualPhysioterphyst.Instance.SaveSetup();
         }
@@ -84,7 +84,4 @@ public class SenderExerciseAI : MonoBehaviour {
         eval.ExerciseSetup(exerciseConfiguration);
     }
 
-    #region DemoUtils 
-
-    #endregion
 }
