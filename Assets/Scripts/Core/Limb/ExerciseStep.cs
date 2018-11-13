@@ -11,7 +11,7 @@ namespace Limb
     /// <extension>
     /// To extend this implement an appropriate class on the example made below for the arm. Doing this provide safe names and referral to articulations.
     /// </extension>
-    /// <author>Antonio Terpin</author>
+    /// <author>Antonio Terpin & Gabriel Ciulei</author>
     public abstract class ExerciseStep
     {
         public ArticolationPoint Root { get; set; }
@@ -23,7 +23,7 @@ namespace Limb
     /// <summary>
     /// Example of implementation of ExerciseStep. Describe an Arm exercise step
     /// </summary>
-    /// <author>Antonio Terpin</author>
+    /// <author>Antonio Terpin & Gabriel Ciulei</author>
     public class ArmExerciseStep : ExerciseStep
     {
         public static string ArmArticolationNameOf(ArmArticolationNamesEnum articolationName)

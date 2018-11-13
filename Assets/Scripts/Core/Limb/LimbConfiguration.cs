@@ -10,7 +10,7 @@ namespace Limb
     /// <extension>
     /// To add a limb, extend this class, take as example the ArmConfiguration class
     /// </extension>
-    /// <author>Antonio Terpin</author>
+    /// <author>Antonio Terpin & Gabriel Ciulei</author>
     public abstract class LimbConfiguration {
         public Dictionary<string, Sensor> sensors = new Dictionary<string, Sensor>();
 

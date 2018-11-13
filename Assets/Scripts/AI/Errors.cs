@@ -4,6 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Describe the errors format
 /// </summary>
+/// <author>Antonio Terpin & Gabriel Ciulei & Giovanni Niero</author>
 namespace AI.Error
 {
     /// <summary>

@@ -9,7 +9,7 @@ namespace Limb
     /// 2) an articolation may be attached to another (single) articulation
     /// 3) an articolation may substain many other articulations
     /// </summary>
-    /// <author>Antonio Terpin</author>
+    /// <author>Antonio Terpin & Gabriel Ciulei & Giovanni Niero</author>
     public class ArticolationPoint
     {
         public Vector3 Position { get; set; }

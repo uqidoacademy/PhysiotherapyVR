@@ -10,7 +10,7 @@ namespace AI
     /// Class used to perform calculations and retrieve results for the patient exercise execution
     /// </summary>
     /// <author>
-    /// Antonio Terpin
+    /// Antonio Terpin & Gabriel Ciulei & Giovanni Niero
     /// </author>
     public class CoreExerciseEvaluator
     {
