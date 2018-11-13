@@ -13,8 +13,11 @@ using Physiotherapy.StateMachine;
 
 public class UIDesktopManager : MonoBehaviour {
 
-    public delegate void ButtonClicked();
-    public static ButtonClicked ClickForChangeState;
+    public delegate void ButtonProfileSelectedClicked(PatientProfile pp);
+    public static ButtonProfileSelectedClicked EventProfileSelected;
+
+    public delegate void ButtonBodyPartClicked(BodyPart pp);
+    public static ButtonBodyPartClicked EventBodyPartSelected;
 
     private static UIDesktopManager instance;
 
@@ -61,7 +64,7 @@ public class UIDesktopManager : MonoBehaviour {
         SelectionPatientPanel.SetActive(true);
         foreach (PatientProfile pf in listPatient) {
             patientButton = Instantiate(Resources.Load("UIPrefabs/PatientProfileButton")) as GameObject;
-            patientButton.GetComponentInChildren<Text>().text = pf.NamePatient + " " + pf.SurnamePatient;
+            patientButton.GetComponentInChildren<PatientProfileButton>().PatientProfileObj = pf;
             patientButton.transform.parent = SelectionPatientPanel.transform.GetChild(0).GetChild(0).GetChild(0);
         }  
     }
@@ -73,8 +76,7 @@ public class UIDesktopManager : MonoBehaviour {
         foreach (BodyPart bp in listBodyPart)
         {
             bodyPartButton = Instantiate(Resources.Load("UIPrefabs/BodyPartButton")) as GameObject;
-            bodyPartButton.GetComponentInChildren<Text>().text = bp.name;
-            bodyPartButton.transform.GetChild(1).GetComponent<Image>().sprite = bp.icon;
+            bodyPartButton.GetComponentInChildren<BodyPartButton>().BodyPartObj = bp;
             bodyPartButton.transform.parent = SelectionBodyPartPanel.transform.GetChild(0).GetChild(0).GetChild(0);
         }
     }

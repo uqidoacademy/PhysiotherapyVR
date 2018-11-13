@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 222918983586726046}
   - component: {fileID: 114473914673601466}
   - component: {fileID: 114193412363330838}
+  - component: {fileID: 114356681173155194}
   m_Layer: 5
   m_Name: PatientProfileButton
   m_TagString: Untagged
@@ -85,9 +86,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114074336574147072, guid: 5f4632faaba87794ebfa84c0baeeb3aa,
-          type: 2}
-        m_MethodName: WearReadySelection
+      - m_Target: {fileID: 114356681173155194}
+        m_MethodName: ButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -99,6 +99,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114356681173155194
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1687076395491574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0006579d8bb2bc646a031afabe326a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 114947035171394800}
 --- !u!114 &114473914673601466
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -7,48 +7,34 @@ namespace Limb
     /// <summary>
     /// Configuration of a limb, so describes what the sensors stand for in the real world (e.g. shoulder, elbow, hand, ..)
     /// </summary>
-    /// <extension>
-    /// To add a limb, extend this class, take as example the ArmConfiguration class
-    /// </extension>
-    /// <author>Antonio Terpin</author>
-    public abstract class LimbConfiguration {
-        public Dictionary<string, Sensor> sensors = new Dictionary<string, Sensor>();
+    /// <author>Antonio Terpin & Gabriel Ciulei</author>
+    public class LimbConfiguration {
+        public Sensor[] sensors;
 
         /// <summary>
         /// Take a snapshot of the limb
         /// </summary>
         /// <returns>The snapshot of the limb configuration (transforms of the sensors)</returns>
-        public abstract LimbData ExtractLimbData();
-
-        protected Dictionary<string, Transform> GetTransformOutOfSensors()
+        public LimbData ExtractLimbData()
         {
-            Dictionary<string, Transform> transforms = new Dictionary<string, Transform>();
-            foreach(string articolationName in sensors.Keys)
+            LimbData limbData = new LimbData();
+            limbData.articolations = GetTransformOutOfSensors();
+            return limbData;
+        }
+
+        protected Transform[] GetTransformOutOfSensors()
+        {
+            Transform[] transforms = new Transform[sensors.Length];
+            for(int i = 0; i < sensors.Length; i++)
             {
-                transforms.Add(articolationName, sensors[articolationName].physicalSensor.transform);
+                transforms[i] = sensors[i].physicalSensor.transform;
             }
             return transforms;
         }
-    }
 
-    /// <summary>
-    /// Extension of the LimbConfiguration class used to describe an arm
-    /// </summary>
-    /// <author>Antonio Terpin</author>
-    public class ArmConfiguration : LimbConfiguration
-    {
-        public ArmConfiguration(Sensor shoulder, Sensor elbow, Sensor hand)
+        public LimbConfiguration(params Sensor[] sensors)
         {
-            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.SHOULDER), shoulder);
-            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.ELBOW), elbow);
-            sensors.Add(ArmExerciseStep.ArmArticolationNameOf(ArmArticolationNamesEnum.HAND), hand);
-        }
-
-        public override LimbData ExtractLimbData()
-        {
-            ArmData data = new ArmData();
-            data.articolations = GetTransformOutOfSensors();
-            return data;
+            this.sensors = sensors;
         }
     }
 }
