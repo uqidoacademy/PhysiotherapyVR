@@ -10,6 +10,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UI.Desktop;
 using Physiotherapy.StateMachine;
+using VRPhysiotheraphyst;
+using AI.Results;
+using AI.Proxy;
+using AI.Error;
 
 public class UIDesktopManager : MonoBehaviour {
 
@@ -25,6 +29,8 @@ public class UIDesktopManager : MonoBehaviour {
 
     public delegate void ButtonWearButtonClicked();
     public static ButtonWearButtonClicked EventWearButtonClicked;
+
+    Dictionary<string, Image> colorizers = new Dictionary<string, Image>();
 
     private static UIDesktopManager instance;
 
@@ -58,6 +64,8 @@ public class UIDesktopManager : MonoBehaviour {
     public GameObject WearTrackersPanel;
 
     public GameObject SetupTrackersPanel;
+
+    public GameObject TrackersFeedbackPanel;
 
     GameObject patientButton;
 
@@ -139,6 +147,50 @@ public class UIDesktopManager : MonoBehaviour {
             limbPart.GetComponent<LimbPartScript>().SetColor(Color.red);
             limbPart.transform.parent = SetupTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
             LimbPartList.Add(limbPart);
+        }
+    }
+
+    public void ActiveTrackersFeedbackPanel(BodyPart bp, ExerciseConfiguration configuration)
+    {
+        SetupTrackersPanel.SetActive(false);
+        TrackersFeedbackPanel.SetActive(true);
+
+        colorizers.Clear();
+
+        foreach (string lp in bp.LimbPart)
+        {
+            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
+            limbPart.GetComponentInChildren<Text>().text = lp;
+            Image colorizer = limbPart.transform.GetChild(0).GetComponent<Image>();
+            colorizer.color = Color.yellow;
+            colorizers[lp] = colorizer;
+            limbPart.transform.parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        }
+        StopTrackingFeedback(configuration);
+        configuration.OnExecutionStepEvaluated += HandleFeedbackResults;
+    }
+
+    public void StopTrackingFeedback(ExerciseConfiguration configuration)
+    {
+        configuration.OnExecutionStepEvaluated -= HandleFeedbackResults;
+    }
+
+    private void HandleFeedbackResults(EvaluationResults results)
+    {
+        AIProxy aiProxy;
+
+        // TODO: get bodypart type
+        if (true)
+        {
+            // ARM
+            aiProxy = new ArmAIProxy();
+        }
+
+        List<string> limbsIDs = StaticTestList.ArtList;
+        foreach (string limbID in limbsIDs)
+        {
+            ArticolationError limbError = aiProxy.UnwrapFromResults(limbID, results);
+            colorizers[limbID].color = limbError.isCorrect ? Color.green : Color.red;
         }
     }
 

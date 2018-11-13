@@ -25,5 +25,13 @@ namespace AI.Error
     {
         public MovementError Position = new MovementError();
         public MovementError Angle = new MovementError();
+
+        public bool isCorrect
+        {
+            get
+            {
+                return Angle.IsMagnitudeCorrect && Angle.IsSpeedCorrect && Position.IsSpeedCorrect && Position.IsMagnitudeCorrect;
+            }
+        }
     }
 }
