@@ -1,4 +1,6 @@
 ﻿using AI;
+using AI.Error;
+using AI.Proxy;
 using AI.Results;
 using DG.Tweening;
 using Limb;
@@ -51,8 +53,13 @@ public class Test : MonoBehaviour {
                 (EvaluationResults results) =>
                 {
                     Debug.Log("Fuck U.");
+                    AIProxy aiProxy = new ArmAIProxy(); // should be taken from context
+                    ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
                 }
                 );
+
+            // to add more events handler:
+            exerciseConfiguration.OnExecutionStepEvaluated += (EvaluationResults results) => { }; // exercise configuration should be taken from somewhere
 
             // configure the virtual physioteraphyst
             VirtualPhysioterphyst eval = VirtualPhysioterphyst.Instance;
