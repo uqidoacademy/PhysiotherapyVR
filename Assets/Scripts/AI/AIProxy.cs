@@ -6,7 +6,7 @@ namespace AI.Proxy
 {
     public abstract class AIProxy
     {
-        public abstract ArticolationError UnwrapFromResults(string id, EvaluationResults results);
+        public abstract ArticolationError UnwrapFromResults(string id, EvaluationResults results, List<string> limbIds);
 
         protected int GetIndexOf(string id, List<string> names)
         {
@@ -16,9 +16,9 @@ namespace AI.Proxy
 
     public class ArmAIProxy : AIProxy
     {
-        public override ArticolationError UnwrapFromResults(string id, EvaluationResults results)
+        public override ArticolationError UnwrapFromResults(string id, EvaluationResults results, List<string> limbIds)
         {
-            return results.Corrections[GetIndexOf(id, StaticTestList.ArtList)];
+            return results.Corrections[GetIndexOf(id, limbIds)];
         }
     }
 }

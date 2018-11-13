@@ -66,7 +66,7 @@ public class SenderExerciseAI : MonoBehaviour {
             (EvaluationResults results) =>
             {
                 AIProxy aiProxy = new ArmAIProxy(); // should be taken from context
-                ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
+                //ArticolationError elbowError = aiProxy.UnwrapFromResults("gomito", results);
             }
             );
         exerciseConfiguration.OnExecutionStepEvaluated += (EvaluationResults results) => { }; // exercise configuration should be taken from somewhere

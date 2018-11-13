@@ -202,7 +202,7 @@ public class UIDesktopManager : MonoBehaviour {
         List<string> limbsIDs = ArmListIDs;
         foreach (string limbID in limbsIDs)
         {
-            ArticolationError limbError = aiProxy.UnwrapFromResults(limbID, results);
+            ArticolationError limbError = aiProxy.UnwrapFromResults(limbID, results, limbsIDs);
             colorizers[limbID].color = limbError.isCorrect ? Color.green : Color.red;
         }
     }
