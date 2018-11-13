@@ -18,7 +18,6 @@ public class AppFlowManager : MonoBehaviour
 
     AppFlowContext context;
 
-
     private static AppFlowManager _instance;
 
     public static AppFlowManager I
@@ -167,6 +166,7 @@ public class AppFlowContext : IContext
 
     public BodyPart currentBodyPart;
 
+    public TrackerManager trackerManager;
 
     public Text DebugText;
 

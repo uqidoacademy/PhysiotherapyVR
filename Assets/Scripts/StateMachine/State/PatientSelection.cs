@@ -45,7 +45,6 @@ namespace Physiotherapy.StateMachine
         {
             //TODO: mettere il paziente selezionato, non il primo della lista
             myContext.currentPatient = myContext.ListPatient[0];
-
             myContext.DoneCallBack();
         }
 

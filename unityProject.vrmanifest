@@ -2,7 +2,7 @@
   "source": "Unity",
   "applications": [
     {
-      "app_key": "application.generated.unity.trackertest.exe",
+      "app_key": "application.generated.unity.physiotherapyvr.exe",
       "launch_type": "url",
       "url": "steam://launch/",
       "strings": {

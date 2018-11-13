@@ -18,6 +18,8 @@ public class UIDesktopManager : MonoBehaviour {
 
     private static UIDesktopManager instance;
 
+    private TrackerManager trackerManager;
+
     public static UIDesktopManager I
     {
         get {
@@ -49,6 +51,10 @@ public class UIDesktopManager : MonoBehaviour {
 
     GameObject bodyPartButton;
 
+    GameObject wearTrackerReadyButton;
+
+    GameObject trackerStatus;
+
     GameObject limbPart;
 
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
@@ -73,10 +79,14 @@ public class UIDesktopManager : MonoBehaviour {
         }
     }
 
-    public void ActiveSetupTrackersPanel(BodyPart bp) {
+    public void ActiveWearTrakersPanel(BodyPart bp) {
+
         SelectionBodyPartPanel.SetActive(false);
-        SetupTrackersPanel.SetActive(true);
+        WearTrackersPanel.SetActive(true);
+        WearButtonReady();
+
         foreach (string lp in bp.LimbPart) {
+
             limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
             limbPart.GetComponentInChildren<Text>().text = lp;
             limbPart.transform.GetChild(0).GetComponent<Image>().color = Color.red;
@@ -84,11 +94,32 @@ public class UIDesktopManager : MonoBehaviour {
         }
     }
 
-    public void PatientSelected() {
+    public void WearReadySelection()
+    {
         ClickForChangeState();
     }
 
-    public void BodyPartSelected() {
-        ClickForChangeState();
+    void WearButtonReady()
+    {
+        
+        wearTrackerReadyButton = Instantiate(Resources.Load("UIPrefabs/WearButton")) as GameObject;
+        wearTrackerReadyButton.GetComponentInChildren<Text>().text = "Start selection body parts";
+        wearTrackerReadyButton.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+
+        trackerStatus = Instantiate(Resources.Load("UIPrefabs/WearTrackerStatusText")) as GameObject;
+        trackerStatus.transform.parent = WearTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+        trackerManager = FindObjectOfType<TrackerManager>();
+
+        if (trackerManager.setUpTrackerDone)
+        {
+            wearTrackerReadyButton.GetComponent<Button>().interactable = true;
+            trackerStatus.GetComponentInChildren<Text>().text = "Devices are ready";
+        }
+        else
+        {
+            wearTrackerReadyButton.GetComponent<Button>().interactable = false;
+            trackerStatus.GetComponentInChildren<Text>().text = "Devices are not ready";
+        }
+
     }
 }

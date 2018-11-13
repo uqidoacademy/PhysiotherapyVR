@@ -20,6 +20,8 @@ public class SampleRecorder : MonoBehaviour {
 
     private bool recordNow;
 
+    private bool playbackNow;
+
     private int currentTick = 0;
 
     private float cooldownTick;
@@ -30,6 +32,7 @@ public class SampleRecorder : MonoBehaviour {
     void Start () {
         memoryMovments = new List<SingleSample> ();
         recordNow = false;
+        playbackNow = false;
     }
 
     void Update () {
@@ -50,20 +53,27 @@ public class SampleRecorder : MonoBehaviour {
 
             CreatePreviewTrackers ();
         }
-    }
 
+        if(playbackNow && cooldownTick <= 0) {
+            if (currentTick >= memoryMovments.Count)
+                currentTick = 0;
+            currentTick++;
+            CreatePreviewTrackers();
+            cooldownTick = tickCadence;
+        }
+    }
     private void CreatePreviewTrackers () {
         if (trackersPreview == null) {
             trackersPreview = new List<GameObject> ();
             for (int i = 0; i < trackersTransform.Count; i++) {
                 trackersPreview.Add (Instantiate (prefabTrackerCube, transform));
-
+                trackersPreview[i].name = StaticTestList.ArtList[i];
                 trackersPreview[i].GetComponent<MeshRenderer>().material.color = StaticTestList.ColorList[i];
             }
         }
 
         for (int i = 0; i < trackersTransform.Count; i++) {
-            trackersPreview[i].transform.position = memoryMovments[memoryMovments.Count-1].trackersWorldPositions[i];
+            trackersPreview[i].transform.position = memoryMovments[currentTick-1].trackersWorldPositions[i];
         }
     }
 
@@ -71,11 +81,23 @@ public class SampleRecorder : MonoBehaviour {
     public void StartRecording () {
         recordNow = true;
         cooldownTick = 0;
+        memoryMovments.Clear();
+        currentTick = 0;
     }
 
     public void StopRecording () {
         recordNow = false;
+        playbackNow = true;
     }
 
+    public void StartPlayback()
+    {
+        playbackNow = true;
+    }
+
+    public void StopPlayback()
+    {
+        playbackNow = false;
+    }
 
 }

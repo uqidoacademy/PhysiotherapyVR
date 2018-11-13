@@ -406,10 +406,37 @@ Prefab:
         type: 2}
       propertyPath: actionSet
       value: 
+      objectReference: {fileID: 11400000, guid: 774e19e6cb64efa46b16b2748ba585d4,
+        type: 2}
+    - target: {fileID: 11450312, guid: dc06161b6d97feb419f45f03b62e14b9, type: 2}
+      propertyPath: showDebugText
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010474703086, guid: dc06161b6d97feb419f45f03b62e14b9,
+        type: 2}
+      propertyPath: disableAllOtherActionSets
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc06161b6d97feb419f45f03b62e14b9, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &564411152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 160596, guid: dc06161b6d97feb419f45f03b62e14b9,
+    type: 2}
+  m_PrefabInternal: {fileID: 367356071}
+--- !u!114 &564411156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 564411152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462bac800530d8b4396f0f8fb5db5677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recordAction: {fileID: 11400000, guid: d1e0caf3efa21994ebc52e3bb3a06a93, type: 2}
 --- !u!1 &629744222
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,6 +687,23 @@ Transform:
   m_Father: {fileID: 35467966}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1227105347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 144230, guid: dc06161b6d97feb419f45f03b62e14b9,
+    type: 2}
+  m_PrefabInternal: {fileID: 367356071}
+--- !u!114 &1227105349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1227105347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462bac800530d8b4396f0f8fb5db5677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recordAction: {fileID: 11400000, guid: 1ec8f968b6ba8c248bc7bd540a9302d6, type: 2}
 --- !u!1 &1350978183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,6 +1084,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1824643651}
   - component: {fileID: 1824643650}
+  - component: {fileID: 1824643652}
   m_Layer: 0
   m_Name: SampleRecorder
   m_TagString: Untagged
@@ -1065,7 +1110,6 @@ MonoBehaviour:
   - {fileID: 1867249457}
   prefabTrackerCube: {fileID: 1153872915713724, guid: 29da927cf5b3420448519c28e984ab93,
     type: 2}
-  recordNow: 1
 --- !u!4 &1824643651
 Transform:
   m_ObjectHideFlags: 0
@@ -1079,6 +1123,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1824643652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1824643649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462bac800530d8b4396f0f8fb5db5677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recordAction: {fileID: 0}
 --- !u!4 &1867249457 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4937177787861128, guid: dd45a1c185fefe84da439c77d2a20aff,
