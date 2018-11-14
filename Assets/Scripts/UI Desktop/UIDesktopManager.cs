@@ -160,8 +160,15 @@ public class UIDesktopManager : MonoBehaviour {
         }
     }
 
-    public void ActiveTrackersFeedbackPanel(BodyPart bp)
+    void ColorLimbAIResult(string limb,bool correctPosition){
+        colorizers[limb].color = correctPosition ? Color.green : Color.red;
+    }
+
+    public void ActiveTrackersFeedbackPanel(BodyPart bp,SenderExerciseAI.SendResultOfAI risultAI)
     {
+        risultAI += ColorLimbAIResult;
+
+
         ExerciseConfiguration configuration = FindObjectOfType<SenderExerciseAI>().exerciseConfiguration;
         RegistrationExercisePanel.SetActive(false);
         TrackersFeedbackPanel.SetActive(true);
@@ -179,33 +186,12 @@ public class UIDesktopManager : MonoBehaviour {
             limbPart.transform.parent = parent;
         }
         StopTrackingFeedback(bp.LimbPart, configuration);
-        configuration.OnExecutionStepEvaluated += HandleFeedbackResults;
     }
 
     List<string> ArmListIDs = new List<string>();
     public void StopTrackingFeedback(List<string> limbIDs, ExerciseConfiguration configuration)
     {
         ArmListIDs = limbIDs;
-        configuration.OnExecutionStepEvaluated -= HandleFeedbackResults;
-    }
-
-    private void HandleFeedbackResults(EvaluationResults results)
-    {
-        AIProxy aiProxy;
-
-        // TODO: get bodypart type
-        if (true)
-        {
-            // ARM
-            aiProxy = new AIProxy();
-        }
-
-        List<string> limbsIDs = ArmListIDs;
-        foreach (string limbID in limbsIDs)
-        {
-            ArticolationError limbError = aiProxy.UnwrapFromResults(limbID, results, limbsIDs);
-            colorizers[limbID].color = limbError.Position.IsCorrect ? Color.green : Color.red;
-        }
     }
 
     public void LimbPartReady(string LimbPartName)
