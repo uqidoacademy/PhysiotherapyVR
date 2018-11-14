@@ -18,9 +18,9 @@ public class SampleRecorder : MonoBehaviour {
 
     private List<SingleSample> memoryMovments;
 
-    private bool recordNow;
+    public bool recordNow;
 
-    private bool playbackNow;
+    public bool playbackNow;
 
     private int currentTick = 0;
 
@@ -87,11 +87,11 @@ public class SampleRecorder : MonoBehaviour {
 
     public void StopRecording () {
         recordNow = false;
-        playbackNow = true;
     }
 
     public void StartPlayback()
     {
+        currentTick = 0;
         playbackNow = true;
     }
 

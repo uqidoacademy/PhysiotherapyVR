@@ -21,6 +21,9 @@ public class SenderExerciseAI : MonoBehaviour {
 
     public bool isThisExercise = false;
 
+    private SampleRecorder sampleRecorder;
+
+
     public void StartSendRecording()
     {
     Debug.Log("start recording");
@@ -29,9 +32,11 @@ public class SenderExerciseAI : MonoBehaviour {
         {
             CreateAI();
             VirtualPhysioterphyst.Instance.StartSetup();
+            sampleRecorder.StartRecording();
         }
         else
         {
+            sampleRecorder.StartPlayback();
             VirtualPhysioterphyst.Instance.StartEvaluation();
         }
     }
@@ -42,10 +47,12 @@ public class SenderExerciseAI : MonoBehaviour {
         UIDesktopManager.I.RegistrationFeedback(false);
         if (isThisExercise == false)
         {
+            sampleRecorder.StopRecording();
             VirtualPhysioterphyst.Instance.SaveSetup();
         }
         else
         {
+            sampleRecorder.StopPlayback();
             VirtualPhysioterphyst.Instance.StopEvaluation();
         }
     }
@@ -57,6 +64,7 @@ public class SenderExerciseAI : MonoBehaviour {
 
     private void CreateAI()
     {
+        sampleRecorder = GetComponent<SampleRecorder>();
         float tolleranceRadius = 0.1f;
         ArticolationTollerance tollerance = new ArticolationTollerance();
         tollerance.positionSpeedTolleranceRadius = tolleranceRadius;

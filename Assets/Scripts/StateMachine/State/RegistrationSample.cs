@@ -23,6 +23,11 @@ namespace Physiotherapy.StateMachine
             senderToCreate.elbow = myContext.trackerManager.trackerListReady[1].reference;
             senderToCreate.hand = myContext.trackerManager.trackerListReady[2].reference;
             
+            SampleRecorder sampleRecordGhost = GameObject.FindObjectOfType<SampleRecorder>();
+            sampleRecordGhost.trackersTransform = new List<Transform>();
+            sampleRecordGhost.trackersTransform.Add(myContext.trackerManager.trackerListReady[0].reference.transform);
+            sampleRecordGhost.trackersTransform.Add(myContext.trackerManager.trackerListReady[1].reference.transform);
+            sampleRecordGhost.trackersTransform.Add(myContext.trackerManager.trackerListReady[2].reference.transform);
 
             base.Enter();
 
