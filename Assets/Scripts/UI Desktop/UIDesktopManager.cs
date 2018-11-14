@@ -100,7 +100,7 @@ public class UIDesktopManager : MonoBehaviour {
         SelectionPatientPanel.SetActive(true);
 
 
-        if (SelectionPatientPanel.transform.Find("ScroolView/Viewport/Content").childCount <= 0)
+        if (SelectionPatientPanel.transform.Find("ScrollView/Viewport/Content").childCount <= 0)
         {
             foreach (PatientProfile pf in listPatient)
             {
@@ -115,7 +115,7 @@ public class UIDesktopManager : MonoBehaviour {
     {
        
         SelectionBodyPartPanel.SetActive(true);
-        if (SelectionBodyPartPanel.transform.Find("ScroolView/Viewport/Content").childCount <= 0)
+        if (SelectionBodyPartPanel.transform.Find("ScrollView/Viewport/Content").childCount <= 0)
         {
             foreach (BodyPart bp in listBodyPart)
             {
