@@ -37,6 +37,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
+            UIDesktopManager.I.WearTrackersPanel.SetActive(false);
             UIDesktopManager.EventWearButtonClicked -= TrackerWorn;
         }
     }

@@ -55,6 +55,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
+            UIDesktopManager.I.SelectionPatientPanel.SetActive(false);
             UIDesktopManager.EventProfileSelected -= DoneSelectionPatient;
         }
     }

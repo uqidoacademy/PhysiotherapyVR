@@ -41,6 +41,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
+            UIDesktopManager.I.RegistrationExercisePanel.SetActive(false);
             UIDesktopManager.EventRetryRegistration -= RetryRegistration;
             UIDesktopManager.EventGoToExercise -= GoToExercise;
         }

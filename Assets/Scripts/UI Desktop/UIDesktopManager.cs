@@ -107,7 +107,7 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void ActiveSelectionBodyPartPanel(List<BodyPart> listBodyPart)
     {
-        SelectionPatientPanel.SetActive(false);
+       
         SelectionBodyPartPanel.SetActive(true);
         foreach (BodyPart bp in listBodyPart)
         {
@@ -119,7 +119,7 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void ActiveWearTrakersPanel() {
 
-        SelectionBodyPartPanel.SetActive(false);
+        
         WearTrackersPanel.SetActive(true);
         WearButtonReady();
     }
@@ -155,7 +155,6 @@ public class UIDesktopManager : MonoBehaviour {
     public void ActiveSetupTrackersPanel(BodyPart bp)
     {
         LimbPartList = new List<GameObject>();
-        WearTrackersPanel.SetActive(false);
         SetupTrackersPanel.SetActive(true);
         foreach (string lp in bp.LimbPart)
         {
@@ -177,7 +176,6 @@ public class UIDesktopManager : MonoBehaviour {
         SenderExerciseAI.EventSendResultAI += ColorLimbAIResult;
 
         ExerciseConfiguration configuration = FindObjectOfType<SenderExerciseAI>().exerciseConfiguration;
-        RegistrationExercisePanel.SetActive(false);
         TrackersFeedbackPanel.SetActive(true);
         
         colorizers.Clear();
@@ -220,7 +218,7 @@ public class UIDesktopManager : MonoBehaviour {
     }
 
     public void ActiveRegistrationExercisePanel() {
-        SetupTrackersPanel.SetActive(false);
+       
         RegistrationExercisePanel.SetActive(true);
     }
 

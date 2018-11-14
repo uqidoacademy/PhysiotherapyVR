@@ -35,6 +35,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Exit()
         {
+            UIDesktopManager.I.TrackersFeedbackPanel.SetActive(false);
             UIDesktopManager.EventEndExperience -= GoToNextState;
             UIDesktopManager.EventReDoExerciseSameBodyPart -= ReDoExerciseSameBodyPart;
             UIDesktopManager.EventReDoExerciseDifferentBodyPart -= ReDoExerciseDifferentBodyPart;
