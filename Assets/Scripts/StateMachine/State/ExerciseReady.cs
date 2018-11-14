@@ -21,7 +21,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Tick()
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            
                 myContext.DoneCallBack();
 
         }

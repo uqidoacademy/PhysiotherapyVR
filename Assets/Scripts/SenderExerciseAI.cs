@@ -26,8 +26,17 @@ public class SenderExerciseAI : MonoBehaviour
 
     if (isThisExercise == false)
     {
-      CreateAI();
-      VirtualPhysioterphyst.Instance.StartSetup();
+    Debug.Log("start recording");
+
+    if(isThisExercise == false)
+        {
+            CreateAI();
+            VirtualPhysioterphyst.Instance.StartSetup();
+        }
+        else
+        {
+            VirtualPhysioterphyst.Instance.StartEvaluation();
+        }
     }
     else
     {

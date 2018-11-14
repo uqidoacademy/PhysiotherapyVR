@@ -13,7 +13,7 @@ namespace AI.Proxy
 
         protected int GetIndexOf(string id, List<string> names)
         {
-            return 0;
+            return names.IndexOf(id);
         }
     }
 }

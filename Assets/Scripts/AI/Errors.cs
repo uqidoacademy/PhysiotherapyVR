@@ -16,6 +16,13 @@ namespace AI.Error
         public Vector3 Speed { get; set; }
         public bool IsMagnitudeCorrect { get; set; }
         public bool IsSpeedCorrect { get; set; }
+        public bool IsCorrect
+        {
+            get
+            {
+                return IsMagnitudeCorrect && IsSpeedCorrect;
+            }
+        }
     }
 
     /// <summary>
