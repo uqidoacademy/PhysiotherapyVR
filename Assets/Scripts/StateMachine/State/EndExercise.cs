@@ -11,7 +11,7 @@ namespace Physiotherapy.StateMachine
 
         public override void Enter()
         {
-
+            Application.Quit();
             myContext = (AppFlowContext)context;
 
 
