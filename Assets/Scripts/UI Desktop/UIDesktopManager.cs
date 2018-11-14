@@ -86,7 +86,7 @@ public class UIDesktopManager : MonoBehaviour {
 
     GameObject limbPart;
 
-    Dictionary<string, Image> colorizers;
+    Dictionary<string, Image> colorizers = new Dictionary<string, Image>();
 
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
         SelectionPatientPanel.SetActive(true);
@@ -165,7 +165,7 @@ public class UIDesktopManager : MonoBehaviour {
         ExerciseConfiguration configuration = FindObjectOfType<SenderExerciseAI>().exerciseConfiguration;
         RegistrationExercisePanel.SetActive(false);
         TrackersFeedbackPanel.SetActive(true);
-
+        
         colorizers.Clear();
 
         foreach (string lp in bp.LimbPart)
@@ -175,7 +175,8 @@ public class UIDesktopManager : MonoBehaviour {
             Image colorizer = limbPart.transform.GetChild(0).GetComponent<Image>();
             colorizer.color = Color.yellow;
             colorizers[lp] = colorizer;
-            limbPart.transform.parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+            Transform parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+            limbPart.transform.parent = parent;
         }
         StopTrackingFeedback(bp.LimbPart, configuration);
         configuration.OnExecutionStepEvaluated += HandleFeedbackResults;
@@ -203,7 +204,7 @@ public class UIDesktopManager : MonoBehaviour {
         foreach (string limbID in limbsIDs)
         {
             ArticolationError limbError = aiProxy.UnwrapFromResults(limbID, results, limbsIDs);
-            colorizers[limbID].color = limbError.isCorrect ? Color.green : Color.red;
+            colorizers[limbID].color = limbError.Position.IsCorrect ? Color.green : Color.red;
         }
     }
 
