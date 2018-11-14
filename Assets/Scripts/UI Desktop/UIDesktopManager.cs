@@ -127,7 +127,7 @@ public class UIDesktopManager : MonoBehaviour {
         
         trackerManager = FindObjectOfType<TrackerManager>();
 
-        if (trackerManager.setUpTrackerDone)
+        if (trackerManager.setUpTrackerDone == false)
         {
             wearTrackerReadyButton.GetComponent<Button>().interactable = true;
             trackerStatus.GetComponentInChildren<Text>().text = "Devices are ready";
@@ -222,5 +222,15 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void GoToExercise() {
         EventGoToExercise();
+    }
+
+    public void RegistrationFeedback(bool registrationState) {
+        if (registrationState)
+        {
+            RegistrationExercisePanel.transform.Find("Panel/Viewport/Content/RegistrationText").GetComponent<Text>().text = "In registration";
+        }
+        else {
+            RegistrationExercisePanel.transform.Find("Panel/Viewport/Content/RegistrationText").GetComponent<Text>().text = "Not in registration";
+        }
     }
 }

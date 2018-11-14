@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 224939621652606852}
   - component: {fileID: 222993584241891230}
   - component: {fileID: 114497334941118324}
-  - component: {fileID: 114612130956593654}
   m_Layer: 5
   m_Name: LimbPart
   m_TagString: Untagged
@@ -238,5 +237,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 100}
+  m_SizeDelta: {x: 400, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
