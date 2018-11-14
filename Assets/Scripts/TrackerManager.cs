@@ -9,90 +9,98 @@ using Valve.VR;
 public class TrackerManager : MonoBehaviour
 {
 
-    public List<trackerReady> trackerListReady = new List<trackerReady>();
+  public List<trackerReady> trackerListReady = new List<trackerReady>();
 
-    public bool setUpTrackerDone = false;
+  public bool setUpTrackerDone = false;
 
-    private List<string> limbArts;
+  public GameObject vrUI;
 
-    public void SetUpTrackers(List<string> list)
+  private List<string> limbArts;
+
+  public void SetUpTrackers(List<string> list)
+  {
+    limbArts = list;
+    TrackersCount();
+    InstantiateTrackers(FindTrackerIndex());
+  }
+
+  List<uint> FindTrackerIndex()
+  {
+    List<uint> trackerIndex = new List<uint>();
+    var error = ETrackedPropertyError.TrackedProp_Success;
+    for (uint i = 0; i < 16; i++)
     {
-        limbArts = list;
-        TrackersCount();
-        InstantiateTrackers(FindTrackerIndex());
+      var result = new System.Text.StringBuilder((int)64);
+      OpenVR.System.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_RenderModelName_String, result, 64, ref error);
+
+      if (result.ToString().Contains("tracker"))
+      {
+        trackerIndex.Add(i);
+
+      }
     }
 
-    List<uint> FindTrackerIndex()
+    return trackerIndex;
+
+  }
+
+
+  //instantiate game objects based on how many indexes there are in the indexList
+
+  void InstantiateTrackers(List<uint> indexList)
+  {
+    foreach (uint index in indexList)
     {
-        List<uint> trackerIndex = new List<uint>();
-        var error = ETrackedPropertyError.TrackedProp_Success;
-        for (uint i = 0; i < 16; i++)
-        {
-            var result = new System.Text.StringBuilder((int)64);
-            OpenVR.System.GetStringTrackedDeviceProperty(i, ETrackedDeviceProperty.Prop_RenderModelName_String, result, 64, ref error);
-
-            if (result.ToString().Contains("tracker"))
-            {
-                trackerIndex.Add(i);
-
-            }
-        }
-
-        return trackerIndex;
-
+      GameObject childTracker = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), transform);
+      childTracker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+      childTracker.AddComponent<BoxCollider>().isTrigger = true;
+      childTracker.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
+      childTracker.name = "tracker_" + index;
+      childTracker.AddComponent<SteamVR_TrackedObject>().SetDeviceIndex((int)index);
+      if (vrUI != null)
+        Instantiate(vrUI, childTracker.transform);
     }
 
+  }
+  //check how many trackers are active based on how many trackers are needed for the exercise
+  //if all ok, call trackerRenamer
+  //else if some trackers are missing--> display dialog box
 
-    //instantiate game objects based on how many indexes there are in the indexList
+  void TrackersCount()
+  {
 
-    void InstantiateTrackers(List<uint> indexList)
+    if (limbArts.Count == FindTrackerIndex().Count)
     {
-        foreach (uint index in indexList)
-        {
-            GameObject childTracker = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), transform);
-            childTracker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-            childTracker.AddComponent<BoxCollider>().isTrigger = true;
-            childTracker.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
-            childTracker.name = "tracker_" + index;
-            childTracker.AddComponent<SteamVR_TrackedObject>().SetDeviceIndex((int)index);
-        }
+      setUpTrackerDone = true;
+      //trackerRenamer.SetInteraction(true);
 
     }
-    //check how many trackers are active based on how many trackers are needed for the exercise
-    //if all ok, call trackerRenamer
-    //else if some trackers are missing--> display dialog box
-
-    void TrackersCount()
+    else
     {
-
-        if (limbArts.Count == FindTrackerIndex().Count)
-        {
-            setUpTrackerDone = true;
-            //trackerRenamer.SetInteraction(true);
-            
-        }
-        else
-        {
-            int notInitTrackers = limbArts.Count - FindTrackerIndex().Count;
-            EditorUtility.DisplayDialog("Tracker missing",
-              "There are " +
-              notInitTrackers +
-              (notInitTrackers == 1 ? " tracker not initialized" : " trackers not initialized"),
-              "OK");
-           // trackerRenamer.SetInteraction(false);
-
-        }
-    }
-
-    public struct trackerReady
-    {
-        public string TrackerID;
-        public GameObject reference;
-
-        public bool isReady{ get {
-                    return reference;
-            } }
+      int notInitTrackers = limbArts.Count - FindTrackerIndex().Count;
+      EditorUtility.DisplayDialog("Tracker missing",
+        "There are " +
+        notInitTrackers +
+        (notInitTrackers == 1 ? " tracker not initialized" : " trackers not initialized"),
+        "OK");
+      // trackerRenamer.SetInteraction(false);
 
     }
+  }
+
+  public struct trackerReady
+  {
+    public string TrackerID;
+    public GameObject reference;
+
+    public bool isReady
+    {
+      get
+      {
+        return reference;
+      }
+    }
+
+  }
 
 }
