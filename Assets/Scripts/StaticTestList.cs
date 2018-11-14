@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class StaticTestList {
 
-    public static List<Color> ColorList = new List<Color> { Color.red, Color.yellow, Color.green };
+    public static List<Color> ColorList = new List<Color> { Color.black, Color.yellow, Color.blue };
 
 }
 

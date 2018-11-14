@@ -50,7 +50,7 @@ public class SenderExerciseAI : MonoBehaviour {
 
     private void CreateAI()
     {
-        float tolleranceRadius = 0.2f;
+        float tolleranceRadius = 0.1f;
         ArticolationTollerance tollerance = new ArticolationTollerance();
         tollerance.positionSpeedTolleranceRadius = tolleranceRadius;
         tollerance.positionTolleranceRadius = tolleranceRadius;
@@ -74,6 +74,29 @@ public class SenderExerciseAI : MonoBehaviour {
                     isRotationCorrect = error.Angle.IsSpeedCorrect && error.Angle.IsMagnitudeCorrect;
                     Debug.Log(articolationName + ": POSITION IS CORRECT - " + isPositionCorrect.ToString() 
                         + " # ROTATION IS CORRECT - " + isRotationCorrect.ToString());
+
+                    GameObject trackerOb;
+
+                    switch (articolationName)
+                    {
+                        case "spalla":
+                            trackerOb = shoulder;
+                            break;
+                        case "gomito":
+                            trackerOb = elbow;
+                            break;
+                        case "mano":
+                            trackerOb = hand;
+                            break;
+                        default:
+                            trackerOb = hand;
+                            break;
+                    }
+
+                    if (isPositionCorrect)
+                        trackerOb.GetComponent<MeshRenderer>().material.color = Color.green;
+                    else
+                        trackerOb.GetComponent<MeshRenderer>().material.color = Color.red;
                 }
             }
             );
