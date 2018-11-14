@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224939621652606852}
   - component: {fileID: 222993584241891230}
   - component: {fileID: 114497334941118324}
+  - component: {fileID: 114612130956593654}
   m_Layer: 5
   m_Name: LimbPart
   m_TagString: Untagged
@@ -124,7 +125,7 @@ MonoBehaviour:
   m_FillOrigin: 0
 --- !u!114 &114612130956593654
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1348830368117938}
