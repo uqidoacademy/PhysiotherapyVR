@@ -49,7 +49,7 @@ public class AppFlowManager : MonoBehaviour
         // Setup SM
         sm = gameObject.AddComponent<MyStateMachine>();
 
-        AppFlowContext context = new AppFlowContext()
+        context = new AppFlowContext()
         {
             DebugText = DebugText,
             PatientSelectionDoneCallback = patientSelectionDone,
@@ -58,6 +58,8 @@ public class AppFlowManager : MonoBehaviour
             SetUpTrackerDoneCallback = goToRegistrationSample,
             RetryRegistrationCallback = goToRegistrationSample,
             RegistrationOkCallback = goToExerciseReady,
+            FinishExerciseSameBdPartCallback = goToRegistrationSample,
+            FinishExerciseDifferentBdPartCallback = goToChooseBodyParts,
 
             // ChooseBodyPartsDoneCallback = patientSelectionToDo,
         };
@@ -97,6 +99,8 @@ public class AppFlowManager : MonoBehaviour
     }
 
 
+
+
     private void goToNextState()
     {
         for (int i = 0; i < states.Count; i++)
@@ -110,6 +114,14 @@ public class AppFlowManager : MonoBehaviour
                 break;
             }
 
+        }
+    }
+
+    private void goToChooseBodyParts()
+    {
+        if (context.currentPatient != null)
+        {
+            sm.CurrentState = getState(typeof(ChooseBodyParts));
         }
     }
 
@@ -207,9 +219,21 @@ public class AppFlowContext : IContext
     public Action RegistrationOkCallback;
 
     /// <summary>
+    /// callback da richiamare finito l'esercizio se si vuole farne un altro con la stessa parte del corpo coinvolta
+    /// </summary>
+    public Action FinishExerciseSameBdPartCallback;
+
+    /// <summary>
+    /// callback da richiamare finito l'esercizio se si vuole farne un altro con diversa parte del corpo coinvolta
+    /// </summary>
+    public Action FinishExerciseDifferentBdPartCallback;
+
+    /// <summary>
     /// Callback generica da richiamare quando finisco il lavoro dello stato
     /// </summary>
     public Action DoneCallBack;
+
+    
 
     public Text GetDebugText()
     {

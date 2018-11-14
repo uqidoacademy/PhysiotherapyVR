@@ -26,8 +26,17 @@ public class SenderExerciseAI : MonoBehaviour
 
     if (isThisExercise == false)
     {
-      CreateAI();
-      VirtualPhysioterphyst.Instance.StartSetup();
+    Debug.Log("start recording");
+
+    if(isThisExercise == false)
+        {
+            CreateAI();
+            VirtualPhysioterphyst.Instance.StartSetup();
+        }
+        else
+        {
+            VirtualPhysioterphyst.Instance.StartEvaluation();
+        }
     }
     else
     {
@@ -95,6 +104,7 @@ public class SenderExerciseAI : MonoBehaviour
                 break;
             }
 
+            trackerOb.GetComponent<LookAtCameraVRUI>().target = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
             if (isPositionCorrect)
               trackerOb.GetComponentInChildren<Image>().color = Color.green;
             else
