@@ -7,6 +7,7 @@ using Limb;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using VRPhysiotheraphyst;
 
 public class SenderExerciseAI : MonoBehaviour
@@ -76,28 +77,28 @@ public class SenderExerciseAI : MonoBehaviour
             Debug.Log(articolationName + ": POSITION IS CORRECT - " + isPositionCorrect.ToString()
                     + " # ROTATION IS CORRECT - " + isRotationCorrect.ToString());
 
-            GameObject trackerOb;
+            Canvas trackerOb;
 
             switch (articolationName)
             {
               case "spalla":
-                trackerOb = shoulder.GetComponentInChildren<GameObject>();
+                trackerOb = shoulder.GetComponentInChildren<Canvas>();
                 break;
               case "gomito":
-                trackerOb = elbow.GetComponentInChildren<GameObject>();
+                trackerOb = elbow.GetComponentInChildren<Canvas>();
                 break;
               case "mano":
-                trackerOb = hand.GetComponentInChildren<GameObject>();
+                trackerOb = hand.GetComponentInChildren<Canvas>();
                 break;
               default:
-                trackerOb = hand;
+                trackerOb = hand.GetComponentInChildren<Canvas>();
                 break;
             }
 
             if (isPositionCorrect)
-              trackerOb.GetComponent<MeshRenderer>().material.color = Color.green;
+              trackerOb.GetComponentInChildren<Image>().color = Color.green;
             else
-              trackerOb.GetComponent<MeshRenderer>().material.color = Color.red;
+              trackerOb.GetComponentInChildren<Image>().color = Color.red;
           }
         }
         );
