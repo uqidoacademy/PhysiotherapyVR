@@ -104,6 +104,7 @@ public class SenderExerciseAI : MonoBehaviour
                 break;
             }
 
+            trackerOb.GetComponent<LookAtCameraVRUI>().target = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Transform>();
             if (isPositionCorrect)
               trackerOb.GetComponentInChildren<Image>().color = Color.green;
             else

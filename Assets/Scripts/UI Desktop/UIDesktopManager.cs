@@ -174,7 +174,7 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void ActiveTrackersFeedbackPanel(BodyPart bp)
     {
-        SenderExerciseAI.EventSendResultAI += ColorLimbAIResult;
+        //SenderExerciseAI.EventSendResultAI += ColorLimbAIResult;
 
         ExerciseConfiguration configuration = FindObjectOfType<SenderExerciseAI>().exerciseConfiguration;
         RegistrationExercisePanel.SetActive(false);
