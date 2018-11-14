@@ -21,23 +21,31 @@ public class UIDesktopManager : MonoBehaviour {
 
     private List<GameObject> LimbPartList;
 
+    #region Events
+
     public delegate void ButtonProfileSelectedClicked(PatientProfile pp);
     public static ButtonProfileSelectedClicked EventProfileSelected;
 
     public delegate void ButtonBodyPartClicked(BodyPart pp);
     public static ButtonBodyPartClicked EventBodyPartSelected;
 
-    public delegate void ButtonWearButtonClicked();
-    public static ButtonWearButtonClicked EventWearButtonClicked;
+    public delegate void ButtonClicked();
 
-    public delegate void SetUpButtonClicked();
-    public static SetUpButtonClicked EventSetUpTrackers;
+    public static ButtonClicked EventWearButtonClicked;
 
-    public delegate void RetryRegistrationButtonClicked();
-    public static RetryRegistrationButtonClicked EventRetryRegistration;
+    public static ButtonClicked EventSetUpTrackers;
 
-    public delegate void GoToExerciseButtonClicked();
-    public static GoToExerciseButtonClicked EventGoToExercise;
+    public static ButtonClicked EventRetryRegistration;
+
+    public static ButtonClicked EventGoToExercise;
+
+    public static ButtonClicked EventEndExperience;
+
+    public static ButtonClicked EventReDoExerciseSameBodyPart;
+
+    public static ButtonClicked EventReDoExerciseDifferentBodyPart;
+
+    #endregion
 
     private static UIDesktopManager instance;
 
@@ -217,6 +225,8 @@ public class UIDesktopManager : MonoBehaviour {
         RegistrationExercisePanel.SetActive(true);
     }
 
+    #region Button functions
+
     public void RetryRegistration() {
         EventRetryRegistration();
     }
@@ -224,4 +234,23 @@ public class UIDesktopManager : MonoBehaviour {
     public void GoToExercise() {
         EventGoToExercise();
     }
+
+    public void EndExperience()
+    {
+        EventEndExperience();
+    }
+
+    public void ReDoExerciseSameBodyPart()
+    {
+        EventReDoExerciseSameBodyPart();
+    }
+
+    public void ReDoExerciseDifferentBodyPart()
+    {
+        EventReDoExerciseDifferentBodyPart();
+    }
+
+
+
+    #endregion
 }
