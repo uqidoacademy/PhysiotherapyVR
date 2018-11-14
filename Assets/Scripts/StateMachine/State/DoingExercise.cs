@@ -15,7 +15,7 @@ namespace Physiotherapy.StateMachine
 
             myContext = (AppFlowContext)context;
             
-            UIDesktopManager.I.ActiveTrackersFeedbackPanel(myContext.currentBodyPart,SenderExerciseAI.EventSendResultAI);
+            UIDesktopManager.I.ActiveTrackersFeedbackPanel(myContext.currentBodyPart);
 
             base.Enter();
         }

@@ -164,10 +164,9 @@ public class UIDesktopManager : MonoBehaviour {
         colorizers[limb].color = correctPosition ? Color.green : Color.red;
     }
 
-    public void ActiveTrackersFeedbackPanel(BodyPart bp,SenderExerciseAI.SendResultOfAI risultAI)
+    public void ActiveTrackersFeedbackPanel(BodyPart bp)
     {
-        risultAI += ColorLimbAIResult;
-
+        SenderExerciseAI.EventSendResultAI += ColorLimbAIResult;
 
         ExerciseConfiguration configuration = FindObjectOfType<SenderExerciseAI>().exerciseConfiguration;
         RegistrationExercisePanel.SetActive(false);
@@ -185,7 +184,7 @@ public class UIDesktopManager : MonoBehaviour {
             Transform parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
             limbPart.transform.parent = parent;
         }
-        StopTrackingFeedback(bp.LimbPart, configuration);
+        //StopTrackingFeedback(bp.LimbPart, configuration);
     }
 
     List<string> ArmListIDs = new List<string>();
