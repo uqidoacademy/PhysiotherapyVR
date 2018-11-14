@@ -11,6 +11,9 @@ using VRPhysiotheraphyst;
 
 public class SenderExerciseAI : MonoBehaviour {
     
+    public delegate void SendResultOfAI(string limb,bool correctPosition);
+    public static SendResultOfAI EventSendResultAI;
+
     public float timing = 1;
     public GameObject elbow, shoulder, hand;
 
@@ -20,7 +23,7 @@ public class SenderExerciseAI : MonoBehaviour {
 
     public void StartSendRecording()
     {
-        Debug.Log("start recording");
+    Debug.Log("start recording");
 
     if(isThisExercise == false)
         {
@@ -47,6 +50,9 @@ public class SenderExerciseAI : MonoBehaviour {
         }
     }
 
+    public void SendResult(string limb,bool correctPosition) {
+        EventSendResultAI(limb,correctPosition);
+    }
 
     private void CreateAI()
     {
@@ -74,6 +80,9 @@ public class SenderExerciseAI : MonoBehaviour {
                     isRotationCorrect = error.Angle.IsSpeedCorrect && error.Angle.IsMagnitudeCorrect;
                     Debug.Log(articolationName + ": POSITION IS CORRECT - " + isPositionCorrect.ToString() 
                         + " # ROTATION IS CORRECT - " + isRotationCorrect.ToString());
+
+                    //Genera evento con risultati AI -> contesto
+                    SendResult(articolationName,isPositionCorrect);
 
                     GameObject trackerOb;
 
