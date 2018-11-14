@@ -51,7 +51,8 @@ public class SenderExerciseAI : MonoBehaviour {
     }
 
     public void SendResult(string limb,bool correctPosition) {
-        EventSendResultAI(limb,correctPosition);
+        if (EventSendResultAI != null)
+            EventSendResultAI(limb,correctPosition);
     }
 
     private void CreateAI()
@@ -81,26 +82,31 @@ public class SenderExerciseAI : MonoBehaviour {
                     Debug.Log(articolationName + ": POSITION IS CORRECT - " + isPositionCorrect.ToString() 
                         + " # ROTATION IS CORRECT - " + isRotationCorrect.ToString());
 
-                    //Genera evento con risultati AI -> contesto
-                    SendResult(articolationName,isPositionCorrect);
-
                     GameObject trackerOb;
+                    string nameID = "";
 
                     switch (articolationName)
                     {
                         case "spalla":
+                            nameID = "Shoulder";
                             trackerOb = shoulder;
                             break;
                         case "gomito":
+                            nameID = "Elbow";
                             trackerOb = elbow;
                             break;
                         case "mano":
+                            nameID = "Wrist";
                             trackerOb = hand;
                             break;
                         default:
                             trackerOb = hand;
                             break;
                     }
+
+                    //Genera evento con risultati AI -> contesto
+                    SendResult(nameID, isPositionCorrect);
+
 
                     if (isPositionCorrect)
                         trackerOb.GetComponent<MeshRenderer>().material.color = Color.green;
