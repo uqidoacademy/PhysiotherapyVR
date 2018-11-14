@@ -11,9 +11,9 @@ public class AddConnectionParts : MonoBehaviour {
 	private float sizeLimb = 0.08f;
 	private List<GameObject> limbsTrackers = new List<GameObject> ();
 
-	private List<string> partsOfBody;
+	public List<string> partsOfBody = new List<string>();
 
-	private bool connectLimbs = false;
+    private bool connectLimbs = false;
 
 	// Update is called once per frame
 	void Update () {

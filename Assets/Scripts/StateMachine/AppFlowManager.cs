@@ -95,12 +95,14 @@ public class AppFlowManager : MonoBehaviour
     {
 
         Debug.Log("Second State");
-        sm.CurrentState = sm.States[1];
+        sm.CurrentState = getState(typeof(ChooseBodyParts));
     }
 
 
 
-
+    /// <summary>
+    /// Usata tutte le volte che semplicemente si passa allo stato successivo seguendo il normale flow dell'evento
+    /// </summary>
     private void goToNextState()
     {
         for (int i = 0; i < states.Count; i++)

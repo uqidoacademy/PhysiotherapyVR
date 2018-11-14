@@ -25,6 +25,10 @@ namespace Physiotherapy.StateMachine
             
 
             base.Enter();
+
+            AddConnectionParts limbsConnected = GameObject.FindObjectOfType<AddConnectionParts>();
+            limbsConnected.partsOfBody = myContext.currentBodyPart.LimbPart;
+            limbsConnected.PrepareConnections();
         }
 
 
