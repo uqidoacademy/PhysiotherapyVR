@@ -147,7 +147,7 @@ public class UIDesktopManager : MonoBehaviour {
         
         trackerManager = FindObjectOfType<TrackerManager>();
 
-        if (trackerManager.setUpTrackerDone == false)
+        if (trackerManager.setUpTrackerDone)
         {
             wearTrackerReadyButton.GetComponent<Button>().interactable = true;
             trackerStatus.GetComponentInChildren<Text>().text = "Devices are ready";

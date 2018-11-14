@@ -24,7 +24,7 @@ public class SenderExerciseAI : MonoBehaviour {
     public void StartSendRecording()
     {
     Debug.Log("start recording");
-
+        UIDesktopManager.I.RegistrationFeedback(true);
     if(isThisExercise == false)
         {
             CreateAI();
@@ -39,7 +39,7 @@ public class SenderExerciseAI : MonoBehaviour {
     public void StopSendRecording()
     {
         Debug.Log("stop recording");
-
+        UIDesktopManager.I.RegistrationFeedback(false);
         if (isThisExercise == false)
         {
             VirtualPhysioterphyst.Instance.SaveSetup();
