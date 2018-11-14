@@ -98,22 +98,31 @@ public class UIDesktopManager : MonoBehaviour {
 
     public void ActiveSelectionPatientPanel(List<PatientProfile> listPatient) {
         SelectionPatientPanel.SetActive(true);
-        foreach (PatientProfile pf in listPatient) {
-            patientButton = Instantiate(Resources.Load("UIPrefabs/PatientProfileButton")) as GameObject;
-            patientButton.GetComponentInChildren<PatientProfileButton>().PatientProfileObj = pf;
-            patientButton.transform.parent = SelectionPatientPanel.transform.GetChild(0).GetChild(0).GetChild(0);
-        }  
+
+
+        if (SelectionPatientPanel.transform.Find("ScroolView/Viewport/Content").childCount <= 0)
+        {
+            foreach (PatientProfile pf in listPatient)
+            {
+                patientButton = Instantiate(Resources.Load("UIPrefabs/PatientProfileButton")) as GameObject;
+                patientButton.GetComponentInChildren<PatientProfileButton>().PatientProfileObj = pf;
+                patientButton.transform.parent = SelectionPatientPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+            }
+        }
     }
 
     public void ActiveSelectionBodyPartPanel(List<BodyPart> listBodyPart)
     {
        
         SelectionBodyPartPanel.SetActive(true);
-        foreach (BodyPart bp in listBodyPart)
+        if (SelectionBodyPartPanel.transform.Find("ScroolView/Viewport/Content").childCount <= 0)
         {
-            bodyPartButton = Instantiate(Resources.Load("UIPrefabs/BodyPartButton")) as GameObject;
-            bodyPartButton.GetComponentInChildren<BodyPartButton>().BodyPartObj = bp;
-            bodyPartButton.transform.parent = SelectionBodyPartPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+            foreach (BodyPart bp in listBodyPart)
+            {
+                bodyPartButton = Instantiate(Resources.Load("UIPrefabs/BodyPartButton")) as GameObject;
+                bodyPartButton.GetComponentInChildren<BodyPartButton>().BodyPartObj = bp;
+                bodyPartButton.transform.parent = SelectionBodyPartPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+            }
         }
     }
 
@@ -121,7 +130,10 @@ public class UIDesktopManager : MonoBehaviour {
 
         
         WearTrackersPanel.SetActive(true);
-        WearButtonReady();
+        if (WearTrackersPanel.transform.Find("Panel/Viewport/Content").childCount <= 0)
+        {
+            WearButtonReady();
+        }
     }
 
     void WearButtonReady()
@@ -156,14 +168,17 @@ public class UIDesktopManager : MonoBehaviour {
     {
         LimbPartList = new List<GameObject>();
         SetupTrackersPanel.SetActive(true);
-        foreach (string lp in bp.LimbPart)
+        if (SetupTrackersPanel.transform.Find("Panel/Viewport/Content").childCount <= 0)
         {
-            
-            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
-            limbPart.GetComponent<LimbPartScript>().LimbPartName = lp;
-            limbPart.GetComponent<LimbPartScript>().SetColor(Color.red);
-            limbPart.transform.parent = SetupTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
-            LimbPartList.Add(limbPart);
+            foreach (string lp in bp.LimbPart)
+            {
+
+                limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
+                limbPart.GetComponent<LimbPartScript>().LimbPartName = lp;
+                limbPart.GetComponent<LimbPartScript>().SetColor(Color.red);
+                limbPart.transform.parent = SetupTrackersPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+                LimbPartList.Add(limbPart);
+            }
         }
     }
 
@@ -179,16 +194,18 @@ public class UIDesktopManager : MonoBehaviour {
         TrackersFeedbackPanel.SetActive(true);
         
         colorizers.Clear();
-
-        foreach (string lp in bp.LimbPart)
+        if (TrackersFeedbackPanel.transform.Find("Panel/Viewport/Content").childCount <= 0)
         {
-            limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
-            limbPart.GetComponentInChildren<Text>().text = lp;
-            Image colorizer = limbPart.transform.GetChild(0).GetComponent<Image>();
-            colorizer.color = Color.yellow;
-            colorizers[lp] = colorizer;
-            Transform parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
-            limbPart.transform.parent = parent;
+            foreach (string lp in bp.LimbPart)
+            {
+                limbPart = Instantiate(Resources.Load("UIPrefabs/LimbPart")) as GameObject;
+                limbPart.GetComponentInChildren<Text>().text = lp;
+                Image colorizer = limbPart.transform.GetChild(0).GetComponent<Image>();
+                colorizer.color = Color.yellow;
+                colorizers[lp] = colorizer;
+                Transform parent = TrackersFeedbackPanel.transform.GetChild(0).GetChild(0).GetChild(0);
+                limbPart.transform.parent = parent;
+            }
         }
         //StopTrackingFeedback(bp.LimbPart, configuration);
     }
