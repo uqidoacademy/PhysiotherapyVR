@@ -130,6 +130,15 @@ namespace AI
                 ArticolationTollerance tollerance = tollerances[i++];
 
                 articolationError.Position.Magnitude = currentStepIdealArticolationPoint.Position - currentStepArticolationPoint.Position;
+
+                Debug.Log("Articolation [" + i + "]");
+                Debug.Log("ideal position (" +
+                    currentStepIdealArticolationPoint.Position.x + ", " + currentStepIdealArticolationPoint.Position.y + ", " + currentStepIdealArticolationPoint.Position.z + ")"
+                    );
+                Debug.Log("real position (" +
+                    currentStepArticolationPoint.Position.x + ", " + currentStepArticolationPoint.Position.y + ", " + currentStepArticolationPoint.Position.z + ")"
+                    );
+
                 articolationError.Position.IsMagnitudeCorrect = articolationError.Position.Magnitude.magnitude < tollerance.positionTolleranceRadius;
 
                 articolationError.Angle.Magnitude = currentStepIdealArticolationPoint.Angle - currentStepArticolationPoint.Angle;

@@ -10,6 +10,10 @@ using UnityEngine;
 using VRPhysiotheraphyst;
 
 public class SenderExerciseAI : MonoBehaviour {
+
+    public ArticolationTollerance shoulderTollerance;
+    public ArticolationTollerance elbowTollerance;
+    public ArticolationTollerance handTollerance;
     
     public delegate void SendResultOfAI(string limb,bool correctPosition);
     public static SendResultOfAI EventSendResultAI;
@@ -65,15 +69,9 @@ public class SenderExerciseAI : MonoBehaviour {
     private void CreateAI()
     {
         sampleRecorder = GetComponent<SampleRecorder>();
-        float tolleranceRadius = 0.1f;
-        ArticolationTollerance tollerance = new ArticolationTollerance();
-        tollerance.positionSpeedTolleranceRadius = tolleranceRadius;
-        tollerance.positionTolleranceRadius = tolleranceRadius;
-        tollerance.rotationSpeedTolleranceRadius = tolleranceRadius;
-        tollerance.rotationTolleranceRadius = tolleranceRadius;
-        Sensor shoulderSensor = new Sensor(shoulder, tollerance, "spalla");
-        Sensor elbowSensor = new Sensor(elbow, tollerance, "gomito");
-        Sensor handSensor = new Sensor(hand, tollerance, "mano");
+        Sensor shoulderSensor = new Sensor(shoulder, shoulderTollerance, "spalla");
+        Sensor elbowSensor = new Sensor(elbow, elbowTollerance, "gomito");
+        Sensor handSensor = new Sensor(hand, handTollerance, "mano");
 
         LimbConfiguration config = new LimbConfiguration(shoulderSensor, elbowSensor, handSensor);
         exerciseConfiguration = new ExerciseConfiguration(

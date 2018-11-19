@@ -52,6 +52,20 @@ namespace VRPhysiotheraphyst
         }
 
         private List<LimbExercise> _exercises = new List<LimbExercise>();
+        public List<ExerciseStep> GetIdealSamplingForExercise(int index)
+        {
+            return _exercises[index].idealStepsSampling;
+        }
+
+        public List<ExerciseStep> GetRealSamplingForExercise(int index)
+        {
+            return _exercises[index].realStepsSampling;
+        }
+
+        public int GetExerciseCount()
+        {
+            return _exercises.Count;
+        }
 
         #region Sampling activities
 
@@ -119,7 +133,11 @@ namespace VRPhysiotheraphyst
             {
                 if (ex.isTemporary)
                 {
-                    if (save) ex.aiManager.CreateExerciseSession(ex.idealStepsSampling.ToArray(), timingBetweenSamples);
+                    if (save)
+                    {
+                        ex.aiManager.CreateExerciseSession(ex.idealStepsSampling.ToArray(), timingBetweenSamples);
+                        ex.isTemporary = false;
+                    }
                     else _exercises.Remove(ex);
                 }
             }
@@ -161,6 +179,9 @@ namespace VRPhysiotheraphyst
             executionSampleHandlers = new HandleSample[_exercises.Count];
             for (int exID = 0; exID < _exercises.Count; exID++)
             {
+                LimbExercise exercise = _exercises[exID];
+                exercise.realStepsSampling.Clear();
+                exercise.aiManager.StartExercise();
                 executionSampleHandlers[exID] = GetExecutionSamplerHandlerForExercise(exID);
                 OnSampleTaken += executionSampleHandlers[exID];
             }

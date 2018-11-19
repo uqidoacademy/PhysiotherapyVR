@@ -14,6 +14,8 @@ namespace Physiotherapy.StateMachine
             Application.Quit();
             myContext = (AppFlowContext)context;
 
+            Debug.Log("HO FINITO L'ESERCIZIO");
+
 
             base.Enter();
         }

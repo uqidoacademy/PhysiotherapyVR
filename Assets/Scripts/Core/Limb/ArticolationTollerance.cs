@@ -8,7 +8,8 @@ namespace Limb
     /// Describe the tollerance that is given to the movement of an articolation
     /// </summary>
     /// <author>Antonio Terpin & Gabriel Ciulei & Giovanni Niero</author>
-    public class ArticolationTollerance
+    [CreateAssetMenu(fileName = "Data", menuName = "Body/ArticolationTollerance", order = 1)]
+    public class ArticolationTollerance : ScriptableObject
     {
         public float positionTolleranceRadius;
         public float positionSpeedTolleranceRadius;

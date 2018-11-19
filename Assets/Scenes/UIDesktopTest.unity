@@ -3221,7 +3221,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e675440ee4a2dda499f68d31200d2454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timing: 0.2
+  shoulderTollerance: {fileID: 11400000, guid: c7228a4747cb8a1419a21fd68063baf0, type: 2}
+  elbowTollerance: {fileID: 11400000, guid: ce22d2d3000a329479bd1a246c083288, type: 2}
+  handTollerance: {fileID: 11400000, guid: 60a5d3f52fbca9e45b2664dbf9897688, type: 2}
+  timing: 0.05
   elbow: {fileID: 0}
   shoulder: {fileID: 0}
   hand: {fileID: 0}
@@ -3250,7 +3253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40bfee1f793568b40af9be5f5688fbd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timingBetweenSamples: 0.2
+  timingBetweenSamples: 10
 --- !u!114 &1523485174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3262,7 +3265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c6f80aefaec1564e9f1f56f2da46dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickCadence: 0.2
+  tickCadence: 0.05
   trackersTransform:
   - {fileID: 0}
   - {fileID: 0}
