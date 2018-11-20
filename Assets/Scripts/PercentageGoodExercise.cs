@@ -18,6 +18,7 @@ public class PercentageGoodExercise : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Reset ();
+		SenderExerciseAI.EventSendResultAI += ExerciseResult;
 	}
 
 	public void Reset () {
@@ -29,27 +30,27 @@ public class PercentageGoodExercise : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		cooldownTick -= Time.deltaTime;
-		if (cooldownTick <= 0) { 
+		if (cooldownTick <= 0) {
 			SendPercentageExercise ();
-            cooldownTick = tickCadence;
-        }
-    }
+			cooldownTick = tickCadence;
+		}
+	}
 
 	void SendPercentageExercise () {
+		int percentage = 0;
 		if (numberOfTakenSamples != 0) {
-			int percentage = Mathf.RoundToInt (totalSumOfCorrectSamples / numberOfTakenSamples * 100);
-			if (EventSendPercentageExercise != null)
-				EventSendPercentageExercise (percentage);
-		} else
-        {
-            EventSendPercentageExercise(0);
-        }
+			percentage = Mathf.RoundToInt (totalSumOfCorrectSamples / numberOfTakenSamples * 100);
+		}
+		if (EventSendPercentageExercise != null) {
+			EventSendPercentageExercise (percentage);
+		}
 	}
 
 	void ExerciseResult (string limb, bool correctPosition) {
 		numberOfTakenSamples += 1;
 		if (correctPosition)
 			totalSumOfCorrectSamples += 1;
+		Debug.Log ("Got results from AI!");
 	}
 
 }
