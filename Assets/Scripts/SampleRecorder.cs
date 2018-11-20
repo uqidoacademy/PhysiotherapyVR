@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class SampleRecorder : MonoBehaviour {
 
     private struct SingleSample {
@@ -10,7 +10,7 @@ public class SampleRecorder : MonoBehaviour {
         public int tickIndex;
     }
 
-    public float tickCadence;
+    private float tickCadence = 0.05f;
 
     public List<Transform> trackersTransform;
 
@@ -26,7 +26,7 @@ public class SampleRecorder : MonoBehaviour {
 
     private float cooldownTick;
 
-    private List<GameObject> trackersPreview;
+    public List<GameObject> trackersPreview;
 
     // Use this for initialization
     void Start () {
@@ -73,7 +73,7 @@ public class SampleRecorder : MonoBehaviour {
         }
 
         for (int i = 0; i < trackersTransform.Count; i++) {
-            trackersPreview[i].transform.position = memoryMovments[currentTick-1].trackersWorldPositions[i];
+            trackersPreview[i].transform.DOMove(memoryMovments[currentTick-1].trackersWorldPositions[i],tickCadence);
         }
     }
 
