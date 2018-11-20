@@ -151,11 +151,13 @@ public class UIDesktopManager : MonoBehaviour {
         {
             wearTrackerReadyButton.GetComponent<Button>().interactable = true;
             trackerStatus.GetComponentInChildren<Text>().text = "Devices are ready";
+            trackerStatus.GetComponentInChildren<Text>().color = Color.green;
         }
         else
         {
             wearTrackerReadyButton.GetComponent<Button>().interactable = false;
             trackerStatus.GetComponentInChildren<Text>().text = "Devices are not ready";
+            trackerStatus.GetComponentInChildren<Text>().color = Color.red;
         }
     }
 
@@ -253,9 +255,11 @@ public class UIDesktopManager : MonoBehaviour {
         if (registrationState)
         {
             RegistrationExercisePanel.transform.Find("Panel/Viewport/Content/RegistrationText").GetComponent<Text>().text = "In registration";
+            RegistrationExercisePanel.transform.Find("Panel/Viewport/Content/RegistrationText").GetComponent<Text>().color = Color.green;
         }
         else {
             RegistrationExercisePanel.transform.Find("Panel/Viewport/Content/RegistrationText").GetComponent<Text>().text = "Not in registration";
+            RegistrationExercisePanel.transform.Find("Panel/Viewport/Content/RegistrationText").GetComponent<Text>().color = Color.red;
         }
     }
 
