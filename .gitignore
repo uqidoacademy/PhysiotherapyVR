@@ -38,3 +38,7 @@ sysinfo.txt
 \.vscode/
 
 Assets/Unity Recorder/Editor/Sources/Recorders/_Legacy/FrameCapturer/Plugins/
+Assets/Scenes/UIDesktopTest.unity
+Assets/Scenes/UIDesktopTest.unity
+Assets/Scripts/TrackerManager.cs
+Assets/SteamVR/InteractionSystem/Core/Scripts/Hand.cs
