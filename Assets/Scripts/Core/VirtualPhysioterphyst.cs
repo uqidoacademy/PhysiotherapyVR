@@ -82,7 +82,9 @@ namespace VRPhysiotheraphyst
             return (Sample sample) =>
             {
                 LimbExercise ex = _exercises[exID];
-                EvaluationResults results = ex.aiManager.EvaluateExerciseStep(sample.sampleDataForExercise[exID].UnwrapFromSensors());
+                EvaluationResults results = (ex.exerciseConfig.isRealTimeSampling) ?
+                    ex.aiManager.EvaluateExerciseStep(sample.sampleDataForExercise[exID].UnwrapFromSensors(), sample.idealDataForExercise[exID].UnwrapFromSensors()) :
+                    ex.aiManager.EvaluateExerciseStep(sample.sampleDataForExercise[exID].UnwrapFromSensors());
                 ex.exerciseConfig.ProvideExerciseResults(results);
             };
         }
@@ -120,8 +122,18 @@ namespace VRPhysiotheraphyst
             setupSampleHandlers = new HandleSample[_exercises.Count];
             for (int exID = 0; exID < _exercises.Count; exID++)
             {
-                setupSampleHandlers[exID] = GetIdealSamplerHandlerForExercise(exID);
-                OnSampleTaken += setupSampleHandlers[exID];
+                LimbExercise exercise = _exercises[exID];
+                if(!exercise.exerciseConfig.isRealTimeSampling)
+                {
+                    // need setup
+                    setupSampleHandlers[exID] = GetIdealSamplerHandlerForExercise(exID);
+                    OnSampleTaken += setupSampleHandlers[exID];
+                } else
+                {
+                    // no need of setup
+                    exercise.isTemporary = false;
+                    exercise.aiManager.CreateExerciseSession(timingBetweenSamples); // creating a session without tranining set
+                }
             }
 
             StartSampling(timingBetweenSamples);
@@ -135,7 +147,7 @@ namespace VRPhysiotheraphyst
                 {
                     if (save)
                     {
-                        ex.aiManager.CreateExerciseSession(ex.idealStepsSampling.ToArray(), timingBetweenSamples);
+                        ex.aiManager.CreateExerciseSession(timingBetweenSamples, ex.idealStepsSampling.ToArray());
                         ex.isTemporary = false;
                     }
                     else _exercises.Remove(ex);
@@ -181,7 +193,11 @@ namespace VRPhysiotheraphyst
             {
                 LimbExercise exercise = _exercises[exID];
                 exercise.realStepsSampling.Clear();
-                exercise.aiManager.StartExercise();
+                if(exercise.exerciseConfig.isRealTimeSampling)
+                {
+                    exercise.idealStepsSampling.Clear();
+                }
+                exercise.aiManager.StartExercise(exercise.exerciseConfig.isRealTimeSampling);
                 executionSampleHandlers[exID] = GetExecutionSamplerHandlerForExercise(exID);
                 OnSampleTaken += executionSampleHandlers[exID];
             }
@@ -207,6 +223,7 @@ namespace VRPhysiotheraphyst
         public class Sample
         {
             public LimbData[] sampleDataForExercise;
+            public LimbData[] idealDataForExercise;
         }
 
         delegate void HandleSample(Sample sample);
@@ -228,7 +245,9 @@ namespace VRPhysiotheraphyst
             sample.sampleDataForExercise = new LimbData[_exercises.Count];
             for (int exID = 0; exID < _exercises.Count; exID++)
             {
-                sample.sampleDataForExercise[exID] = _exercises[exID].exerciseConfig.limbConfiguration.ExtractLimbData();
+                LimbExercise exercise = _exercises[exID];
+                sample.sampleDataForExercise[exID] = exercise.exerciseConfig.limbConfiguration.ExtractLimbData();
+                if (exercise.exerciseConfig.isRealTimeSampling) sample.sampleDataForExercise[exID] = exercise.exerciseConfig.ghostLimbConfiguration.ExtractLimbData();
             }
             OnSampleTaken(sample);
         }

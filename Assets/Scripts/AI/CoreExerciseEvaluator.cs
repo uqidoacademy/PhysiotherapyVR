@@ -16,11 +16,12 @@ namespace AI
     {
         public class ExerciseEvaluatorTrainingSet
         {
-            public ExerciseStep[] idealMovementSteps;
+            public List<ExerciseStep> idealMovementSteps;
             public float timing;
         }
 
         private ExerciseEvaluatorTrainingSet _trainingSet;
+        private bool _isRealTimeSampling = false;
 
         private List<ExerciseStep> PerformedMovementSteps = new List<ExerciseStep>();
 
@@ -33,14 +34,17 @@ namespace AI
 
         public void Init(ExerciseEvaluatorTrainingSet trainingSet)
         {
-            if (IsTrainingSetValid(trainingSet)) throw new ArgumentException("Too few ideal movement steps");
+            if (!IsTrainingSetValid(trainingSet)) throw new ArgumentException("Too few ideal movement steps");
             _trainingSet = trainingSet;
+            _isRealTimeSampling = trainingSet.idealMovementSteps == null;
+
             RestartExercise();
         }
 
         private bool IsTrainingSetValid(ExerciseEvaluatorTrainingSet trainingSet)
         {
-            return trainingSet.idealMovementSteps.Length < 2;
+            // the training set is valid if is null (real time sampling) or if it is at minimum two sample long
+            return trainingSet.idealMovementSteps == null || trainingSet.idealMovementSteps.Count >= 2;
         }
 
         #endregion
@@ -55,7 +59,7 @@ namespace AI
         private ExerciseStep GetIdealStep(int shiftFromLastPerformedIndex)
         {
             int index = PerformedMovementSteps.Count - 1 + shiftFromLastPerformedIndex;
-            if (index >= 0 && index < _trainingSet.idealMovementSteps.Length)
+            if (index >= 0 && index < _trainingSet.idealMovementSteps.Count)
                 return _trainingSet.idealMovementSteps[index];
 
             return null;
@@ -104,16 +108,30 @@ namespace AI
 
         #endregion
 
-        public ArticolationError[] EvaluateExerciseStep(ExerciseStep currentStep, ArticolationTollerance[] tollerances)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tollerances"></param>
+        /// <param name="currentStep"></param>
+        /// <param name="idealExerciseStep"></param>
+        /// <returns></returns>
+        public ArticolationError[] EvaluateExerciseStep(ArticolationTollerance[] tollerances, ExerciseStep currentStep, ExerciseStep idealExerciseStep = null)
         {
+            // check abiity to evaluate the step
+            if (_isRealTimeSampling && idealExerciseStep == null) throw new Exception("Unable to evaluate exercise step without ideal sample or a training set!");
+
             PerformedMovementSteps.Add(currentStep);
+
+            // eventually keep training the ai (doing this all the following code is the same in both cases)
+            if(idealExerciseStep != null) _trainingSet.idealMovementSteps.Add(idealExerciseStep);
+            
             ExerciseStep previousStep = GetPerformedStep(-1),
                 currentIdealStep = GetIdealStep(0),
                 previousIdealStep = GetIdealStep(-1);
 
             if(currentIdealStep == null)
             {
-                int lastStepIndex = _trainingSet.idealMovementSteps.Length - 1;
+                int lastStepIndex = _trainingSet.idealMovementSteps.Count - 1;
                 currentIdealStep = _trainingSet.idealMovementSteps[lastStepIndex];
                 previousIdealStep = _trainingSet.idealMovementSteps[lastStepIndex - 1];
             }

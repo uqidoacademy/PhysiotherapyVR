@@ -8,6 +8,8 @@ namespace VRPhysiotheraphyst
 {
     public class ExerciseConfiguration
     {
+        public bool isRealTimeSampling = false; // if true ideal sampling is taken at real time with real sampling
+        public LimbConfiguration ghostLimbConfiguration; // if isRealTimeSampling this represents the ideal ghost limb to compare with the real sampling
         public LimbConfiguration limbConfiguration;
         public delegate void HandleResults(EvaluationResults results);
         public event HandleResults OnExecutionStepEvaluated;

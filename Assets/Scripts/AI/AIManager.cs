@@ -43,18 +43,35 @@ namespace AI
             return results;
         }
 
-        public void CreateExerciseSession(ExerciseStep[] exerciseSteps, float timing)
+        /// <summary>
+        /// Create a new exercise session (made of multiple repetitions potentially)
+        /// </summary>
+        /// <param name="timing">timing between each sample</param>
+        /// <param name="exerciseSteps">if provided represents the ideal steps, if not real time ideal sampling from a ghost is needed</param>
+        public void CreateExerciseSession(float timing, ExerciseStep[] exerciseSteps = null)
         {
             CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet trainingSet = new CoreExerciseEvaluator.ExerciseEvaluatorTrainingSet();
-            trainingSet.idealMovementSteps = exerciseSteps;
+            if (exerciseSteps == null) trainingSet.idealMovementSteps = null;
+            else
+            {
+                List<ExerciseStep> exerciseStepsList = new List<ExerciseStep>();
+                exerciseStepsList.AddRange(exerciseSteps);
+                trainingSet.idealMovementSteps = exerciseStepsList;
+            }
             trainingSet.timing = timing;
             _exerciseEvaluator = new CoreExerciseEvaluator(trainingSet);
         }
 
-        public EvaluationResults EvaluateExerciseStep(ExerciseStep exerciseStep)
+        /// <summary>
+        /// Evaluate an exercise step
+        /// </summary>
+        /// <param name="exerciseStep">The performed step</param>
+        /// <param name="idealExerciseStep">Optional, required if no training set was provided</param>
+        /// <returns></returns>
+        public EvaluationResults EvaluateExerciseStep(ExerciseStep exerciseStep, ExerciseStep idealExerciseStep = null)
         {
             bool niceWork = true;
-            ArticolationError[] stepEvaluationResults = _exerciseEvaluator.EvaluateExerciseStep(exerciseStep, ExerciseTollerance);
+            ArticolationError[] stepEvaluationResults = _exerciseEvaluator.EvaluateExerciseStep(ExerciseTollerance, exerciseStep, idealExerciseStep);
             if (ExerciseTollerance != null)
             {
                 for(int i = 0; i < stepEvaluationResults.Length; i++)
@@ -68,7 +85,7 @@ namespace AI
             return new EvaluationResults(niceWork, stepEvaluationResults);
         }
 
-        public void StartExercise()
+        public void StartExercise(bool isRealTimeSampling = false)
         {
             _exerciseEvaluator.RestartExercise();
         }
@@ -83,11 +100,6 @@ namespace AI
             OverallExerciseResults results = new OverallExerciseResults(score / _exerciseStepsEvaluation.Count * MAX_SCORE);
             _exercisesResults.Add(results);
             return results;
-        }
-
-        public OverallExerciseResults EvaluateArmExercise(int armExerciseID, int armSessionID)
-        {
-            throw new System.NotImplementedException();
         }
 
         #endregion
