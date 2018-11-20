@@ -5,7 +5,7 @@ using TMPro;
 
 public class PercentageExerciseUI : MonoBehaviour {
 	
-	void Update () {
+	void Start () {
 		PercentageGoodExercise.EventSendPercentageExercise += UpdatePercentageUI;
 	}
 

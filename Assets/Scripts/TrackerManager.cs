@@ -51,7 +51,7 @@ public class TrackerManager : MonoBehaviour
             GameObject childTracker = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), transform);
             childTracker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             childTracker.AddComponent<BoxCollider>().isTrigger = true;
-            childTracker.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
+            childTracker.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
             childTracker.name = "tracker_" + index;
             childTracker.AddComponent<SteamVR_TrackedObject>().SetDeviceIndex((int)index);
         }

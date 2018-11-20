@@ -63,7 +63,7 @@ public class SampleRecorder : MonoBehaviour {
         }
     }
     private void CreatePreviewTrackers () {
-        if (trackersPreview == null) {
+        if (trackersPreview == null || trackersPreview.Count != trackersTransform.Count) {
             trackersPreview = new List<GameObject> ();
             for (int i = 0; i < trackersTransform.Count; i++) {
                 trackersPreview.Add (Instantiate (prefabTrackerCube, transform));
@@ -72,8 +72,9 @@ public class SampleRecorder : MonoBehaviour {
             }
         }
 
-        for (int i = 0; i < trackersTransform.Count; i++) {
-            trackersPreview[i].transform.DOMove(memoryMovments[currentTick-1].trackersWorldPositions[i],tickCadence);
+        for (int i = 0; i < trackersPreview.Count; i++)
+        {
+            trackersPreview[i].transform.DOMove(memoryMovments[currentTick - 1].trackersWorldPositions[i], tickCadence);
         }
     }
 
