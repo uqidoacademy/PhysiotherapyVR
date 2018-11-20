@@ -14,10 +14,12 @@ namespace VRPhysiotheraphyst
         public delegate void HandleResults(EvaluationResults results);
         public event HandleResults OnExecutionStepEvaluated;
 
-        public ExerciseConfiguration(LimbConfiguration limbConfig, HandleResults resultsHandler = null)
+        public ExerciseConfiguration(LimbConfiguration limbConfig, HandleResults resultsHandler = null, LimbConfiguration ghostLimbConfiguration = null)
         {
             limbConfiguration = limbConfig;
             OnExecutionStepEvaluated += resultsHandler;
+            isRealTimeSampling = ghostLimbConfiguration != null;
+            this.ghostLimbConfiguration = ghostLimbConfiguration;
         }
 
         public void ProvideExerciseResults(EvaluationResults results)

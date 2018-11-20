@@ -35,8 +35,13 @@ namespace AI
         public void Init(ExerciseEvaluatorTrainingSet trainingSet)
         {
             if (!IsTrainingSetValid(trainingSet)) throw new ArgumentException("Too few ideal movement steps");
+            if(trainingSet.idealMovementSteps == null)
+            {
+                _isRealTimeSampling = true;
+                trainingSet.idealMovementSteps = new List<ExerciseStep>();
+            }
             _trainingSet = trainingSet;
-            _isRealTimeSampling = trainingSet.idealMovementSteps == null;
+            
 
             RestartExercise();
         }

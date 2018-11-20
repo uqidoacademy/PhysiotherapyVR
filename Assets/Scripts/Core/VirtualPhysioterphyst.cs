@@ -243,13 +243,17 @@ namespace VRPhysiotheraphyst
         {
             Sample sample = new Sample();
             sample.sampleDataForExercise = new LimbData[_exercises.Count];
+            sample.idealDataForExercise = new LimbData[_exercises.Count];
             for (int exID = 0; exID < _exercises.Count; exID++)
             {
                 LimbExercise exercise = _exercises[exID];
                 sample.sampleDataForExercise[exID] = exercise.exerciseConfig.limbConfiguration.ExtractLimbData();
-                if (exercise.exerciseConfig.isRealTimeSampling) sample.sampleDataForExercise[exID] = exercise.exerciseConfig.ghostLimbConfiguration.ExtractLimbData();
+                if (exercise.exerciseConfig.isRealTimeSampling)
+                {
+                    sample.idealDataForExercise[exID] = exercise.exerciseConfig.ghostLimbConfiguration.ExtractLimbData();
+                }
             }
-            OnSampleTaken(sample);
+            if(OnSampleTaken != null) OnSampleTaken(sample);
         }
 
         #endregion

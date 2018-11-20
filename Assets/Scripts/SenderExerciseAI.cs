@@ -22,21 +22,30 @@ public class SenderExerciseAI : MonoBehaviour {
     public GameObject elbow, shoulder, hand;
 
     public ExerciseConfiguration exerciseConfiguration;
-
+    
     public bool isThisExercise = false;
 
     private SampleRecorder sampleRecorder;
 
+    private bool _initialized = false;
+    private void _Init()
+    {
+        sampleRecorder = GetComponent<SampleRecorder>();
+        CreateAI();
+        _initialized = true;
+    }
 
     public void StartSendRecording()
     {
+        if (!_initialized) _Init();
+
     Debug.Log("start recording");
         UIDesktopManager.I.RegistrationFeedback(true);
     if(isThisExercise == false)
         {
             CreateAI();
-            VirtualPhysioterphyst.Instance.StartSetup();
             sampleRecorder.StartRecording();
+            VirtualPhysioterphyst.Instance.StartSetup();
         }
         else
         {
@@ -52,6 +61,9 @@ public class SenderExerciseAI : MonoBehaviour {
         if (isThisExercise == false)
         {
             sampleRecorder.StopRecording();
+            VirtualPhysioterphyst.Instance.EndSetup();
+
+            // todo do this on go to exercise click, else if repeat use .DiscardSetup()
             VirtualPhysioterphyst.Instance.SaveSetup();
         }
         else
@@ -68,12 +80,17 @@ public class SenderExerciseAI : MonoBehaviour {
 
     private void CreateAI()
     {
-        sampleRecorder = GetComponent<SampleRecorder>();
         Sensor shoulderSensor = new Sensor(shoulder, shoulderTollerance, "spalla");
         Sensor elbowSensor = new Sensor(elbow, elbowTollerance, "gomito");
         Sensor handSensor = new Sensor(hand, handTollerance, "mano");
 
         LimbConfiguration config = new LimbConfiguration(shoulderSensor, elbowSensor, handSensor);
+
+        // check that there is the ghost
+        if (sampleRecorder.trackersPreview.Count != 3) throw new System.Exception("Ghost non correttamente configurato");
+
+        LimbConfiguration ghostConfig = new LimbConfiguration(new Sensor(sampleRecorder.trackersPreview[0]), new Sensor(sampleRecorder.trackersPreview[1]), new Sensor(sampleRecorder.trackersPreview[2]));
+
         exerciseConfiguration = new ExerciseConfiguration(
             config,
             (EvaluationResults results) =>
@@ -119,13 +136,10 @@ public class SenderExerciseAI : MonoBehaviour {
                     else
                         trackerOb.GetComponent<MeshRenderer>().material.color = Color.red;
                 }
-            }
+            },
+            ghostConfig
             );
-        exerciseConfiguration.OnExecutionStepEvaluated += (EvaluationResults results) => { }; // exercise configuration should be taken from somewhere
-        VirtualPhysioterphyst eval = VirtualPhysioterphyst.Instance;
-        float timing = 0.5f, totalDuration = 2f;
-        eval.timingBetweenSamples = timing;
-        eval.ExerciseSetup(exerciseConfiguration);
+        VirtualPhysioterphyst.Instance.ExerciseSetup(exerciseConfiguration);
     }
 
 }

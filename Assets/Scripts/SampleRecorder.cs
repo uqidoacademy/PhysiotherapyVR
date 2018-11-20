@@ -33,6 +33,7 @@ public class SampleRecorder : MonoBehaviour {
         memoryMovments = new List<SingleSample> ();
         recordNow = false;
         playbackNow = false;
+        CreatePreviewTrackers();
     }
 
     void Update () {
@@ -51,14 +52,14 @@ public class SampleRecorder : MonoBehaviour {
 
             cooldownTick = tickCadence;
 
-            CreatePreviewTrackers ();
+            DoPreviewTrackers();
         }
 
         if(playbackNow && cooldownTick <= 0) {
             if (currentTick >= memoryMovments.Count)
                 currentTick = 0;
             currentTick++;
-            CreatePreviewTrackers();
+            DoPreviewTrackers();
             cooldownTick = tickCadence;
         }
     }
@@ -71,7 +72,10 @@ public class SampleRecorder : MonoBehaviour {
                 trackersPreview[i].GetComponent<MeshRenderer>().material.color = StaticTestList.ColorList[i];
             }
         }
+    }
 
+    private void DoPreviewTrackers()
+    {
         for (int i = 0; i < trackersPreview.Count; i++)
         {
             trackersPreview[i].transform.DOMove(memoryMovments[currentTick - 1].trackersWorldPositions[i], tickCadence);
