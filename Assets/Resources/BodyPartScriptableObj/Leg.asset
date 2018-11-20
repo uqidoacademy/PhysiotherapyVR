@@ -15,8 +15,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 8beb18295abf89148ad2fda24c9c64c2, type: 3}
   NumberTrackers: 3
   LimbPart:
-  - hip
-  - knee
-  - ankle
+  - Hip
+  - Knee
+  - Ankle
   PositionTollerance: 3
   VelocityTollernace: 3

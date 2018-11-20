@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c49d8be7e71634abdebba7311aea99, type: 3}
   m_Name: HandTollerance
   m_EditorClassIdentifier: 
-  positionTolleranceRadius: 0.01
+  positionTolleranceRadius: 0.1
   positionSpeedTolleranceRadius: 1000
   rotationTolleranceRadius: 1000
   rotationSpeedTolleranceRadius: 1000
