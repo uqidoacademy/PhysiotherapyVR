@@ -34,7 +34,6 @@ public class TrackerManager : MonoBehaviour
             if (result.ToString().Contains("tracker"))
             {
                 trackerIndex.Add(i);
-
             }
         }
 
@@ -49,7 +48,7 @@ public class TrackerManager : MonoBehaviour
     {
         foreach (uint index in indexList)
         {
-            GameObject childTracker = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), transform);
+            GameObject childTracker = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), transform);
             childTracker.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             childTracker.AddComponent<BoxCollider>().isTrigger = true;
             childTracker.GetComponent<BoxCollider>().size = new Vector3(0.1f, 0.1f, 0.1f);
@@ -79,8 +78,6 @@ public class TrackerManager : MonoBehaviour
               notInitTrackers +
               (notInitTrackers == 1 ? " tracker not initialized" : " trackers not initialized"),
               "OK");
-           // trackerRenamer.SetInteraction(false);
-
         }
     }
 
