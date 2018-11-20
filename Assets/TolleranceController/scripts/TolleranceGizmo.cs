@@ -48,7 +48,7 @@ public class TolleranceGizmo : MonoBehaviour {
     /// <summary>
     /// Refresh tollerance view Gizmo.
     /// </summary>
-    public void SetTransparentColorShape() {
+    public void DrawTolleranceGizmo() {
         DrawTolleranceGizmo(BaseTransparentShapeColor);
     }
 

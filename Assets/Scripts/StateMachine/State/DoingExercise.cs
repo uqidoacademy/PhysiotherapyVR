@@ -23,6 +23,14 @@ namespace Physiotherapy.StateMachine
             UIDesktopManager.I.ActiveTrackersFeedbackPanel(myContext.currentBodyPart);
 
             base.Enter();
+
+            // Quick Fix!!!
+            foreach (var gizmo in GameObject.FindObjectsOfType<TolleranceGizmo>())
+            {
+                // niente... eliminato perchè la tolleranza che viene passata quì non è quella corretta...
+                //gizmo.radius = myContext.listBodyParts[0].PositionTollerance;
+                //gizmo.DrawTolleranceGizmo();
+            }
         }
 
 
