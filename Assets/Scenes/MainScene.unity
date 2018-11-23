@@ -588,7 +588,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00006031266, y: 0}
+  m_AnchoredPosition: {x: -0.00006031266, y: 0.000061035156}
   m_SizeDelta: {x: 16, y: 16}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &276999692
@@ -841,7 +841,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Patients Selection
+  m_Text: Patient Selection
 --- !u!222 &316964837
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4956,7 +4956,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2002066958}
   m_Direction: 2
   m_Value: 0.9999962
-  m_Size: 0.9794521
+  m_Size: 0.97922844
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6747,7 +6747,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -3895}
   m_SizeDelta: {x: -17, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1636926857
@@ -6789,8 +6789,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1857534325}
   m_HandleRect: {fileID: 1857534324}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.99067414
+  m_Value: 0.0000038147264
+  m_Size: 0.9907723
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7497,8 +7497,8 @@ RectTransform:
   m_Father: {fileID: 835549151}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.99067414, y: 1}
+  m_AnchorMin: {x: 0.000000035201126, y: 0}
+  m_AnchorMax: {x: 0.99077237, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8020,7 +8020,7 @@ RectTransform:
   m_Father: {fileID: 298334361}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.020547848}
+  m_AnchorMin: {x: 0, y: 0.020771483}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
