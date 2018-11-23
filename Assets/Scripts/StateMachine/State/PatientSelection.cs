@@ -30,11 +30,6 @@ namespace Physiotherapy.StateMachine
                "Varone", "Male", 1.7f, true, "Broken shoulder"));
             UIDesktopManager.I.ActiveSelectionPatientPanel(myContext.ListPatient);
 
-            
-
-
-
-
             base.Enter();
         }
 
