@@ -31,6 +31,11 @@ became green.
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/SetupTrakers.jpg">
 
 ### Registration exercise
-Now physioterapist can explain the exercise to the patient and register the correct sample. The sistem during the registration store 
+Now physioterapist can explain the exercise to the patient and register the correct sample. The system during the registration store 
 the positions of the trakers every frame.
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/RegistrationExercise.jpg">
+
+### Trakers feedback
+Finally patient can do exercise alone in VR and the system report to Desktop which limb part is correct and which not. In the 3D
+world patient have a magic sphere that indicate him the right way for every limb part.
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/TrakerFeedback.jpg">
