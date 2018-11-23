@@ -31,5 +31,6 @@ became green.
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/SetupTrakers.jpg">
 
 ### Registration exercise
-Now physioterapist can explain the exercise to the patient and register the correct sample.
+Now physioterapist can explain the exercise to the patient and register the correct sample. The sistem during the registration store 
+the positions of the trakers every frame.
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/RegistrationExercise.jpg">
