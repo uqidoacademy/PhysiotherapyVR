@@ -43,4 +43,4 @@ world patient have a magic spheres that indicate him the right way for every lim
 During the exercise, patient with HTC Vive headset, controls and trakers can do the right movement thanks to the magic balls that 
 suggest him every limb part positions.
 
-<a href="https://vimeo.com/user69344154/review/302489727/3fca992a20">Guarda il video su Vimeo</a>
+<a href="https://vimeo.com/user69344154/review/302489727/3fca992a20">See on Vimeo</a>
