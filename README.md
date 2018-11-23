@@ -14,7 +14,7 @@ with realtime simulations and informations.
 
 ### Patients selection
 
-<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/PatientsSelection.jpg">
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/PatientSelection.jpg">
 
 ### Body part selection
 
