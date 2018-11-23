@@ -22,8 +22,8 @@ namespace Physiotherapy.StateMachine
             myContext = (AppFlowContext)context;
 
             myContext.ListPatient = new List<PatientProfile>();
-            myContext.ListPatient.Add(new PatientProfile("MR", "Mario",
-                "Rossi", "Male", 1.7f, true, "Broken shoulder"));
+            myContext.ListPatient.Add(new PatientProfile("MR", "Gabriel",
+                "Polo", "Male", 1.7f, true, "Broken shoulder"));
             myContext.ListPatient.Add(new PatientProfile("SN", "Simone",
                "Niero", "Male", 1.7f, true, "Broken shoulder"));
             myContext.ListPatient.Add(new PatientProfile("SN", "Alessio",
