@@ -12,6 +12,10 @@ with realtime simulations and informations.
 
 ## Desktop
 
-## Patients selection
+### Patients selection
 
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/PatientsSelection.jpg">
+
+### Body part selection
+
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/BodyPartSelection.jpg">
