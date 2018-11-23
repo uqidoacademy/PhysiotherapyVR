@@ -13,9 +13,19 @@ with realtime simulations and informations.
 ## Desktop
 
 ### Patients selection
-
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/PatientSelection.jpg">
 
-### Body part selection
 
+### Body part selection
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/BodyPartSelection.jpg">
+
+
+### Wear trakers
+System allows to continue only when all HTV Vive trakers are active.
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/WearTraker.jpg">
+
+
+### Setup trakers
+Physiotherapist, after placing trakers, can active them by touching them with HTC Vive controller. After touch, the circle of limb part
+became green.
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/SetupTrakers.jpg">
