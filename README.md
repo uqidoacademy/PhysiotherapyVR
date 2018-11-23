@@ -19,3 +19,13 @@ with realtime simulations and informations.
 ### Body part selection
 
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/BodyPartSelection.jpg">
+
+### Wear trakers 
+
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/WearTraker.jpg">
+
+System allows to continue only when all HTV Vive trakers are active.
+
+### Setup trakers
+
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/SetupTrakers.jpg">
