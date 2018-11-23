@@ -11,4 +11,4 @@ The VR part is for patient: with HTC Vive headset and trakers he can do the exer
 with realtime simulations and informations.
 
 ## Desktop
-<img="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/Physiotherapy-banner-1.jpg">
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/Physiotherapy-banner-1.jpg">
