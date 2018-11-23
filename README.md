@@ -29,3 +29,7 @@ System allows to continue only when all HTV Vive trakers are active.
 Physiotherapist, after placing trakers, can active them by touching them with HTC Vive controller. After touch, the circle of limb part
 became green.
 <img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/SetupTrakers.jpg">
+
+### Registration exercise
+Now physioterapist can explain the exercise to the patient and register the correct sample.
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/RegistrationExercise.jpg">
