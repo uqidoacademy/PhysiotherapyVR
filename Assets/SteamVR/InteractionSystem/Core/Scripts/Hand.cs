@@ -695,7 +695,7 @@ namespace Valve.VR.InteractionSystem
             if (trackedObject == null)
                 trackedObject = this.gameObject.GetComponent<SteamVR_Behaviour_Pose>();
 
-            //trackedObject.onTransformUpdated.AddListener(OnTransformUpdated);
+            trackedObject.onTransformUpdated.AddListener(OnTransformUpdated);
         }
 
         protected virtual void OnTransformUpdated(SteamVR_Action_Pose pose)
