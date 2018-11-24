@@ -21,7 +21,7 @@ We develop this VR experience thanks to a physioterapist.
 
 ### Wear trakers
 System allows to continue only when all HTC Vive trakers are active.
-<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/WearTraker.jpg">
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/WearTrakers.jpg">
 
 
 ### Setup trakers
