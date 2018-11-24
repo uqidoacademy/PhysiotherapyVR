@@ -37,7 +37,7 @@ the positions of the trakers every frame.
 ### Trakers feedback
 Finally patient can do exercise alone in VR and the system report to Desktop which limb part is correct and which not. In the 3D
 world patient have a magic spheres that indicate him the right way for every limb parts.
-<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/TrakerFeedback.jpg">
+<img src="https://github.com/uqidoacademy/PhysiotherapyVR/blob/master/Assets/Image/UIScreenshots/TrakersFeedback.jpg">
 
 ## VR
 During the exercise, patient with HTC Vive headset, controls and trakers can do the right movement thanks to the magic balls that 
