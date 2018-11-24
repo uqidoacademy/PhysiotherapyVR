@@ -9,6 +9,8 @@ The VR part is for patient: with HTC Vive headset, controls and trakers he can d
 
 We develop this VR experience thanks to a physioterapist. He help us to understand physioterapists needs so to develop a useful application.
 
+We had only one week to develop this application, so at this time is only a prototype.
+
 ## Desktop
 
 ### Patient selection
